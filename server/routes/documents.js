@@ -1,7 +1,10 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Document = require('../models/Document');
+const Chunk = require('../models/Chunk');
+const Asset = require('../models/Asset');
 const { addIngestionJob } = require('../queues/ingestionQueue');
 
 const router = express.Router();
@@ -89,6 +92,67 @@ router.get('/', async (req, res) => {
       pages: Math.ceil(total / limit),
     },
   });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/documents/:id
+// Deletes document, all its chunks, removes from asset relationships
+// ---------------------------------------------------------------------------
+router.delete('/:id', async (req, res) => {
+  try {
+    const docId = req.params.id;
+
+    const doc = await Document.findById(docId);
+    if (!doc) {
+      return res.status(404).json({ error: 'Document not found.' });
+    }
+
+    console.log(`[documents] Deleting document ${docId} and related data`);
+
+    // 1. Delete all chunks associated with this document
+    const chunkResult = await Chunk.deleteMany({ doc_id: docId });
+    console.log(`[documents] Deleted ${chunkResult.deletedCount} chunks`);
+
+    // 2. Remove this document's references from asset relationships
+    if (doc.equipment_tags && doc.equipment_tags.length > 0) {
+      for (const tag of doc.equipment_tags) {
+        try {
+          await Asset.findOneAndUpdate(
+            { tag },
+            {
+              $pull: {
+                relationships: { source_doc_id: docId },
+              },
+            }
+          );
+        } catch (assetErr) {
+          console.warn(`[documents] Failed to clean asset "${tag}": ${assetErr.message}`);
+        }
+      }
+      console.log(`[documents] Cleaned relationships from ${doc.equipment_tags.length} assets`);
+    }
+
+    // 3. Delete the uploaded file from disk
+    if (doc.file_path) {
+      try {
+        if (fs.existsSync(doc.file_path)) {
+          fs.unlinkSync(doc.file_path);
+          console.log(`[documents] Deleted file: ${doc.file_path}`);
+        }
+      } catch (fsErr) {
+        console.warn(`[documents] Could not delete file: ${fsErr.message}`);
+      }
+    }
+
+    // 4. Delete the document record itself
+    await Document.findByIdAndDelete(docId);
+
+    console.log(`[documents] Document ${docId} fully deleted`);
+    return res.json({ deleted: true });
+  } catch (error) {
+    console.error(`[documents] Delete error: ${error.message}`);
+    return res.status(500).json({ error: `Failed to delete document: ${error.message}` });
+  }
 });
 
 module.exports = router;

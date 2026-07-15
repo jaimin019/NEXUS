@@ -1,5 +1,6 @@
 const Bull = require('bull');
 const Document = require('../models/Document');
+const { processIngestionJob } = require('./ingestionProcessor');
 
 // Parse Upstash Redis URL for Bull connection
 // Upstash provides a redis:// or rediss:// URL
@@ -34,20 +35,15 @@ if (redisUrl) {
 const ingestionQueue = new Bull('document-ingestion', queueConfig);
 
 // ---------------------------------------------------------------------------
-// Processor — placeholder: logs the job and advances status to 'parsing'
+// Processor — runs the full 4-stage ingestion pipeline
 // ---------------------------------------------------------------------------
 ingestionQueue.process(async (job) => {
-  const { docId, filePath, docType } = job.data;
   console.log(`[ingestion-queue] Processing job ${job.id}`);
-  console.log(`  docId    : ${docId}`);
-  console.log(`  filePath : ${filePath}`);
-  console.log(`  docType  : ${docType}`);
+  console.log(`  docId    : ${job.data.docId}`);
+  console.log(`  filePath : ${job.data.filePath}`);
+  console.log(`  docType  : ${job.data.docType}`);
 
-  // Advance ingestion status → parsing
-  await Document.findByIdAndUpdate(docId, { ingestion_status: 'parsing' });
-
-  // TODO: implement actual parsing, chunking, embedding, graphing pipeline
-  return { docId, status: 'parsing' };
+  return await processIngestionJob(job);
 });
 
 ingestionQueue.on('completed', (job, result) => {
