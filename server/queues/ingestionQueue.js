@@ -2,25 +2,39 @@ const Bull = require('bull');
 const Document = require('../models/Document');
 const { processIngestionJob } = require('./ingestionProcessor');
 
-// Parse Upstash Redis URL for Bull connection
-// Upstash provides a redis:// or rediss:// URL
-const redisUrl = process.env.UPSTASH_REDIS_URL;
+// Parse Upstash Redis URL for Bull connection.
+// Upstash REST URLs use https:// — convert to rediss:// for ioredis/Bull.
+// Upstash also exposes a native Redis endpoint on port 6379 (TLS).
+let rawRedisUrl = process.env.UPSTASH_REDIS_URL || '';
+
+// Normalise https:// → rediss:// so URL parsing works
+if (rawRedisUrl.startsWith('https://')) {
+  rawRedisUrl = rawRedisUrl.replace('https://', 'rediss://');
+} else if (rawRedisUrl.startsWith('http://')) {
+  rawRedisUrl = rawRedisUrl.replace('http://', 'redis://');
+}
 
 let queueConfig = {};
 
-if (redisUrl) {
-  // Upstash Redis typically uses TLS (rediss://)
-  const url = new URL(redisUrl);
-  queueConfig = {
-    redis: {
-      host: url.hostname,
-      port: parseInt(url.port, 10) || 6379,
-      password: process.env.UPSTASH_REDIS_TOKEN || url.password,
-      tls: url.protocol === 'rediss:' ? { rejectUnauthorized: false } : undefined,
-      maxRetriesPerRequest: 3,
-      enableReadyCheck: false,
-    },
-  };
+if (rawRedisUrl) {
+  try {
+    const url = new URL(rawRedisUrl);
+    queueConfig = {
+      redis: {
+        host: url.hostname,
+        port: parseInt(url.port, 10) || 6379,
+        password: process.env.UPSTASH_REDIS_TOKEN || url.password || undefined,
+        tls: url.protocol === 'rediss:' ? { rejectUnauthorized: false } : undefined,
+        maxRetriesPerRequest: 3,
+        enableReadyCheck: false,
+        connectTimeout: 10000,
+      },
+    };
+    console.log(`[ingestion-queue] Redis config → host: ${url.hostname}, tls: ${url.protocol === 'rediss:'}`);
+  } catch (e) {
+    console.warn('[ingestion-queue] Could not parse UPSTASH_REDIS_URL, falling back to local Redis');
+    queueConfig = { redis: { host: '127.0.0.1', port: 6379, maxRetriesPerRequest: 3 } };
+  }
 } else {
   // Fallback: local Redis for development
   queueConfig = {
