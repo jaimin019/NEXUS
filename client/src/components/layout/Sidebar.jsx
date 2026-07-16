@@ -1,6 +1,7 @@
 /**
  * Sidebar — Fixed left navigation with collapse animation.
  */
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Network, Bot, Activity, ShieldCheck,
@@ -8,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useNexusStore from '@/store/nexusStore';
+import { getFailurePatterns, getComplianceDashboard, getAssets } from '@/lib/api';
 
 const NAV_ITEMS = [
   { id: 'dashboard',   label: 'Dashboard',       icon: LayoutDashboard, route: '/' },
@@ -49,11 +51,40 @@ export default function Sidebar() {
   const {
     sidebarCollapsed, toggleSidebar,
     setActivePage, activeAlerts,
-    assets, complianceDashboard
+    assets, setAssets,
+    complianceDashboard, setComplianceDashboard,
+    failurePatterns, setFailurePatterns
   } = useNexusStore();
+
+  // Fetch metrics and refresh every 60 seconds
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const [patRes, compRes, astRes] = await Promise.all([
+          getFailurePatterns(),
+          getComplianceDashboard(),
+          assets.length === 0 ? getAssets() : Promise.resolve({ data: { assets } })
+        ]);
+
+        if (patRes.data?.patterns) setFailurePatterns(patRes.data.patterns);
+        if (compRes.data) setComplianceDashboard(compRes.data);
+        if (astRes.data?.assets && assets.length === 0) setAssets(astRes.data.assets);
+      } catch (err) {
+        console.warn('[Sidebar] background poll check failed:', err.message);
+      }
+    };
+
+    fetchMetrics();
+    const interval = setInterval(fetchMetrics, 60000);
+    return () => clearInterval(interval);
+  }, [setFailurePatterns, setComplianceDashboard, setAssets, assets.length]);
 
   // Check condition: knowledge gaps (< 0.4 completeness)
   const hasKnowledgeGaps = assets.some((a) => (a.knowledge_completeness ?? 1) < 0.4);
+
+  // Check condition: failurePatterns with occurrence_count >= 3
+  const highOccurrencePatterns = failurePatterns.filter((p) => (p.occurrence_count || 1) >= 3);
+  const hasHighOccurrencePatterns = highOccurrencePatterns.length > 0;
 
   // Check condition: critical compliance gaps
   const hasCriticalComplianceGaps =
@@ -104,6 +135,7 @@ export default function Sidebar() {
           const active = isActive(item);
           const Icon = item.icon;
           const isSynapse = item.id === 'synapse';
+          const isChronicle = item.id === 'chronicle';
           const isCompliance = item.id === 'compliance';
 
           return (
@@ -126,6 +158,13 @@ export default function Sidebar() {
                     >
                       <Icon className={`w-5 h-5 ${active ? 'text-nexus-primary' : 'text-amber-400'}`} />
                     </motion.div>
+                  ) : isChronicle && hasHighOccurrencePatterns ? (
+                    <motion.div
+                      animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                    >
+                      <Icon className={`w-5 h-5 ${active ? 'text-nexus-primary' : 'text-amber-400'}`} />
+                    </motion.div>
                   ) : (
                     <Icon className={`w-5 h-5 ${active ? 'text-nexus-primary' : ''}`} />
                   )}
@@ -135,6 +174,14 @@ export default function Sidebar() {
                     <span
                       title="Critical Compliance Gaps Detected"
                       className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-nexus-surface animate-pulse"
+                    />
+                  )}
+
+                  {/* Amber dot badge for CHRONICLE recurring patterns */}
+                  {isChronicle && hasHighOccurrencePatterns && (
+                    <span
+                      title="Recurring High-Risk Failure Patterns Detected"
+                      className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-500 rounded-full ring-2 ring-nexus-surface animate-pulse"
                     />
                   )}
                 </div>
@@ -152,6 +199,11 @@ export default function Sidebar() {
                       {isCompliance && hasCriticalComplianceGaps && (
                         <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
                       )}
+                      {isChronicle && hasHighOccurrencePatterns && (
+                        <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold">
+                          {highOccurrencePatterns.length}
+                        </span>
+                      )}
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -166,6 +218,9 @@ export default function Sidebar() {
                   <span>{item.label}</span>
                   {isCompliance && hasCriticalComplianceGaps && (
                     <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  )}
+                  {isChronicle && hasHighOccurrencePatterns && (
+                    <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
                   )}
                 </div>
               )}
