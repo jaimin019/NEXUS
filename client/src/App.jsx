@@ -4,7 +4,8 @@ import Dashboard from '@/pages/Dashboard';
 import Documents from '@/pages/Documents';
 import Synapse from '@/pages/Synapse';
 import Compliance from '@/pages/Compliance';
-import { OraclePage, ChroniclePage } from '@/pages/Placeholders';
+import Oracle from '@/pages/Oracle';
+import { ChroniclePage } from '@/pages/Placeholders';
 
 export default function App() {
   return (
@@ -14,7 +15,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route index element={<Dashboard />} />
           <Route path="/synapse" element={<Synapse />} />
-          <Route path="/oracle" element={<OraclePage />} />
+          <Route path="/oracle" element={<Oracle />} />
           <Route path="/chronicle" element={<ChroniclePage />} />
           <Route path="/compliance" element={<Compliance />} />
           <Route path="/documents" element={<Documents />} />
