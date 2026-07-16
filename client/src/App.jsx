@@ -1,25 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <h1 className="bg-gradient-to-r from-nexus-400 to-nexus-600 bg-clip-text text-5xl font-extrabold text-transparent">
-          NEXUS
-        </h1>
-        <p className="mt-3 text-lg text-surface-200">
-          AI-powered Industrial Knowledge Intelligence Platform
-        </p>
-      </div>
-    </div>
-  );
-}
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import AppShell from '@/components/layout/AppShell';
+import Dashboard from '@/pages/Dashboard';
+import Documents from '@/pages/Documents';
+import { SynapsePage, OraclePage, ChroniclePage, CompliancePage } from '@/pages/Placeholders';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* All pages share the AppShell layout */}
+        <Route element={<AppShell />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/synapse" element={<SynapsePage />} />
+          <Route path="/oracle" element={<OraclePage />} />
+          <Route path="/chronicle" element={<ChroniclePage />} />
+          <Route path="/compliance" element={<CompliancePage />} />
+          <Route path="/documents" element={<Documents />} />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
