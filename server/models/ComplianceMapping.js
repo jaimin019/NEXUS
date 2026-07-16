@@ -47,6 +47,14 @@ const complianceMappingSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  resolution_note: {
+    type: String,
+    default: null,
+  },
+  resolved_at: {
+    type: Date,
+    default: null,
+  },
   created_at: {
     type: Date,
     default: Date.now,
