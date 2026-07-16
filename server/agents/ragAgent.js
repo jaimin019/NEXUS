@@ -6,7 +6,13 @@
 
 const Groq = require('groq-sdk');
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+let groqClient = null;
+function getGroqClient() {
+  if (!groqClient) {
+    groqClient = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  }
+  return groqClient;
+}
 
 const ORACLE_SYSTEM_PROMPT = `You are ORACLE, the AI knowledge copilot for an industrial plant. You answer maintenance, safety, and engineering queries using ONLY the provided source documents.
 
@@ -71,7 +77,8 @@ async function generateAnswer(query, retrievedChunks, conversationHistory = []) 
 
   let answer;
   try {
-    const completion = await groq.chat.completions.create({
+    const client = getGroqClient();
+    const completion = await client.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages,
       temperature: 0.1,

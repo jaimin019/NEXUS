@@ -24,7 +24,7 @@ const chronicleRouter = require('./routes/chronicle');
 // App setup
 // ---------------------------------------------------------------------------
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Ensure uploads/ directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
