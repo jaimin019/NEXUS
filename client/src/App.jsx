@@ -7,6 +7,7 @@ import Synapse from '@/pages/Synapse';
 import Compliance from '@/pages/Compliance';
 import Oracle from '@/pages/Oracle';
 import Chronicle from '@/pages/Chronicle';
+import Architecture from '@/pages/Architecture';
 import { ToastProvider } from '@/components/ui/Toast';
 import useNexusStore from '@/store/nexusStore';
 
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="/chronicle" element={<Chronicle />} />
             <Route path="/compliance" element={<Compliance />} />
             <Route path="/documents" element={<Documents />} />
+            <Route path="/architecture" element={<Architecture />} />
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

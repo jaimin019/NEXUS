@@ -1,10 +1,10 @@
 /**
  * TopBar — Fixed top navigation bar.
  */
-import { Bell, Upload, Search } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { Bell, Upload, Search, Server, Activity } from 'lucide-react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import useNexusStore from '@/store/nexusStore';
 
 const ROUTE_TO_PAGE = {
@@ -14,6 +14,7 @@ const ROUTE_TO_PAGE = {
   '/chronicle': 'chronicle',
   '/compliance': 'compliance',
   '/documents': 'documents',
+  '/architecture': 'architecture',
 };
 
 const PAGE_TITLES = {
@@ -23,18 +24,41 @@ const PAGE_TITLES = {
   chronicle:  'CHRONICLE — Failure Intelligence',
   compliance: 'SpectraSync Compliance',
   documents:  'Document Library',
+  architecture: 'Architecture Diagram',
 };
 
 export default function TopBar({ onUploadClick }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { activePage, setActivePage, activeAlerts, sidebarCollapsed } = useNexusStore();
+  
+  const [healthStatus, setHealthStatus] = useState(null);
 
   // Sync activePage with route on navigation
   useEffect(() => {
     const page = ROUTE_TO_PAGE[location.pathname] || 'dashboard';
     setActivePage(page);
   }, [location.pathname, setActivePage]);
+
+  // Fetch health status periodically
+  useEffect(() => {
+    const fetchHealth = async () => {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          const data = await res.json();
+          setHealthStatus(data.status); // 'healthy' or 'unhealthy'
+        } else {
+          setHealthStatus('unhealthy');
+        }
+      } catch {
+        setHealthStatus('unhealthy');
+      }
+    };
+    fetchHealth();
+    const interval = setInterval(fetchHealth, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearchClick = () => {
     setActivePage('oracle');
@@ -81,8 +105,37 @@ export default function TopBar({ onUploadClick }) {
         </kbd>
       </button>
 
+      {/* System Status */}
+      <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-nexus-border bg-nexus-surface/50 ml-2">
+        <div className="relative flex items-center justify-center w-2.5 h-2.5">
+          {healthStatus === 'healthy' ? (
+            <>
+              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-20 animate-ping"></span>
+              <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            </>
+          ) : (
+            <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-red-500"></span>
+          )}
+        </div>
+        <span className="text-[10px] font-medium text-nexus-muted">
+          {healthStatus === 'healthy' ? 'System Healthy' : (healthStatus === 'unhealthy' ? 'System Issue' : 'Checking...')}
+        </span>
+      </div>
+
       {/* Actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ml-auto">
+        {/* Architecture Button */}
+        <Link
+          to="/architecture"
+          onClick={() => setActivePage('architecture')}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
+            border border-nexus-primary/30 text-nexus-primary bg-nexus-primary/10
+            hover:bg-nexus-primary/20 transition-colors text-xs font-medium"
+        >
+          <Server className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Architecture</span>
+        </Link>
+
         {/* Upload Button */}
         <button
           onClick={onUploadClick}

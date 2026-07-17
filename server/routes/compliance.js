@@ -8,6 +8,8 @@
 const express = require('express');
 const router = express.Router();
 const ComplianceMapping = require('../models/ComplianceMapping');
+const Document = require('../models/Document');
+const cacheMiddleware = require('../middleware/cache');
 const { runComplianceAudit, getComplianceDashboard, resolveGap } = require('../agents/complianceAgent');
 
 // ---------------------------------------------------------------------------
@@ -39,7 +41,7 @@ router.post('/audit', async (req, res) => {
 // GET /api/compliance/dashboard
 // Returns getComplianceDashboard() result
 // ---------------------------------------------------------------------------
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', cacheMiddleware(30), async (req, res) => {
   console.log(`[GET /api/compliance/dashboard] Fetching compliance dashboard stats...`);
   const dashboard = await getComplianceDashboard();
   return res.json(dashboard);

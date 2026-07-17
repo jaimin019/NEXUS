@@ -9,6 +9,7 @@ const router = express.Router();
 const FailureSignature = require('../models/FailureSignature');
 const Document = require('../models/Document');
 const Chunk = require('../models/Chunk');
+const cacheMiddleware = require('../middleware/cache');
 const { mineFailurePatterns } = require('../agents/chronicleAgent');
 const { generateExpertQuestions, saveExpertResponse } = require('../agents/expertCaptureAgent');
 
@@ -31,7 +32,7 @@ router.post('/mine', async (req, res) => {
 // GET /api/chronicle/patterns
 // Returns all FailureSignature documents sorted by occurrence_count desc
 // ---------------------------------------------------------------------------
-router.get('/patterns', async (req, res) => {
+router.get('/patterns', cacheMiddleware(30), async (req, res) => {
   console.log(`[GET /api/chronicle/patterns] Fetching all mined failure patterns...`);
 
   const patterns = await FailureSignature.find()

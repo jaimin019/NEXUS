@@ -19,6 +19,7 @@ const queryRouter = require('./routes/query');
 const assetsRouter = require('./routes/assets');
 const complianceRouter = require('./routes/compliance');
 const chronicleRouter = require('./routes/chronicle');
+const healthRouter = require('./routes/health');
 
 // ---------------------------------------------------------------------------
 // App setup
@@ -35,10 +36,13 @@ if (!fs.existsSync(uploadsDir)) {
 // ---------------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------------
+const requestLogger = require('./middleware/requestLogger');
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger);
 
 // Serve uploaded files statically (dev convenience)
 app.use('/uploads', express.static(uploadsDir));
@@ -46,10 +50,7 @@ app.use('/uploads', express.static(uploadsDir));
 // ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
-});
-
+app.use('/api/health', healthRouter);
 app.use('/api/documents', documentsRouter);
 app.use('/api/query', queryRouter);
 app.use('/api/assets', assetsRouter);

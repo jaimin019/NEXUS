@@ -12,6 +12,7 @@ const express = require('express');
 const router = express.Router();
 
 const Asset = require('../models/Asset');
+const cacheMiddleware = require('../middleware/cache');
 const Chunk = require('../models/Chunk');
 const FailureSignature = require('../models/FailureSignature');
 
@@ -20,7 +21,7 @@ const FailureSignature = require('../models/FailureSignature');
 // Returns all assets sorted by knowledge_completeness ascending
 // (lowest completeness first — surfaces knowledge gaps to the UI)
 // ---------------------------------------------------------------------------
-router.get('/', async (req, res) => {
+router.get('/', cacheMiddleware(60), async (req, res) => {
   const t0 = Date.now();
 
   try {
