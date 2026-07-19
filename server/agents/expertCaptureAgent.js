@@ -196,7 +196,6 @@ async function saveExpertResponse(engineerId, engineerName, question, answer, eq
           const newCompleteness = Math.min((asset.knowledge_completeness || 0) + 0.1, 1.0);
           await Asset.findByIdAndUpdate(asset._id, {
             $set: { knowledge_completeness: newCompleteness },
-            $inc: { graph_edges_created: 1 },
           });
         } else {
           // If asset doesn't exist yet, create it

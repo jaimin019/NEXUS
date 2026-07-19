@@ -1,3 +1,4 @@
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const Bull = require('bull');
 const Document = require('../models/Document');
 const { processIngestionJob } = require('./ingestionProcessor');
@@ -60,6 +61,10 @@ ingestionQueue.process(async (job) => {
   return await processIngestionJob(job);
 });
 
+ingestionQueue.on('error', (err) => {
+  console.warn('[ingestion-queue] Bull/Redis error (will fall back to sync ingestion if needed):', err.message);
+});
+
 ingestionQueue.on('completed', (job, result) => {
   console.log(`[ingestion-queue] Job ${job.id} completed —`, result);
 });
@@ -72,17 +77,30 @@ ingestionQueue.on('failed', (job, err) => {
 // Helper — add a new ingestion job to the queue
 // ---------------------------------------------------------------------------
 async function addIngestionJob(docId, filePath, docType) {
-  const job = await ingestionQueue.add(
-    { docId, filePath, docType },
-    {
-      attempts: 3,
-      backoff: { type: 'exponential', delay: 5000 },
-      removeOnComplete: 100,
-      removeOnFail: 200,
-    }
-  );
-  console.log(`[ingestion-queue] Enqueued job ${job.id} for doc ${docId}`);
-  return job;
+  try {
+    const job = await ingestionQueue.add(
+      { docId, filePath, docType },
+      {
+        attempts: 3,
+        backoff: { type: 'exponential', delay: 5000 },
+        removeOnComplete: 100,
+        removeOnFail: 200,
+      }
+    );
+    console.log(`[ingestion-queue] Enqueued job ${job.id} for doc ${docId}`);
+    return job;
+  } catch (err) {
+    console.warn(`[ingestion-queue] Redis queue unavailable (${err.message}). Running ingestion job synchronously in background...`);
+    const mockJob = {
+      id: `sync-${Date.now()}`,
+      data: { docId, filePath, docType },
+      progress: (p) => console.log(`[sync-job progress] ${p}%`),
+      log: (msg) => console.log(`[sync-job log] ${msg}`)
+    };
+    // Run asynchronously in background without crashing
+    processIngestionJob(mockJob).catch(e => console.error(`[sync-job error] ${e.message}`));
+    return mockJob;
+  }
 }
 
 module.exports = { ingestionQueue, addIngestionJob };

@@ -15,7 +15,8 @@ async function getPipeline() {
     return pipelineInstance;
   }
 
-  console.log('[embedder] Loading model: Xenova/all-MiniLM-L6-v2 (first load may take a moment)...');
+  console.log('Downloading embedding model (~23MB if not cached)...');
+  console.log('[embedder] Loading model: Xenova/all-MiniLM-L6-v2...');
 
   // @xenova/transformers is ESM-only, use dynamic import
   const { pipeline } = await import('@xenova/transformers');

@@ -67,11 +67,12 @@ router.get('/patterns/:id', async (req, res) => {
 // ---------------------------------------------------------------------------
 // POST /api/chronicle/expert/questions
 // Body: { engineerId, engineerName }
-// Generates 5 targeted interview questions
+// Generates 5 targeted interview questions (supports POST and GET)
 // ---------------------------------------------------------------------------
-router.post('/expert/questions', async (req, res) => {
-  const { engineerId = 'retiring-expert', engineerName = 'Senior Engineer' } = req.body;
-  console.log(`[POST /api/chronicle/expert/questions] Generating questions for ${engineerName}`);
+router.all('/expert/questions', async (req, res) => {
+  const engineerId = req.body.engineerId || req.body.engineer_id || req.query.engineerId || req.query.engineer_id || 'retiring-expert';
+  const engineerName = req.body.engineerName || req.body.engineer_name || req.query.engineerName || req.query.engineer_name || 'Senior Engineer';
+  console.log(`[${req.method} /api/chronicle/expert/questions] Generating questions for ${engineerName}`);
 
   const questions = await generateExpertQuestions(engineerId, engineerName);
   return res.json({ questions });
@@ -83,7 +84,11 @@ router.post('/expert/questions', async (req, res) => {
 // Saves expert response into semantic index and updates asset completeness
 // ---------------------------------------------------------------------------
 router.post('/expert/save', async (req, res) => {
-  const { engineerId, engineerName, question, answer, equipmentTags = [] } = req.body;
+  const engineerId = req.body.engineerId || req.body.engineer_id || 'expert';
+  const engineerName = req.body.engineerName || req.body.engineer_name || 'Senior Engineer';
+  const question = req.body.question || req.body.question_text;
+  const answer = req.body.answer || req.body.answer_text;
+  const equipmentTags = req.body.equipmentTags || req.body.equipment_tags || req.body.related_assets || [];
 
   if (!question || !answer) {
     return res.status(400).json({ error: 'Both question and answer are required.' });

@@ -18,7 +18,7 @@ const { runComplianceAudit, getComplianceDashboard, resolveGap } = require('../a
 // Runs runComplianceAudit asynchronously in the background
 // ---------------------------------------------------------------------------
 router.post('/audit', async (req, res) => {
-  const { regulationDocId } = req.body;
+  const regulationDocId = req.body.regulationDocId || req.body.regulation_doc_id;
 
   if (!regulationDocId) {
     return res.status(400).json({ error: 'regulationDocId is required in request body.' });

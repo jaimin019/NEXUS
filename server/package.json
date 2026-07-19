@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "seed": "node scripts/seedDemoData.js",
+    "create-indexes": "node scripts/createVectorIndex.js"
   },
   "dependencies": {
     "@langchain/core": "^0.3.80",

@@ -186,7 +186,6 @@ async function buildGraph(entities, docId) {
           { tag },
           {
             knowledge_completeness: completeness,
-            $inc: { graph_edges_created: edgesCreated },
           }
         );
       } catch (kcErr) {

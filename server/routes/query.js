@@ -101,9 +101,9 @@ async function runSearchPipeline(query, filters = {}, conversationHistory = []) 
 }
 
 // ---------------------------------------------------------------------------
-// POST /api/query/search
+// POST /api/query and POST /api/query/search
 // ---------------------------------------------------------------------------
-router.post('/search', async (req, res) => {
+router.post(['/', '/search'], async (req, res) => {
   const t0 = Date.now();
 
   const { query, filters = {}, conversationHistory = [] } = req.body;

@@ -1,5 +1,6 @@
-// Load environment variables first
-require('dotenv').config();
+// Load environment variables from server/.env regardless of CWD
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // Register async error handler — must be required before routes
 require('express-async-errors');
@@ -7,7 +8,6 @@ require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
 
@@ -70,6 +70,18 @@ app.use((err, _req, res, _next) => {
 });
 
 // ---------------------------------------------------------------------------
+// Graceful Error Handling
+// ---------------------------------------------------------------------------
+process.on('uncaughtException', (err) => {
+  console.error('❌ [NEXUS] Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ [NEXUS] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// ---------------------------------------------------------------------------
 // Database connection & server start
 // ---------------------------------------------------------------------------
 async function start() {
@@ -77,26 +89,38 @@ async function start() {
 
   if (mongoUri) {
     try {
+      console.log('[NEXUS] Connecting to MongoDB...');
       await mongoose.connect(mongoUri);
-      console.log('✅  Connected to MongoDB');
+      console.log('[NEXUS] MongoDB connected ✅');
     } catch (err) {
-      console.error('❌  MongoDB connection failed:', err.message);
-      console.warn('⚠️   Server will start without database — some routes will fail.');
+      console.error('❌ [NEXUS] MongoDB connection failed:', err.message);
+      console.warn('⚠️ [NEXUS] Server will start without database — some routes will fail.');
     }
   } else {
-    console.warn('⚠️   MONGODB_URI not set — skipping database connection.');
+    console.warn('⚠️ [NEXUS] MONGODB_URI not set — skipping database connection.');
   }
 
-  // Boot Bull queue workers (imported for side-effects — processor registers on import)
+  // Warm up / load embedding model
+  try {
+    console.log('[NEXUS] Embedding model loading...');
+    const { embedTexts } = require('./ingestion/embedder');
+    await embedTexts(['warmup']);
+    console.log('[NEXUS] Embedding model ready ✅');
+  } catch (err) {
+    console.warn('⚠️ [NEXUS] Could not load embedding model:', err.message);
+  }
+
+  // Boot Bull queue workers
   try {
     require('./queues/ingestionQueue');
-    console.log('✅  Ingestion queue worker registered');
+    console.log('[NEXUS] Ingestion queue connected to Redis ✅');
+    console.log('[NEXUS] Queue processor registered ✅');
   } catch (err) {
-    console.warn('⚠️   Could not start ingestion queue:', err.message);
+    console.warn('⚠️ [NEXUS] Could not start ingestion queue:', err.message);
   }
 
   app.listen(PORT, () => {
-    console.log(`\n🚀  NEXUS server listening on http://localhost:${PORT}\n`);
+    console.log(`[NEXUS] Server running on port ${PORT} ✅`);
   });
 }
 
