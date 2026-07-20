@@ -228,7 +228,9 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
       </motion.button>
 
       {/* Speaking label */}
+      {voiceState === 'speaking' && (
         <span className="text-[10px] mt-0.5 whitespace-nowrap" style={{ color: '#D4B896' }}>Speaking…</span>
+      )}
     </div>
   );
 }

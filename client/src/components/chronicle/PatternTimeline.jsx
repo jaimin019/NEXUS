@@ -9,7 +9,7 @@ export default function PatternTimeline({ patterns = [], onOpenSourceModal }) {
         <div className="w-12 h-12 rounded-full bg-nexus-primary/10 border border-nexus-primary/20 flex items-center justify-center">
           <ShieldCheck className="w-6 h-6 text-nexus-primary" />
         </div>
-        <h4 className="text-sm font-bold text-white">No Failure Signatures Mined Yet</h4>
+        <h4 className="text-sm font-bold text-nexus-text">No Failure Signatures Mined Yet</h4>
         <p className="text-xs text-nexus-textMuted max-w-sm">
           Click the "Mine New Patterns" button above to autonomously extract historical recurrence signatures from your indexed maintenance logs and incident reports.
         </p>
@@ -84,7 +84,7 @@ export default function PatternTimeline({ patterns = [], onOpenSourceModal }) {
                     <span className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold border ${typeColor}`}>
                       {pattern.equipment_type || 'Equipment'}
                     </span>
-                    <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                    <h3 className="text-base sm:text-lg font-bold text-nexus-text tracking-tight">
                       {pattern.failure_mode || 'Historical Recurrence Signature'}
                     </h3>
                   </div>
@@ -124,7 +124,7 @@ export default function PatternTimeline({ patterns = [], onOpenSourceModal }) {
                         pattern.contributing_conditions.map((cond, cIdx) => (
                           <span
                             key={cIdx}
-                            className="px-2.5 py-1 rounded-md bg-white/5 border border-nexus-border text-xs font-medium text-nexus-text"
+                            className="px-2.5 py-1 rounded-md bg-nexus-surfaceHigh border border-nexus-border text-xs font-medium text-nexus-text"
                           >
                             {cond}
                           </span>
@@ -147,7 +147,7 @@ export default function PatternTimeline({ patterns = [], onOpenSourceModal }) {
                 </div>
 
                 {/* Card Footer row */}
-                <div className="px-4 sm:px-5 py-3.5 flex flex-wrap items-center justify-between gap-4 bg-black/30 text-xs">
+                <div className="px-4 sm:px-5 py-3.5 flex flex-wrap items-center justify-between gap-4 bg-nexus-surfaceHigh/60 border-t border-nexus-border/50 text-xs">
                   <div className="flex flex-wrap items-center gap-4">
                     {/* Lead Time */}
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border font-mono ${leadDaysColor}`}>
@@ -158,7 +158,7 @@ export default function PatternTimeline({ patterns = [], onOpenSourceModal }) {
                     {/* Source Incidents Link */}
                     <button
                       onClick={() => onOpenSourceModal && onOpenSourceModal(pattern)}
-                      className="inline-flex items-center gap-1.5 text-nexus-blush hover:text-white font-semibold underline underline-offset-4 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-nexus-primary hover:text-nexus-text font-semibold underline underline-offset-4 transition-colors"
                     >
                       <FileText className="w-3.5 h-3.5" />
                       <span>{incidentsCount} source incidents</span>

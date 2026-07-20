@@ -33,7 +33,7 @@ export default function PatternSimulator({ onOpenSourceModal }) {
             <FlaskConical className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white tracking-tight">Test Pattern Matcher</h3>
+            <h3 className="text-sm font-bold text-nexus-text tracking-tight">Test Pattern Matcher</h3>
             <p className="text-xs text-nexus-textMuted">
               Simulate real-time symptom matching against historical CHRONICLE failure signatures.
             </p>
@@ -51,7 +51,7 @@ export default function PatternSimulator({ onOpenSourceModal }) {
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Describe current equipment symptoms or paste work order text (e.g., 'bearing vibration increasing on pump with thermal spike')..."
             rows={2}
-            className="w-full bg-black/50 border border-nexus-border rounded-xl p-3.5 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-[#C4A882] transition-colors font-mono resize-none"
+            className="w-full bg-nexus-surface border border-nexus-border rounded-xl p-3.5 text-xs text-nexus-text placeholder:text-nexus-textMuted focus:outline-none focus:border-[#C4A882] transition-colors font-mono resize-none"
           />
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-2 text-[11px] text-nexus-textMuted">
@@ -99,7 +99,7 @@ export default function PatternSimulator({ onOpenSourceModal }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="p-8 rounded-xl bg-black/30 border border-nexus-border flex flex-col items-center justify-center text-center space-y-2"
+            className="p-8 rounded-xl bg-nexus-surface border border-nexus-border flex flex-col items-center justify-center text-center space-y-2"
           >
             <div className="w-8 h-8 rounded-full border-2 border-[#C4A882] border-t-transparent animate-spin" />
             <span className="text-xs font-mono text-nexus-textMuted">
@@ -137,7 +137,7 @@ export default function PatternSimulator({ onOpenSourceModal }) {
                       <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold border" style={{ background: 'rgba(196,124,47,0.2)', color: '#C4A882', borderColor: 'rgba(196,124,47,0.3)' }}>
                         {matchedAlert.equipment_type || 'Equipment'}
                       </span>
-                      <span className="font-bold text-white text-sm">
+                      <span className="font-bold text-nexus-text text-sm">
                         {matchedAlert.failure_mode || 'Detected Failure Mode'}
                       </span>
                     </div>

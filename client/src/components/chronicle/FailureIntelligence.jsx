@@ -108,7 +108,7 @@ export default function FailureIntelligence() {
       {/* Header row */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-nexus-border pb-6">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
+          <h1 className="text-2xl font-black text-nexus-text tracking-tight flex items-center gap-2.5">
             <span>Failure Pattern Intelligence</span>
           </h1>
           <p className="text-xs text-nexus-textMuted mt-1 max-w-xl leading-relaxed">
@@ -120,7 +120,7 @@ export default function FailureIntelligence() {
           <button
             onClick={loadData}
             title="Refresh Patterns"
-            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-nexus-textMuted hover:text-white border border-nexus-border transition-colors"
+            className="p-2.5 rounded-xl bg-nexus-surfaceHigh hover:bg-nexus-border text-nexus-textMuted hover:text-nexus-text border border-nexus-border transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-nexus-primary' : ''}`} />
           </button>
@@ -168,7 +168,7 @@ export default function FailureIntelligence() {
             <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
               Highest Risk Pattern
             </span>
-            <span className="text-sm font-bold text-white truncate block" title={stats.highestRiskText}>
+            <span className="text-sm font-bold text-nexus-text truncate block" title={stats.highestRiskText}>
               {stats.highestRiskText}
             </span>
           </div>
@@ -197,7 +197,7 @@ export default function FailureIntelligence() {
       {/* Main Pattern Timeline Visualization */}
       <div className="space-y-4">
         <div className="flex items-center justify-between border-b border-nexus-border/50 pb-2">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-nexus-text flex items-center gap-2">
             <Activity className="w-4 h-4 text-nexus-accent" />
             <span>Recurrence Signatures Timeline</span>
           </h3>

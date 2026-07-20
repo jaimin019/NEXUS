@@ -263,7 +263,7 @@ export default function ExpertCapture() {
             <Brain className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-sm font-mono font-bold text-white">
+            <div className="text-sm font-mono font-bold text-nexus-text">
               {stats.interviewsCount} Interviews Indexed
             </div>
             <div className="text-[11px] font-mono text-[#C49A3C] font-semibold">
@@ -292,7 +292,7 @@ export default function ExpertCapture() {
                   <UserCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white tracking-tight">Retiring Engineer Profile</h3>
+                  <h3 className="text-base font-bold text-nexus-text tracking-tight">Retiring Engineer Profile</h3>
                   <p className="text-xs text-nexus-textMuted">Provide background details to tailor PhoenixMind interview generation.</p>
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function ExpertCapture() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Engineer Name */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider block">
+                <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider block">
                   Engineer Name
                 </label>
                 <input
@@ -312,13 +312,13 @@ export default function ExpertCapture() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Robert Vance"
-                  className="w-full bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-borderLight transition-colors"
+                  className="w-full bg-nexus-surface border border-nexus-border rounded-xl p-3 text-xs text-nexus-text placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-primary transition-colors"
                 />
               </div>
 
               {/* Engineer ID with Generate Button */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider block">
+                <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider block">
                   Engineer ID
                 </label>
                 <div className="flex items-center gap-2">
@@ -327,12 +327,12 @@ export default function ExpertCapture() {
                     value={empId}
                     onChange={(e) => setEmpId(e.target.value)}
                     placeholder="e.g. EMP-4089"
-                    className="flex-1 bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
+                    className="flex-1 bg-nexus-surface border border-nexus-border rounded-xl p-3 text-xs text-nexus-text placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-primary font-mono transition-colors"
                   />
                   <button
                     type="button"
                     onClick={handleGenerateId}
-                    className="px-3.5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-nexus-border text-xs font-medium text-nexus-textMuted hover:text-white transition-colors whitespace-nowrap"
+                    className="px-3.5 py-3 rounded-xl bg-nexus-surfaceHigh hover:bg-nexus-border border border-nexus-border text-xs font-medium text-nexus-textMuted hover:text-nexus-text transition-colors whitespace-nowrap"
                   >
                     Generate ID
                   </button>
@@ -341,7 +341,7 @@ export default function ExpertCapture() {
 
               {/* Years of Experience */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider block">
+                <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider block">
                   Years of Experience
                 </label>
                 <div className="relative">
@@ -352,14 +352,14 @@ export default function ExpertCapture() {
                     max={60}
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
-                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
+                    className="w-full bg-nexus-surface border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-nexus-text focus:outline-none focus:border-nexus-primary font-mono transition-colors"
                   />
                 </div>
               </div>
 
               {/* Retirement Date */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider block">
+                <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider block">
                   Retirement / Transition Date
                 </label>
                 <div className="relative">
@@ -368,7 +368,7 @@ export default function ExpertCapture() {
                     type="date"
                     value={retireDate}
                     onChange={(e) => setRetireDate(e.target.value)}
-                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
+                    className="w-full bg-nexus-surface border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-nexus-text focus:outline-none focus:border-nexus-primary font-mono transition-colors"
                   />
                 </div>
               </div>
@@ -376,10 +376,10 @@ export default function ExpertCapture() {
 
             {/* Primary Equipment Areas (Multi-select pills) */}
             <div className="space-y-2 pt-2">
-              <label className="text-xs font-semibold text-white uppercase tracking-wider block">
+              <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider block">
                 Primary Equipment Areas worked (`Select all relevant tags`)
               </label>
-              <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/40 border border-nexus-border">
+              <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-nexus-surface border border-nexus-border">
                 {availableTags.map((tag) => {
                   const isSelected = selectedTags.includes(tag);
                   return (
@@ -390,7 +390,7 @@ export default function ExpertCapture() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
                         isSelected
                           ? 'bg-[#C49A3C] text-black shadow-lg scale-105'
-                          : 'bg-white/5 text-nexus-textMuted hover:text-white hover:bg-white/10'
+                          : 'bg-nexus-surfaceHigh text-nexus-textMuted hover:text-nexus-text hover:bg-nexus-border'
                       }`}
                     >
                       <span>{tag}</span>
@@ -438,7 +438,7 @@ export default function ExpertCapture() {
             </div>
 
             <div className="space-y-2 min-h-[60px]">
-              <h3 className="text-lg font-bold text-white tracking-tight">PhoenixMind Autonomous Synthesizer</h3>
+              <h3 className="text-lg font-bold text-nexus-text tracking-tight">PhoenixMind Autonomous Synthesizer</h3>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={loadingStepTextIdx}
@@ -471,11 +471,11 @@ export default function ExpertCapture() {
                 <div className="px-3 py-1 rounded-full bg-nexus-primary text-white font-mono font-bold text-xs shadow-md shadow-nexus-primary/25">
                   Question {currentIdx + 1} of {questions.length}
                 </div>
-                <span className="text-xs font-medium text-white">{name} ({empId})</span>
+                <span className="text-xs font-medium text-nexus-text">{name} ({empId})</span>
               </div>
 
               {/* Progress track */}
-              <div className="w-32 sm:w-48 h-2 rounded-full bg-white/10 overflow-hidden">
+              <div className="w-32 sm:w-48 h-2 rounded-full bg-nexus-border overflow-hidden">
                 <div
                   style={{ width: `${Math.round(((currentIdx + 1) / questions.length) * 100)}%` }}
                   className="h-full bg-nexus-primary transition-all duration-300 rounded-full"
@@ -484,14 +484,14 @@ export default function ExpertCapture() {
             </div>
 
             {/* Question Card (Large, Centered) */}
-            <div className="card p-8 sm:p-10 border-2 border-nexus-primary/30 shadow-2xl relative overflow-hidden space-y-6 bg-gradient-to-br from-white/[0.04] to-transparent">
+            <div className="card p-8 sm:p-10 border-2 border-nexus-primary/30 shadow-2xl relative overflow-hidden space-y-6 bg-nexus-surface">
               <div className="absolute top-0 right-0 w-64 h-64 bg-nexus-primary/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="flex items-start gap-4">
                 <span className="w-8 h-8 rounded-full bg-nexus-primary/20 border border-nexus-primary text-nexus-primary font-mono font-bold text-sm flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
                   Q{currentIdx + 1}
                 </span>
-                <p className="text-white text-lg sm:text-xl font-medium leading-relaxed tracking-tight">
+                <p className="text-nexus-text text-lg sm:text-xl font-medium leading-relaxed tracking-tight">
                   {currentQText}
                 </p>
               </div>
@@ -517,7 +517,7 @@ export default function ExpertCapture() {
             {/* Answer Input Area */}
             <div className="card p-6 space-y-4 shadow-xl" style={{ background: 'rgba(252,185,178, 0.025)' }}>
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider">
+                <label className="text-xs font-semibold text-nexus-text uppercase tracking-wider">
                   Expert Operational Response (`Speak or Type`)
                 </label>
                 <div className="flex items-center gap-2">
@@ -533,7 +533,7 @@ export default function ExpertCapture() {
                   onChange={(e) => setAnswers((prev) => ({ ...prev, [currentIdx]: e.target.value }))}
                   placeholder="Type your answer here, or use the voice button below to record your tacit operational experience..."
                   rows={5}
-                  className="w-full bg-black/60 border border-nexus-border rounded-xl p-4 text-sm text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-primary transition-colors leading-relaxed resize-none"
+                  className="w-full bg-nexus-surface border border-nexus-border rounded-xl p-4 text-sm text-nexus-text placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-primary transition-colors leading-relaxed resize-none"
                 />
                 <span className="absolute bottom-3 right-4 text-[11px] font-mono text-nexus-textMuted pointer-events-none">
                   {currentAnswer.length} chars
@@ -630,7 +630,7 @@ export default function ExpertCapture() {
               <h2 className="text-2xl sm:text-3xl font-black gradient-text tracking-tight">
                 Knowledge Preserved
               </h2>
-              <p className="text-xs sm:text-sm font-mono text-white">
+              <p className="text-xs sm:text-sm font-mono text-nexus-text">
                 <strong className="text-[#D4B896]">{questions.length} answers</strong> indexed into PhoenixMind RAG space ·{' '}
                 <strong className="text-[#C49A3C]">{enrichedTagsSet.size || selectedTags.length} equipment nodes</strong> enriched
               </p>
@@ -641,7 +641,7 @@ export default function ExpertCapture() {
               <span className="text-xs font-semibold text-nexus-textMuted uppercase tracking-wider block">
                 Enriched Asset Nodes in SYNAPSE Graph
               </span>
-              <div className="flex flex-wrap items-center justify-center gap-2 p-4 rounded-xl bg-black/40 border border-nexus-border">
+              <div className="flex flex-wrap items-center justify-center gap-2 p-4 rounded-xl bg-nexus-surface border border-nexus-border">
                 {Array.from(enrichedTagsSet.size > 0 ? enrichedTagsSet : selectedTags).map((t, idx) => (
                   <span
                     key={idx}

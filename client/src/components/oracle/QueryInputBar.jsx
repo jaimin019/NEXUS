@@ -78,11 +78,8 @@ export default function QueryInputBar({ onSubmit, onVoiceTranscript, answerToSpe
           disabled={isQuerying}
           placeholder="Ask about equipment, procedures, compliance, or failures…"
           rows={1}
-          style={{ background: "transparent", border: "none", outline: "none", color: "#2C2416", fontSize: "14px", lineHeight: "1.6", resize: "none", width: "100%", fontFamily: "inherit" }} className="min-h-[24px] max-h-[120px] disabled:opacity-60 placeholder:text-[#C4B49A]"
-          style={{ scrollbarWidth: 'none' }}
+          style={{ background: "transparent", border: "none", outline: "none", color: "#2C2416", fontSize: "14px", lineHeight: "1.6", resize: "none", width: "100%", fontFamily: "inherit", scrollbarWidth: 'none' }} className="min-h-[24px] max-h-[120px] disabled:opacity-60 placeholder:text-[#C4B49A]"
         />
-
-        
 
         {/* Actions row */}
         <div className="flex items-center gap-1.5 flex-shrink-0 pb-0.5">
@@ -91,7 +88,7 @@ export default function QueryInputBar({ onSubmit, onVoiceTranscript, answerToSpe
             whileTap={{ scale: 0.93 }}
             onClick={handleSubmit}
             disabled={!text.trim() || isQuerying}
-            className="btn-primary" style={{ width: "36px", height: "36px", borderRadius: "50%", padding: 0, display: "flex", alignItems: "center", justifyCenter: "center" }}
+            className="btn-primary" style={{ width: "36px", height: "36px", borderRadius: "50%", padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             {isQuerying ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           </motion.button>

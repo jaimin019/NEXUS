@@ -19,12 +19,12 @@ function HexIcon() {
       animate={{ rotate: 360 }}
       transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
     >
-      <path d="M36 4L68 22V58L36 76L4 58V22L36 4Z" fill="url(#hg)" opacity="0.9" />
-      <path d="M36 16L58 28.5V53.5L36 66L14 53.5V28.5L36 16Z" fill="#0A0A0F" opacity="0.7" />
-      <circle cx="36" cy="36" r="8" fill="#06B6D4" />
+      <path d="M36 4L68 22V58L36 76L4 58V28.5L36 4Z" fill="url(#hg)" opacity="0.9" />
+      <path d="M36 16L58 28.5V53.5L36 66L14 53.5V28.5L36 16Z" fill="#FDFAF6" opacity="0.9" />
+      <circle cx="36" cy="36" r="8" fill="#C49A3C" />
       <defs>
         <linearGradient id="hg" x1="4" y1="4" x2="68" y2="76" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#4F46E5" /><stop offset="1" stopColor="#06B6D4" />
+          <stop stopColor="#C49A3C" /><stop offset="1" stopColor="#B8860B" />
         </linearGradient>
       </defs>
     </motion.svg>
@@ -251,7 +251,7 @@ function UserMessage({ msg }) {
   );
 }
 
-export default function ConversationPanel({ onSourceClick }) {
+export default function ConversationPanel({ onSourceClick, onViewModeToggle, viewMode }) {
   const { conversationHistory, isQuerying, clearConversation } = useNexusStore();
   const bottomRef = useRef(null);
   const [confirmClear, setConfirmClear] = useState(false);

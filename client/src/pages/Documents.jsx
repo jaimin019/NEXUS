@@ -235,7 +235,7 @@ export default function Documents() {
       </div>
 
       {/* Document Table */}
-      <div style={{ background: "#FDFAF6", border: "1px solid #E2D9C8", borderRadius: "12px", overflow: "hidden" }} style={{ background: "#FDFAF6", border: "1px solid #E2D9C8" }}>
+      <div style={{ background: "#FDFAF6", border: "1px solid #E2D9C8", borderRadius: "12px", overflow: "hidden" }}>
         {loading ? (
           <div className="p-5 space-y-3">
             {[1,2,3,4,5].map(i => <LoadingSkeleton key={i} height={52} />)}

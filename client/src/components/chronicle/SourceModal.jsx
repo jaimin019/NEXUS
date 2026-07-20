@@ -30,7 +30,7 @@ export default function SourceModal({ pattern, onClose }) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" style={{ background: 'rgba(44,36,22,0.45)' }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -47,13 +47,13 @@ export default function SourceModal({ pattern, onClose }) {
                 </span>
                 <span className="text-xs text-nexus-textMuted">· Source Incidents</span>
               </div>
-              <h3 className="text-base font-bold text-white tracking-tight">
-                {failureMode}
+              <h3 className="text-base font-bold text-nexus-text tracking-tight">
+                {pattern.failure_mode || 'Historical Recurrence Signature'}
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-nexus-textMuted hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg text-nexus-textMuted hover:text-nexus-text hover:bg-nexus-surfaceHigh transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -93,7 +93,7 @@ export default function SourceModal({ pattern, onClose }) {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="font-semibold text-white text-xs truncate max-w-[260px]" title={title}>
+                          <span className="font-semibold text-nexus-text text-xs truncate max-w-[260px]" title={title}>
                             {title}
                           </span>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}`}>
@@ -116,7 +116,7 @@ export default function SourceModal({ pattern, onClose }) {
 
                     <button
                       onClick={() => handleOpenInOracle(doc)}
-                      className="px-3 py-2 rounded-xl bg-nexus-primary/10 hover:bg-nexus-primary/20 border border-nexus-primary/30 text-nexus-primary hover:text-white font-medium text-xs flex items-center justify-center gap-1.5 transition-all flex-shrink-0"
+                      className="px-3 py-2 rounded-xl bg-nexus-primary/10 hover:bg-nexus-primary/20 border border-nexus-primary/30 text-nexus-primary hover:text-nexus-text font-medium text-xs flex items-center justify-center gap-1.5 transition-all flex-shrink-0"
                     >
                       <Bot className="w-3.5 h-3.5" />
                       <span>Open in ORACLE</span>

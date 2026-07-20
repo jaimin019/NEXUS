@@ -16,23 +16,19 @@ function CircularProgressRing({ completeness = 0 }) {
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - (pct / 100) * circumference;
 
-  let color = '#C49A3C';
-
   return (
     <div className="relative flex flex-col items-center justify-center py-3">
       <svg height={radius * 2} width={radius * 2} className="-rotate-90">
-        {/* Background Track circle */}
         <circle
-          stroke="#EDE8DE"
+          stroke="#E2D9C8"
           fill="transparent"
           strokeWidth={stroke}
           r={normalizedRadius}
           cx={radius}
           cy={radius}
         />
-        {/* Progress circle */}
         <circle
-          stroke={color}
+          stroke="#C49A3C"
           fill="transparent"
           strokeWidth={stroke}
           strokeDasharray={circumference + ' ' + circumference}
@@ -44,8 +40,8 @@ function CircularProgressRing({ completeness = 0 }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-mono font-extrabold gradient-text text-[#2C2416]">{pct}%</span>
-        <span className="text-[10px] uppercase tracking-wider text-[#9B8B70] font-semibold">Completeness</span>
+        <span style={{ color: '#2C2416', fontWeight: 800, fontSize: '20px' }} className="font-mono">{pct}%</span>
+        <span style={{ color: '#9B8B70', fontSize: '10px' }} className="uppercase tracking-wider font-semibold">Completeness</span>
       </div>
     </div>
   );
@@ -57,18 +53,27 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
   // If nothing selected, render empty state
   if (!selectedAsset) {
     return (
-      <div className="w-full h-full bg-nexus-surface border-l border-nexus-border p-6 flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 rounded-2xl bg-nexus-primary/10 border border-nexus-primary/20 flex items-center justify-center mb-4 shadow-xl">
-          <Network className="w-8 h-8 text-nexus-primary animate-pulse" />
+      <div
+        style={{
+          background: '#FDFAF6',
+          borderLeft: '1px solid #E2D9C8',
+          height: '100%',
+          overflowY: 'auto',
+          padding: '24px'
+        }}
+        className="w-full flex flex-col items-center justify-center text-center"
+      >
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-sm" style={{ background: '#F5EDD8', border: '1px solid rgba(196,154,60,0.3)' }}>
+          <Network className="w-8 h-8 animate-pulse" style={{ color: '#C49A3C' }} />
         </div>
         <h3 className="gradient-text text-lg font-bold mb-2 max-w-[260px]">
           Select an asset to explore its knowledge network
         </h3>
-        <p className="text-xs text-[#9B8B70] mb-6 max-w-[280px]">
+        <p style={{ color: '#9B8B70' }} className="text-xs mb-6 max-w-[280px]">
           Click any D3 node on the canvas to inspect real-time health, regulatory compliance, relationships, and RAG knowledge.
         </p>
         <div className="space-y-2">
-          <span className="text-[11px] font-semibold text-[#9B8B70] uppercase tracking-wider block">
+          <span style={{ color: '#9B8B70' }} className="text-[11px] font-semibold uppercase tracking-wider block">
             Example Assets:
           </span>
           <div className="flex items-center justify-center gap-2">
@@ -76,7 +81,17 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
               <button
                 key={tag}
                 onClick={() => onSelectTag && onSelectTag(tag)}
-                className="px-3 py-1.5 rounded-lg bg-[#F5EDD8] border border-nexus-border text-xs font-mono font-medium text-[#2C2416] hover:text-white hover:border-nexus-primary/50 hover:bg-nexus-primary/10 transition-all shadow-sm"
+                style={{
+                  background: '#F5EDD8',
+                  color: '#C49A3C',
+                  border: '1px solid rgba(196,154,60,0.3)',
+                  borderRadius: '999px',
+                  padding: '4px 12px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+                className="font-mono transition-all shadow-sm"
               >
                 {tag}
               </button>
@@ -140,20 +155,28 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: 350, opacity: 0 }}
         transition={{ duration: 0.25, ease: 'easeOut' }}
-        className="w-full h-full bg-nexus-surface border-l border-nexus-border flex flex-col overflow-y-auto no-scrollbar"
+        style={{
+          background: '#FDFAF6',
+          borderLeft: '1px solid #E2D9C8',
+          height: '100%',
+          overflowY: 'auto',
+          padding: '24px'
+        }}
+        className="w-full flex flex-col no-scrollbar"
       >
         {/* Section 1 — Header */}
-        <div className="p-5 border-b border-nexus-border bg-gradient-to-b from-white/[0.02] to-transparent sticky top-0 z-10 backdrop-blur-md">
+        <div className="pb-4 border-b sticky top-0 z-10" style={{ borderColor: '#E2D9C8', background: '#FDFAF6' }}>
           <div className="flex items-start justify-between gap-3 mb-2">
             <div>
-              <span className="gradient-text font-mono text-2xl font-extrabold tracking-tight block">
+              <span style={{ fontSize: '22px', fontWeight: 800 }} className="gradient-text font-mono tracking-tight block">
                 {tag}
               </span>
-              <h2 className="text-base font-semibold text-white mt-0.5 leading-snug">{name}</h2>
+              <h2 style={{ color: '#2C2416', fontSize: '16px', fontWeight: 600 }} className="mt-0.5 leading-snug">{name}</h2>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-[#9B8B70] hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg transition-colors"
+              style={{ color: '#9B8B70' }}
               title="Close Panel"
             >
               <X className="w-5 h-5" />
@@ -161,63 +184,78 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
           </div>
 
           <div className="flex items-center gap-2 mt-3">
-            <span className="px-2.5 py-1 rounded-md bg-[#F5EDD8] border border-nexus-border text-xs font-medium text-[#2C2416]">
+            <span className="badge-muted">
               {type}
             </span>
-            <span
-              className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold border ${
-                criticality === 'A'
-                  ? 'bg-[#B87070]/10 text-[#B87070] border-[#B87070]/30'
-                  : criticality === 'B'
-                  ? 'bg-[#C4A882]/10 text-[#C4A882] border-[#C4A882]/30'
-                  : 'bg-[#D4B896]/10 text-[#D4B896] border-[#D4B896]/30'
-              }`}
-            >
+            <span className={
+              criticality === 'A' ? 'badge-critical' :
+              criticality === 'B' ? 'badge-caution' : 'badge-positive'
+            }>
               Criticality {criticality}
             </span>
           </div>
         </div>
 
         {/* Section 2 — Knowledge Completeness */}
-        <div className="p-5 border-b border-nexus-border flex flex-col items-center text-center bg-black/20">
+        <div className="py-4 border-b flex flex-col items-center text-center" style={{ borderColor: '#E2D9C8' }}>
           <CircularProgressRing completeness={completeness} />
-          <div className="flex items-center gap-1.5 text-xs text-[#2C2416] font-medium mt-1">
-            <FileText className="w-4 h-4 text-nexus-accent" />
-            <span><strong className="text-white font-mono">{docCount}</strong> documents indexed</span>
+          <div className="flex items-center gap-1.5 font-medium mt-1" style={{ color: '#9B8B70', fontSize: '12px' }}>
+            <FileText className="w-4 h-4" style={{ color: '#C49A3C' }} />
+            <span><strong className="font-mono" style={{ color: '#2C2416' }}>{docCount}</strong> documents indexed</span>
           </div>
         </div>
 
         {/* Section 3 — Health Indicators */}
-        <div className="p-5 border-b border-nexus-border space-y-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
-            Health & Operational Status
+        <div
+          style={{
+            background: '#F5F0E8',
+            border: '1px solid #E2D9C8',
+            borderRadius: '8px',
+            padding: '12px 14px',
+            marginTop: '16px'
+          }}
+          className="space-y-3"
+        >
+          <h4
+            style={{
+              color: '#9B8B70',
+              fontSize: '10px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase'
+            }}
+          >
+            HEALTH INDICATORS
           </h4>
-          <div className="card p-3 space-y-2.5">
+          <div className="space-y-2">
             {/* Vibration Trend */}
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-[#9B8B70]">Vibration Trend:</span>
-              <div className="flex items-center gap-1.5 font-mono">
-                <span className="text-white font-medium">{vibration.value}</span>
+            <div className="flex items-center justify-between" style={{ color: '#9B8B70', fontSize: '12px' }}>
+              <span>Vibration Trend:</span>
+              <div className="flex items-center gap-1.5 font-mono" style={{ color: '#2C2416', fontSize: '13px', fontWeight: 500 }}>
+                <span>{vibration.value}</span>
                 {vibration.trend === 'rising' ? (
-                  <span className="w-2 h-2 rounded-full bg-[#B87070] animate-pulse" title="Rising" />
+                  <span style={{ color: '#A0623A' }} className="font-bold flex items-center gap-1">● rising</span>
                 ) : vibration.trend === 'decreasing' ? (
-                  <span className="w-2 h-2 rounded-full bg-[#C49A3C]" title="Decreasing" />
+                  <span style={{ color: '#6B7A8C' }} className="font-bold flex items-center gap-1">● decreasing</span>
                 ) : (
-                  <span className="w-2 h-2 rounded-full bg-[#D4B896]" title="Stable" />
+                  <span style={{ color: '#7A8C5A' }} className="font-bold flex items-center gap-1">● stable</span>
                 )}
               </div>
             </div>
 
-            <div className="border-t border-white/5 pt-2 flex items-center justify-between text-xs">
-              <span className="text-[#9B8B70]">Last Inspection:</span>
-              <span className="text-[#2C2416] font-medium text-right max-w-[170px] truncate" title={lastInspection}>
+            <div className="border-t pt-2 flex items-center justify-between" style={{ borderColor: '#E2D9C8', color: '#9B8B70', fontSize: '12px' }}>
+              <span>Last Inspection:</span>
+              <span style={{ color: '#2C2416', fontSize: '13px', fontWeight: 500 }} className="text-right max-w-[170px] truncate" title={lastInspection}>
                 {lastInspection}
               </span>
             </div>
 
-            <div className="border-t border-white/5 pt-2 flex items-center justify-between text-xs">
-              <span className="text-[#9B8B70]">Days Since Maint:</span>
-              <span className={`font-mono font-bold ${daysSinceMaintenance > 90 ? 'text-[#B87070]' : 'text-[#D4B896]'}`}>
+            <div className="border-t pt-2 flex items-center justify-between" style={{ borderColor: '#E2D9C8', color: '#9B8B70', fontSize: '12px' }}>
+              <span>Days Since Maint:</span>
+              <span className="font-mono font-bold" style={{
+                color: daysSinceMaintenance > 90 ? '#A0623A' : '#2C2416',
+                fontSize: '13px'
+              }}>
                 {daysSinceMaintenance} days
               </span>
             </div>
@@ -225,18 +263,18 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         </div>
 
         {/* Section 4 — Active Work & Permits */}
-        <div className="p-5 border-b border-nexus-border space-y-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
+        <div className="py-4 border-b space-y-3" style={{ borderColor: '#E2D9C8' }}>
+          <h4 style={{ color: '#9B8B70', fontSize: '10px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Active Work & Permits
           </h4>
           <div className="grid grid-cols-2 gap-3">
             <div className="card p-3 text-center">
-              <span className="text-2xl font-mono font-bold text-white block">{openWorkOrders}</span>
-              <span className="text-[11px] text-[#9B8B70]">Open Work Orders</span>
+              <span className="text-2xl font-mono font-bold block" style={{ color: '#2C2416' }}>{openWorkOrders}</span>
+              <span className="text-[11px]" style={{ color: '#9B8B70' }}>Open Work Orders</span>
             </div>
             <div className="card p-3 text-center">
-              <span className="text-2xl font-mono font-bold text-white block">{activePermits}</span>
-              <span className="text-[11px] text-[#9B8B70]">Active Permits</span>
+              <span className="text-2xl font-mono font-bold block" style={{ color: '#2C2416' }}>{activePermits}</span>
+              <span className="text-[11px]" style={{ color: '#9B8B70' }}>Active Permits</span>
             </div>
           </div>
 
@@ -244,12 +282,18 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
             <motion.div
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-3 rounded-xl flex items-start gap-2.5 text-xs"
-              style={{ background: 'rgba(194,59,46,0.1)', border: '1px solid rgba(194,59,46,0.3)', color: '#C49A3C' }}
+              style={{
+                background: 'rgba(160,98,58,0.06)',
+                border: '1px solid rgba(160,98,58,0.2)',
+                borderRadius: '8px',
+                padding: '10px 12px',
+                marginTop: '12px'
+              }}
+              className="flex items-start gap-2.5"
             >
-              <AlertTriangle className="w-4 h-4 text-[#B87070] flex-shrink-0 mt-0.5 animate-pulse" />
-              <div className="leading-relaxed">
-                <strong className="text-white font-semibold block">Active Work Detected</strong>
+              <ShieldAlert size={14} style={{ color: '#A0623A' }} className="flex-shrink-0 mt-0.5 animate-pulse" />
+              <div className="leading-relaxed" style={{ color: '#A0623A', fontSize: '13px' }}>
+                <strong className="font-semibold block">Active Work Detected</strong>
                 Verify physical isolation and safety interlocks before querying maintenance procedures.
               </div>
             </motion.div>
@@ -257,45 +301,49 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         </div>
 
         {/* Section 5 — Relationships */}
-        <div className="p-5 border-b border-nexus-border space-y-3">
+        <div className="py-4 border-b space-y-3" style={{ borderColor: '#E2D9C8' }}>
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
+            <h4 style={{ color: '#9B8B70', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Knowledge Relationships
             </h4>
-            <span className="text-[11px] font-mono text-[#9B8B70]">{relationships.length} links</span>
+            <span className="text-[11px] font-mono" style={{ color: '#9B8B70' }}>{relationships.length} links</span>
           </div>
 
           {relationships.length === 0 ? (
-            <div className="card p-4 text-center text-xs text-[#9B8B70] italic">
+            <div className="card p-4 text-center text-xs italic" style={{ color: '#9B8B70' }}>
               No explicit connections mapped yet.
             </div>
           ) : (
             <div className="space-y-2">
               {relationships.map((rel, idx) => {
                 const relType = rel.type || 'RELATED_TO';
-                // Adjust colors based on Autumn Sunset palette, matching KnowledgeGraph
-                const typeColor =
-                  relType === 'FEEDS_INTO' ? 'text-[#A0623A] bg-[#C49A3C]/10 border-[#C49A3C]/20' :
-                  relType === 'GOVERNED_BY' ? 'text-[#B87070] bg-[#B87070]/10 border-[#B87070]/20' :
-                  relType === 'CONTROLLED_BY' ? 'text-[#C4A882] bg-[#C4A882]/10 border-[#C4A882]/20' :
-                  'text-[#A0623A] bg-[#C49A3C]/10 border-[#C49A3C]/20';
-
                 return (
                   <div
                     key={idx}
                     onClick={() => onSelectTag && onSelectTag(rel.target_tag)}
-                    className="card p-3 flex items-center justify-between hover:border-nexus-blush transition-all cursor-pointer group"
+                    style={{
+                      background: '#F5EDD8',
+                      border: '1px solid rgba(196,154,60,0.2)',
+                      borderRadius: '8px',
+                      padding: '8px 12px',
+                      marginBottom: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer'
+                    }}
+                    className="transition-all group"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <ArrowRight className="w-4 h-4 text-[#9B8B70] group-hover:text-nexus-primary flex-shrink-0 transition-colors" />
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${typeColor}`}>
+                      <ArrowRight className="w-4 h-4 flex-shrink-0 transition-colors" style={{ color: '#9B8B70' }} />
+                      <span style={{ color: '#C49A3C', fontSize: '12px', fontWeight: 600 }}>
                         {relType}
                       </span>
-                      <span className="font-mono font-bold text-white text-xs truncate group-hover:underline">
+                      <span style={{ color: '#2C2416', fontSize: '13px', fontWeight: 600 }} className="font-mono truncate group-hover:underline">
                         {rel.target_tag}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-[#9B8B70] flex-shrink-0">
+                    <span style={{ color: '#9B8B70', fontSize: '11px' }} className="font-mono flex-shrink-0">
                       {Math.round((rel.confidence || 0.8) * 100)}% conf
                     </span>
                   </div>
@@ -306,10 +354,11 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         </div>
 
         {/* Section 6 — Actions */}
-        <div className="p-5 space-y-3 mt-auto">
+        <div className="pt-4 space-y-3 mt-auto">
           <button
             onClick={handleQueryOracle}
-            className="btn-primary w-full py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2"
+            className="btn-primary"
+            style={{ marginTop: '8px', width: '100%', justifyContent: 'center' }}
           >
             <Bot className="w-4 h-4" />
             <span>Query ORACLE about this asset</span>
@@ -317,9 +366,10 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
 
           <button
             onClick={handleViewChronicle}
-            className="btn-secondary w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2"
+            className="btn-secondary"
+            style={{ marginTop: '8px', width: '100%', justifyContent: 'center' }}
           >
-            <Activity className="w-4 h-4 text-nexus-accent" />
+            <Activity className="w-4 h-4" style={{ color: '#C49A3C' }} />
             <span>View Failure Patterns</span>
           </button>
         </div>

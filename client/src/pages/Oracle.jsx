@@ -35,7 +35,8 @@ function AssetBanner({ tag, onDismiss }) {
 }
 
 export default function Oracle() {
-    const [filters, setFilters] = useState({ equipment_tags: [], doc_types: [], tacit: false });
+  const [viewMode, setViewMode] = useState('desktop');
+  const [filters, setFilters] = useState({ equipment_tags: [], doc_types: [], tacit: false });
   const [activeSource, setActiveSource] = useState(null);
   const [lastAnswer, setLastAnswer] = useState('');
   const [assetBanner, setAssetBanner] = useState(null);
@@ -174,6 +175,8 @@ export default function Oracle() {
               <div className="flex-1 overflow-hidden">
                 <ConversationPanel
                   onSourceClick={setActiveSource}
+                  onViewModeToggle={() => setViewMode(v => v === 'desktop' ? 'mobile' : 'desktop')}
+                  viewMode={viewMode}
                 />
               </div>
               <QueryInputBar

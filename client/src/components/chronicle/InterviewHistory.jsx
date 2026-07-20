@@ -21,7 +21,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
       <div className="flex items-center justify-between border-b border-nexus-border pb-3">
         <div className="flex items-center gap-2">
           <Archive className="w-5 h-5 text-[#C49A3C]" />
-          <h3 className="text-base font-bold text-white tracking-tight">Indexed Expert Knowledge</h3>
+          <h3 className="text-base font-bold text-nexus-text tracking-tight">Indexed Expert Knowledge</h3>
         </div>
         <span className="text-xs font-mono text-nexus-textMuted">
           {interviews.length} sessions recorded in semantic store
@@ -42,7 +42,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
             </div>
           </div>
           <div className="max-w-sm space-y-1">
-            <h4 className="text-sm font-bold text-white">No expert interviews yet</h4>
+            <h4 className="text-sm font-bold text-nexus-text">No expert interviews yet</h4>
             <p className="text-xs text-nexus-textMuted leading-relaxed">
               Start by capturing tacit operational knowledge from your first retiring engineer above. Their responses will be embedded directly into ORACLE and the SYNAPSE graph.
             </p>
@@ -77,8 +77,8 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-white text-base tracking-tight">{engineerName}</span>
-                        <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-white/5 border border-nexus-border text-nexus-textMuted">
+                        <span className="font-bold text-nexus-text text-base tracking-tight">{engineerName}</span>
+                        <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-nexus-surfaceHigh border border-nexus-border text-nexus-textMuted">
                           {engineerId}
                         </span>
                       </div>
@@ -86,7 +86,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                         <Calendar className="w-3.5 h-3.5" />
                         <span>{dateStr}</span>
                         <span>·</span>
-                        <span className="font-mono text-white font-bold">{answersCount} answers indexed</span>
+                        <span className="font-mono text-nexus-text font-bold">{answersCount} answers indexed</span>
                       </div>
                     </div>
 
@@ -112,7 +112,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                         </span>
                       ))}
                       {extraCount > 0 && (
-                        <span className="px-2 py-0.5 rounded-md bg-white/5 text-xs font-mono text-nexus-textMuted">
+                        <span className="px-2 py-0.5 rounded-md bg-nexus-surfaceHigh text-xs font-mono text-nexus-textMuted">
                           +{extraCount} more
                         </span>
                       )}
@@ -123,7 +123,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                 <div className="pt-3 border-t border-nexus-border/60 flex justify-end">
                   <button
                     onClick={() => handleQueryKnowledge(interview)}
-                    className="px-4 py-2 rounded-xl text-[#C49A3C] hover:text-white font-medium text-xs flex items-center gap-2 transition-all group" style={{ background: 'rgba(252,185,178,0.1)', border: '1px solid rgba(252,185,178,0.3)' }}
+                    className="px-4 py-2 rounded-xl text-[#C49A3C] hover:text-nexus-text font-medium text-xs flex items-center gap-2 transition-all group" style={{ background: 'rgba(252,185,178,0.1)', border: '1px solid rgba(252,185,178,0.3)' }}
                   >
                     <Bot className="w-3.5 h-3.5 text-[#C49A3C]" />
                     <span>Query this knowledge</span>

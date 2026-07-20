@@ -30,7 +30,7 @@ export default function Synapse() {
   }, [setSelectedAsset]);
 
   return (
-    <div className="w-full h-[calc(100vh-3.5rem)] flex overflow-hidden bg-nexus-bg">
+    <div style={{ background: '#F5F0E8' }} className="w-full h-[calc(100vh-3.5rem)] flex overflow-hidden">
       {/* Left Panel: D3 Force-Directed Canvas */}
       <div className={`${selectedAsset ? 'w-[65%]' : 'w-[75%]'} h-full transition-all duration-300 ease-in-out relative flex-shrink-0`}>
         <KnowledgeGraph
