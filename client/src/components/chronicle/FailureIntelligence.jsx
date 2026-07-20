@@ -128,7 +128,7 @@ export default function FailureIntelligence() {
           <button
             onClick={handleMineNewPatterns}
             disabled={mining}
-            className="px-5 py-2.5 rounded-xl bg-nexus-primary hover:bg-indigo-600 disabled:opacity-50 text-white font-medium text-xs flex items-center gap-2 shadow-xl shadow-nexus-primary/25 transition-all active:scale-[0.98]"
+            className="btn-primary px-5 py-2.5 rounded-xl text-xs flex items-center gap-2"
           >
             {mining ? (
               <>
@@ -148,7 +148,7 @@ export default function FailureIntelligence() {
       {/* Stats row — 3 horizontal cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Card 1: Total Patterns */}
-        <div className="glass-card p-5 border border-nexus-border flex items-center justify-between relative overflow-hidden shadow-lg group hover:border-nexus-primary/40 transition-all">
+        <div className="card p-5 flex items-center justify-between relative overflow-hidden group hover:border-nexus-primary/40 transition-all">
           <div className="space-y-1">
             <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
               Total Patterns Detected
@@ -163,7 +163,7 @@ export default function FailureIntelligence() {
         </div>
 
         {/* Card 2: Highest Risk Pattern */}
-        <div className="glass-card p-5 border border-nexus-border flex items-center justify-between relative overflow-hidden shadow-lg group hover:border-amber-500/40 transition-all">
+        <div className="card p-5 flex items-center justify-between relative overflow-hidden group hover:border-[#C4A882]/40 transition-all">
           <div className="space-y-1 min-w-0 pr-3">
             <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
               Highest Risk Pattern
@@ -172,24 +172,24 @@ export default function FailureIntelligence() {
               {stats.highestRiskText}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-            <AlertTriangle className="w-6 h-6 text-amber-400" />
+          <div className="w-12 h-12 rounded-2xl bg-[#C4A882]/10 border border-[#C4A882]/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+            <AlertTriangle className="w-6 h-6 text-[#C4A882]" />
           </div>
         </div>
 
         {/* Card 3: Avg Prediction Lead Time */}
-        <div className="glass-card p-5 border border-nexus-border flex items-center justify-between relative overflow-hidden shadow-lg group hover:border-emerald-500/40 transition-all">
+        <div className="card p-5 flex items-center justify-between relative overflow-hidden group hover:border-[#D4B896]/40 transition-all">
           <div className="space-y-1">
             <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
               Avg Prediction Lead Time
             </span>
             <div className="flex items-baseline gap-1.5 font-mono">
-              <span className="text-3xl font-black text-emerald-400">{stats.avgLeadTime}</span>
+              <span className="text-3xl font-black text-[#D4B896]">{stats.avgLeadTime}</span>
               <span className="text-xs text-nexus-textMuted uppercase font-bold">days</span>
             </div>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Clock className="w-6 h-6 text-emerald-400" />
+          <div className="w-12 h-12 rounded-2xl bg-[#D4B896]/10 border border-[#D4B896]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Clock className="w-6 h-6 text-[#D4B896]" />
           </div>
         </div>
       </div>

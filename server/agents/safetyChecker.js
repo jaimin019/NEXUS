@@ -64,10 +64,10 @@ async function checkSafetyPrecedence(equipmentTags = []) {
 
     if (hasActiveWork) {
       console.log(
-        `[safetyChecker] ⚠️  Safety flags on: ${warnings.map((w) => w.tag).join(', ')}`
+        `[safetyChecker] [WARN]️  Safety flags on: ${warnings.map((w) => w.tag).join(', ')}`
       );
     } else {
-      console.log(`[safetyChecker] ✅  No active work orders or permits on checked tags`);
+      console.log(`[safetyChecker] [OK]  No active work orders or permits on checked tags`);
     }
 
     return { hasActiveWork, warnings };

@@ -211,7 +211,7 @@ async function saveExpertResponse(engineerId, engineerName, question, answer, eq
       }
     }
 
-    console.log(`[expertCaptureAgent] ✅ Response saved cleanly under Doc ID: ${doc._id}`);
+    console.log(`[expertCaptureAgent] [OK] Response saved cleanly under Doc ID: ${doc._id}`);
     return {
       saved: true,
       docId: doc._id.toString(),

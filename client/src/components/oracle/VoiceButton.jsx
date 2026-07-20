@@ -6,13 +6,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Loader2, Volume2, Square } from 'lucide-react';
 
-const hasRecognition =
-  typeof window !== 'undefined' &&
-  (window.SpeechRecognition || window.webkitSpeechRecognition);
-
-const hasSynthesis =
-  typeof window !== 'undefined' && window.speechSynthesis;
-
 export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, disabled }) {
   const [voiceState, setVoiceState] = useState('idle'); // idle | listening | processing | speaking
   const [interimText, setInterimText] = useState('');
@@ -43,13 +36,13 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
 
   // When an answer comes in while in processing state, speak it
   useEffect(() => {
-    if (answerToSpeak && voiceState === 'processing' && hasSynthesis) {
+    if (answerToSpeak && voiceState === 'processing' && !!(window.speechSynthesis)) {
       speakAnswer(answerToSpeak);
     }
   }, [answerToSpeak, voiceState]);
 
   const speakAnswer = useCallback((text) => {
-    if (!hasSynthesis) return;
+    if (!!!(window.speechSynthesis)) return;
     window.speechSynthesis.cancel();
     setVoiceState('speaking');
 
@@ -81,7 +74,7 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
   };
 
   const startListening = useCallback(() => {
-    if (!hasRecognition) {
+    if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
       setShowTooltip(true);
       setTimeout(() => setShowTooltip(false), 3000);
       return;
@@ -145,9 +138,9 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
 
   // Button appearance
   const getButtonStyle = () => {
-    if (voiceState === 'listening') return 'bg-red-500/20 border-red-500 text-red-400';
-    if (voiceState === 'processing') return 'bg-cyan-500/20 border-cyan-500 text-cyan-400';
-    if (voiceState === 'speaking') return 'bg-emerald-500/20 border-emerald-500 text-emerald-400';
+    if (voiceState === 'listening') return 'bg-[#B87070]/20 border-[#B87070] text-[#B87070]';
+    if (voiceState === 'processing') return 'bg-[#C49A3C]/20 border-[#C49A3C] text-[#C49A3C]';
+    if (voiceState === 'speaking') return 'bg-[#D4B896]/20 border-[#D4B896] text-[#D4B896]';
     return 'bg-nexus-surface border-nexus-border text-nexus-muted hover:text-nexus-text hover:border-nexus-primary/50';
   };
 
@@ -160,7 +153,7 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
             initial={{ opacity: 0, y: 8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
-            className="absolute bottom-full mb-2 glass-card glow-border px-3 py-2 text-xs text-nexus-text
+            className="absolute bottom-full mb-2 card px-3 py-2 text-xs text-nexus-text
               max-w-[200px] text-center whitespace-nowrap overflow-hidden text-ellipsis z-10"
           >
             "{interimText}"
@@ -175,8 +168,8 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-full mb-2 glass-card border border-amber-500/30 px-3 py-2
-              text-xs text-amber-300 whitespace-nowrap z-10"
+            className="absolute bottom-full mb-2 card border px-3 py-2
+              text-xs whitespace-nowrap z-10" style={{ borderColor: 'rgba(196,124,47,0.3)', color: '#C4A882' }}
           >
             Voice input requires Chrome or Edge
           </motion.div>
@@ -197,8 +190,8 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
                 key={i}
                 animate={{ height: h }}
                 transition={{ duration: 0.1, ease: 'easeInOut' }}
-                className="w-1 bg-red-400 rounded-full"
-                style={{ height: h }}
+                className="w-1 rounded-full"
+                style={{ height: h, background: '#B87070' }}
               />
             ))}
           </motion.div>
@@ -215,14 +208,14 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
         title={
           voiceState === 'listening' ? 'Click to stop listening'
             : voiceState === 'speaking' ? 'Click to stop speaking'
-            : !hasRecognition ? 'Voice requires Chrome or Edge'
+            : !(window.SpeechRecognition || window.webkitSpeechRecognition) ? 'Voice requires Chrome or Edge'
             : 'Click to speak'
         }
       >
         {/* Pulsing ring while listening */}
         {voiceState === 'listening' && (
           <motion.div
-            className="absolute inset-0 rounded-full border-2 border-red-500"
+            className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#B87070' }}
             animate={{ scale: [1, 1.4], opacity: [0.6, 0] }}
             transition={{ duration: 1, repeat: Infinity, ease: 'easeOut' }}
           />
@@ -235,9 +228,7 @@ export default function VoiceButton({ onTranscript, answerToSpeak, onSpeakDone, 
       </motion.button>
 
       {/* Speaking label */}
-      {voiceState === 'speaking' && (
-        <span className="text-[10px] text-emerald-400 mt-0.5 whitespace-nowrap">Speaking…</span>
-      )}
+        <span className="text-[10px] mt-0.5 whitespace-nowrap" style={{ color: '#D4B896' }}>Speaking…</span>
     </div>
   );
 }

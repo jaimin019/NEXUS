@@ -1,7 +1,7 @@
 /**
  * Main Ingestion Pipeline Processor
  * Orchestrates the 4-stage sequential pipeline:
- *   pending → parsing → chunking → embedding → graphing → complete
+ *   pending -> parsing -> chunking -> embedding -> graphing -> complete
  */
 
 const Document = require('../models/Document');
@@ -17,7 +17,7 @@ const { buildGraph } = require('../ingestion/graphBuilder');
  */
 async function updateStatus(docId, status, extra = {}) {
   await Document.findByIdAndUpdate(docId, { ingestion_status: status, ...extra });
-  console.log(`[pipeline] Status updated → ${status}${Object.keys(extra).length ? ` (${JSON.stringify(extra)})` : ''}`);
+  console.log(`[pipeline] Status updated -> ${status}${Object.keys(extra).length ? ` (${JSON.stringify(extra)})` : ''}`);
 }
 
 /**
@@ -66,7 +66,7 @@ async function processIngestionJob(job) {
       ocr_used: ocrUsed,
     });
 
-    console.log(`[pipeline] ✓ Stage 1 complete — ${text.length} chars extracted\n`);
+    console.log(`[pipeline] [OK] Stage 1 complete — ${text.length} chars extracted\n`);
 
     // ─────────────────────────────────────────────────────────────────────
     // Stage 2: ENTITY EXTRACTION
@@ -85,7 +85,7 @@ async function processIngestionJob(job) {
         entities.relationships.length,
     });
 
-    console.log(`[pipeline] ✓ Stage 2 complete — ${entities.equipment_tags.length} tags, ${entities.regulatory_refs.length} refs\n`);
+    console.log(`[pipeline] [OK] Stage 2 complete — ${entities.equipment_tags.length} tags, ${entities.regulatory_refs.length} refs\n`);
 
     // ─────────────────────────────────────────────────────────────────────
     // Stage 3a: CHUNKING
@@ -134,7 +134,7 @@ async function processIngestionJob(job) {
       chunk_count: savedCount,
     });
 
-    console.log(`[pipeline] ✓ Stage 3 complete — ${savedCount} chunks embedded & saved\n`);
+    console.log(`[pipeline] [OK] Stage 3 complete — ${savedCount} chunks embedded & saved\n`);
 
     // ─────────────────────────────────────────────────────────────────────
     // Stage 4: GRAPH BUILDING
@@ -148,7 +148,7 @@ async function processIngestionJob(job) {
       graph_edges_created: graphResult.edgesCreated,
     });
 
-    console.log(`[pipeline] ✓ Stage 4 complete — ${graphResult.assetsUpserted} assets, ${graphResult.edgesCreated} edges\n`);
+    console.log(`[pipeline] [OK] Stage 4 complete — ${graphResult.assetsUpserted} assets, ${graphResult.edgesCreated} edges\n`);
 
     // ─────────────────────────────────────────────────────────────────────
     // COMPLETE
@@ -156,7 +156,7 @@ async function processIngestionJob(job) {
     await updateStatus(docId, 'complete');
 
     console.log(`${'='.repeat(70)}`);
-    console.log(`[pipeline] ✅ Ingestion COMPLETE for docId: ${docId}`);
+    console.log(`[pipeline] [OK] Ingestion COMPLETE for docId: ${docId}`);
     console.log(`${'='.repeat(70)}\n`);
 
     return {
@@ -170,7 +170,7 @@ async function processIngestionJob(job) {
       edgesCreated: graphResult.edgesCreated,
     };
   } catch (error) {
-    console.error(`\n[pipeline] ❌ FAILED for docId: ${docId}`);
+    console.error(`\n[pipeline] [ERROR] FAILED for docId: ${docId}`);
     console.error(`[pipeline] Error: ${error.message}`);
     console.error(`[pipeline] Stack: ${error.stack}\n`);
 

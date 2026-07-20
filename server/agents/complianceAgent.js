@@ -109,7 +109,7 @@ async function runComplianceAudit(regulationDocId) {
       // Evaluate coverage score
       if (!topChunk || topScore < 0.65) {
         // No corresponding SOP coverage — flag as Critical gap
-        console.log(`[complianceAgent] ⚠️ Critical Gap (score ${(topScore * 100).toFixed(1)}% < 65%): No SOP coverage found.`);
+        console.log(`[complianceAgent] [WARN]️ Critical Gap (score ${(topScore * 100).toFixed(1)}% < 65%): No SOP coverage found.`);
         
         await ComplianceMapping.create({
           regulation_id: regIdName,
@@ -127,7 +127,7 @@ async function runComplianceAudit(regulationDocId) {
         critical++;
       } else if (topScore >= 0.65 && topScore <= 0.80) {
         // Partial coverage — send both texts to Groq to verify
-        console.log(`[complianceAgent] 🔍 Partial coverage (score ${(topScore * 100).toFixed(1)}%). Verifying with Groq LLM...`);
+        console.log(`[complianceAgent] [SEARCH] Partial coverage (score ${(topScore * 100).toFixed(1)}%). Verifying with Groq LLM...`);
 
         let auditResult = {
           compliance_status: 'partial',
@@ -188,15 +188,15 @@ async function runComplianceAudit(regulationDocId) {
 
           gapsFound++;
         } else {
-          console.log(`[complianceAgent] ✓ Groq verified as fully compliant.`);
+          console.log(`[complianceAgent] [OK] Groq verified as fully compliant.`);
         }
       } else {
         // topScore > 0.80 -> mark as compliant, skip
-        console.log(`[complianceAgent] ✓ Compliant (score ${(topScore * 100).toFixed(1)}% > 80%)`);
+        console.log(`[complianceAgent] [OK] Compliant (score ${(topScore * 100).toFixed(1)}% > 80%)`);
       }
     }
 
-    console.log(`\n[complianceAgent] ✅ Audit complete — Clauses: ${clausesChecked}, Gaps: ${gapsFound} (Critical: ${critical}, Major: ${major}, Minor: ${minor})`);
+    console.log(`\n[complianceAgent] [OK] Audit complete — Clauses: ${clausesChecked}, Gaps: ${gapsFound} (Critical: ${critical}, Major: ${major}, Minor: ${minor})`);
     return { clausesChecked, gapsFound, critical, major, minor };
   } catch (error) {
     console.error(`[complianceAgent] Fatal error running compliance audit: ${error.message}`);
@@ -279,7 +279,7 @@ async function resolveGap(mappingId, resolution_note) {
       throw new Error(`Compliance mapping ${mappingId} not found.`);
     }
 
-    console.log(`[complianceAgent] ✅ Gap ${mappingId} successfully marked as resolved.`);
+    console.log(`[complianceAgent] [OK] Gap ${mappingId} successfully marked as resolved.`);
     return updated;
   } catch (error) {
     console.error(`[complianceAgent] Error resolving compliance gap: ${error.message}`);

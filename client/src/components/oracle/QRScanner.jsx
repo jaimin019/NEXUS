@@ -65,7 +65,7 @@ export default function QRScanner({ onAssetFromQR }) {
               initial={{ opacity: 0, scale: 0.93, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.93, y: 16 }}
-              className="glass-card w-full max-w-md p-6"
+              className="card w-full max-w-md p-6"
             >
               <div className="flex items-center justify-between mb-5">
                 <div>

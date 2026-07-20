@@ -248,7 +248,7 @@ export default function ExpertCapture() {
         <div>
           <h1 className="text-2xl font-black tracking-tight flex items-center gap-2.5">
             <span className="gradient-text">Expert Knowledge Capture</span>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold text-[#C49A3C] border" style={{ background: 'rgba(252,185,178,0.15)', borderColor: 'rgba(252,185,178,0.3)' }}>
               PhoenixMind Engine
             </span>
           </h1>
@@ -258,15 +258,15 @@ export default function ExpertCapture() {
         </div>
 
         {/* Stat Card */}
-        <div className="glass-card px-5 py-3 border border-nexus-border flex items-center gap-4 shadow-lg" style={{ background: 'rgba(245, 158, 11, 0.03)' }}>
-          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+        <div className="card px-5 py-3 flex items-center gap-4 shadow-lg" style={{ background: 'rgba(252,185,178, 0.03)' }}>
+          <div className="p-2.5 rounded-xl border text-[#C49A3C]" style={{ background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.2)' }}>
             <Brain className="w-5 h-5" />
           </div>
           <div>
             <div className="text-sm font-mono font-bold text-white">
               {stats.interviewsCount} Interviews Indexed
             </div>
-            <div className="text-[11px] font-mono text-cyan-400 font-semibold">
+            <div className="text-[11px] font-mono text-[#C49A3C] font-semibold">
               {stats.enrichedCount} Equipment Nodes Enriched
             </div>
           </div>
@@ -283,12 +283,12 @@ export default function ExpertCapture() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.25 }}
-            className="glass-card p-6 sm:p-8 border border-nexus-border shadow-2xl max-w-4xl mx-auto space-y-6"
-            style={{ background: 'rgba(245, 158, 11, 0.03)' }}
+            className="card p-6 sm:p-8 shadow-2xl max-w-4xl mx-auto space-y-6"
+            style={{ background: 'rgba(252,185,178, 0.03)' }}
           >
             <div className="flex items-center justify-between border-b border-nexus-border pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="w-10 h-10 rounded-xl border flex items-center justify-center text-[#C49A3C]" style={{ background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.2)' }}>
                   <UserCheck className="w-5 h-5" />
                 </div>
                 <div>
@@ -296,7 +296,7 @@ export default function ExpertCapture() {
                   <p className="text-xs text-nexus-textMuted">Provide background details to tailor PhoenixMind interview generation.</p>
                 </div>
               </div>
-              <span className="text-xs font-mono text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+              <span className="text-xs font-mono px-3 py-1 rounded-full border text-[#C49A3C]" style={{ background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.2)' }}>
                 Phase 1 of 2: Profile
               </span>
             </div>
@@ -312,7 +312,7 @@ export default function ExpertCapture() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Robert Vance"
-                  className="w-full bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-amber-500/60 transition-colors"
+                  className="w-full bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-borderLight transition-colors"
                 />
               </div>
 
@@ -327,7 +327,7 @@ export default function ExpertCapture() {
                     value={empId}
                     onChange={(e) => setEmpId(e.target.value)}
                     placeholder="e.g. EMP-4089"
-                    className="flex-1 bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-amber-500/60 font-mono transition-colors"
+                    className="flex-1 bg-black/50 border border-nexus-border rounded-xl p-3 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
                   />
                   <button
                     type="button"
@@ -352,7 +352,7 @@ export default function ExpertCapture() {
                     max={60}
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
-                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-amber-500/60 font-mono transition-colors"
+                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
                   />
                 </div>
               </div>
@@ -368,7 +368,7 @@ export default function ExpertCapture() {
                     type="date"
                     value={retireDate}
                     onChange={(e) => setRetireDate(e.target.value)}
-                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-amber-500/60 font-mono transition-colors"
+                    className="w-full bg-black/50 border border-nexus-border rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-nexus-borderLight font-mono transition-colors"
                   />
                 </div>
               </div>
@@ -389,12 +389,12 @@ export default function ExpertCapture() {
                       onClick={() => toggleTag(tag)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
                         isSelected
-                          ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20 scale-105'
+                          ? 'bg-[#C49A3C] text-black shadow-lg scale-105'
                           : 'bg-white/5 text-nexus-textMuted hover:text-white hover:bg-white/10'
                       }`}
                     >
                       <span>{tag}</span>
-                      {isSelected && <span className="text-[10px]">✓</span>}
+                      {isSelected && <span className="text-[10px]">OK</span>}
                     </button>
                   );
                 })}
@@ -406,7 +406,7 @@ export default function ExpertCapture() {
               <button
                 type="button"
                 onClick={handleStartGenerate}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-nexus-primary hover:bg-indigo-600 text-white font-bold text-xs flex items-center justify-center gap-2.5 shadow-xl shadow-nexus-primary/30 transition-all active:scale-[0.98]"
+                className="btn-primary w-full sm:w-auto px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-2.5"
               >
                 <Brain className="w-4 h-4 fill-current" />
                 <span>Generate Interview Questions</span>
@@ -423,17 +423,17 @@ export default function ExpertCapture() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="glass-card p-12 border border-nexus-border shadow-2xl max-w-2xl mx-auto flex flex-col items-center justify-center text-center space-y-6"
-            style={{ background: 'rgba(245, 158, 11, 0.04)' }}
+            className="card p-12 shadow-2xl max-w-2xl mx-auto flex flex-col items-center justify-center text-center space-y-6"
+            style={{ background: 'rgba(252,185,178, 0.04)' }}
           >
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center shadow-2xl animate-pulse">
-                <Brain className="w-10 h-10 text-amber-400" />
+              <div className="w-20 h-20 rounded-2xl border-2 flex items-center justify-center shadow-2xl animate-pulse text-[#C49A3C]" style={{ background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.3)' }}>
+                <Brain className="w-10 h-10" />
               </div>
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                className="absolute -inset-2 rounded-3xl border-2 border-dashed border-amber-500/40 pointer-events-none"
+                className="absolute -inset-2 rounded-3xl border-2 border-dashed pointer-events-none" style={{ borderColor: 'rgba(252,185,178,0.4)' }}
               />
             </div>
 
@@ -446,7 +446,7 @@ export default function ExpertCapture() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="text-xs font-mono text-amber-300"
+                  className="text-xs font-mono text-[#C49A3C]"
                 >
                   {LOADING_STEPS[loadingStepTextIdx]}
                 </motion.p>
@@ -466,7 +466,7 @@ export default function ExpertCapture() {
             className="space-y-6 max-w-4xl mx-auto"
           >
             {/* Top Progress Bar & Header */}
-            <div className="glass-card p-4 border border-nexus-border flex items-center justify-between shadow-lg" style={{ background: 'rgba(245, 158, 11, 0.03)' }}>
+            <div className="card p-4 flex items-center justify-between shadow-lg" style={{ background: 'rgba(252,185,178, 0.03)' }}>
               <div className="flex items-center gap-3">
                 <div className="px-3 py-1 rounded-full bg-nexus-primary text-white font-mono font-bold text-xs shadow-md shadow-nexus-primary/25">
                   Question {currentIdx + 1} of {questions.length}
@@ -484,7 +484,7 @@ export default function ExpertCapture() {
             </div>
 
             {/* Question Card (Large, Centered) */}
-            <div className="glass-card p-8 sm:p-10 border-2 border-nexus-primary/30 shadow-2xl relative overflow-hidden space-y-6 bg-gradient-to-br from-white/[0.04] to-transparent">
+            <div className="card p-8 sm:p-10 border-2 border-nexus-primary/30 shadow-2xl relative overflow-hidden space-y-6 bg-gradient-to-br from-white/[0.04] to-transparent">
               <div className="absolute top-0 right-0 w-64 h-64 bg-nexus-primary/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="flex items-start gap-4">
@@ -505,7 +505,7 @@ export default function ExpertCapture() {
                   {currentQTags.map((t, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 font-mono font-bold text-xs text-cyan-300 shadow-sm"
+                      className="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs shadow-sm" style={{ background: 'rgba(252,185,178,0.15)', border: '1px solid rgba(252,185,178,0.3)', color: '#C49A3C' }}
                     >
                       {t}
                     </span>
@@ -515,13 +515,13 @@ export default function ExpertCapture() {
             </div>
 
             {/* Answer Input Area */}
-            <div className="glass-card p-6 border border-nexus-border space-y-4 shadow-xl" style={{ background: 'rgba(245, 158, 11, 0.025)' }}>
+            <div className="card p-6 space-y-4 shadow-xl" style={{ background: 'rgba(252,185,178, 0.025)' }}>
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-white uppercase tracking-wider">
                   Expert Operational Response (`Speak or Type`)
                 </label>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono text-amber-400/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded border" style={{ color: 'rgba(252,185,178,0.8)', background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.2)' }}>
                     Voice & Text Supported
                   </span>
                 </div>
@@ -567,14 +567,14 @@ export default function ExpertCapture() {
                     type="button"
                     onClick={handleSaveAndNext}
                     disabled={savingCurrent || !currentAnswer.trim()}
-                    className="px-6 py-2.5 rounded-xl bg-nexus-primary hover:bg-indigo-600 disabled:opacity-50 text-white font-bold text-xs flex items-center gap-2 shadow-xl shadow-nexus-primary/30 transition-all active:scale-[0.98]"
+                    className="btn-primary px-6 py-2.5 rounded-xl text-xs flex items-center gap-2"
                   >
                     {savingCurrent ? (
                       <>
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="text-emerald-400"
+                          className="text-[#D4B896]"
                         >
                           <CheckCircle2 className="w-4 h-4" />
                         </motion.div>
@@ -601,17 +601,17 @@ export default function ExpertCapture() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="glass-card p-10 sm:p-14 border border-nexus-border shadow-2xl max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-6"
-            style={{ background: 'rgba(245, 158, 11, 0.04)' }}
+            className="card p-10 sm:p-14 shadow-2xl max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-6"
+            style={{ background: 'rgba(252,185,178, 0.04)' }}
           >
             {/* Animated Checkmark Circle */}
-            <div className="w-24 h-24 rounded-full bg-emerald-500/15 border-2 border-emerald-500 flex items-center justify-center shadow-2xl shadow-emerald-500/20">
+            <div className="w-24 h-24 rounded-full border-2 flex items-center justify-center shadow-2xl" style={{ background: 'rgba(107,143,78,0.15)', borderColor: '#D4B896', boxShadow: '0 0 20px rgba(107,143,78,0.2)' }}>
               <motion.svg
                 width="48"
                 height="48"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#10B981"
+                stroke="#D4B896"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -621,6 +621,7 @@ export default function ExpertCapture() {
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.6, ease: 'easeOut' }}
+                  stroke="#D4B896"
                 />
               </motion.svg>
             </div>
@@ -630,8 +631,8 @@ export default function ExpertCapture() {
                 Knowledge Preserved
               </h2>
               <p className="text-xs sm:text-sm font-mono text-white">
-                <strong className="text-emerald-400">{questions.length} answers</strong> indexed into PhoenixMind RAG space ·{' '}
-                <strong className="text-cyan-400">{enrichedTagsSet.size || selectedTags.length} equipment nodes</strong> enriched
+                <strong className="text-[#D4B896]">{questions.length} answers</strong> indexed into PhoenixMind RAG space ·{' '}
+                <strong className="text-[#C49A3C]">{enrichedTagsSet.size || selectedTags.length} equipment nodes</strong> enriched
               </p>
             </div>
 
@@ -644,9 +645,9 @@ export default function ExpertCapture() {
                 {Array.from(enrichedTagsSet.size > 0 ? enrichedTagsSet : selectedTags).map((t, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-xs shadow-md"
+                    className="px-3 py-1.5 rounded-lg border font-mono font-bold text-xs shadow-md" style={{ background: 'rgba(252,185,178,0.2)', borderColor: 'rgba(252,185,178,0.4)', color: '#C49A3C' }}
                   >
-                    ✓ {t}
+                    OK {t}
                   </span>
                 ))}
               </div>
@@ -665,7 +666,7 @@ export default function ExpertCapture() {
               <button
                 type="button"
                 onClick={handleViewInOracle}
-                className="px-8 py-3 rounded-xl bg-nexus-primary hover:bg-indigo-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xl shadow-nexus-primary/30 transition-all active:scale-[0.98] w-full sm:w-auto"
+                className="btn-primary px-8 py-3 rounded-xl text-xs flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <Bot className="w-4 h-4" />
                 <span>View in ORACLE Copilot</span>

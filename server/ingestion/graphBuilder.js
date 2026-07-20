@@ -168,7 +168,7 @@ async function buildGraph(entities, docId) {
 
         edgesCreated++;
       } catch (relErr) {
-        console.warn(`[graph-builder] Failed to create edge ${rel.source} → ${rel.target}: ${relErr.message}`);
+        console.warn(`[graph-builder] Failed to create edge ${rel.source} -> ${rel.target}: ${relErr.message}`);
       }
     }
 

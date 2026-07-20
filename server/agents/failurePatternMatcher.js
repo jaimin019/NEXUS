@@ -32,7 +32,7 @@ async function matchFailurePattern(queryText, queryEmbedding, equipmentTag = nul
         if (asset?.asset_type) {
           equipmentTypeFilter = asset.asset_type;
           console.log(
-            `[failurePatternMatcher] Resolved tag "${equipmentTag}" → asset_type "${equipmentTypeFilter}"`
+            `[failurePatternMatcher] Resolved tag "${equipmentTag}" -> asset_type "${equipmentTypeFilter}"`
           );
         }
       } catch (err) {

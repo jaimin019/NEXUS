@@ -1,8 +1,39 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
+
+const TOAST_STYLES = {
+  success: {
+    icon: CheckCircle2,
+    iconColor: '#D4B896',
+    bg: 'rgba(107,143,78,0.15)',
+    border: 'rgba(107,143,78,0.3)',
+    text: 'var(--text)',
+  },
+  error: {
+    icon: XCircle,
+    iconColor: '#B87070',
+    bg: 'rgba(194,59,46,0.15)',
+    border: 'rgba(194,59,46,0.3)',
+    text: 'var(--text)',
+  },
+  warning: {
+    icon: AlertTriangle,
+    iconColor: '#C4A882',
+    bg: 'rgba(196,124,47,0.15)',
+    border: 'rgba(196,124,47,0.3)',
+    text: 'var(--text)',
+  },
+  info: {
+    icon: Info,
+    iconColor: '#C49A3C',
+    bg: 'rgba(196,154,60,0.15)',
+    border: 'rgba(196,154,60,0.3)',
+    text: 'var(--text)',
+  },
+};
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
@@ -38,23 +69,8 @@ export function ToastProvider({ children }) {
       <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-2 pointer-events-none max-w-sm w-full">
         <AnimatePresence mode="popLayout">
           {toasts.map((t) => {
-            let icon = <Info className="w-4 h-4 text-indigo-400 flex-shrink-0" />;
-            let borderColor = 'border-indigo-500/30 bg-indigo-950/90 text-indigo-100';
-            let iconBg = 'bg-indigo-500/10';
-
-            if (t.type === 'success') {
-              icon = <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />;
-              borderColor = 'border-emerald-500/30 bg-emerald-950/90 text-emerald-100';
-              iconBg = 'bg-emerald-500/10';
-            } else if (t.type === 'error') {
-              icon = <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />;
-              borderColor = 'border-red-500/40 bg-red-950/90 text-red-100';
-              iconBg = 'bg-red-500/10';
-            } else if (t.type === 'warning') {
-              icon = <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />;
-              borderColor = 'border-amber-500/40 bg-amber-950/90 text-amber-100';
-              iconBg = 'bg-amber-500/10';
-            }
+            const style = TOAST_STYLES[t.type] || TOAST_STYLES.info;
+            const Icon = style.icon;
 
             return (
               <motion.div
@@ -64,18 +80,29 @@ export function ToastProvider({ children }) {
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 80, scale: 0.9 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border shadow-2xl backdrop-blur-md text-xs font-medium ${borderColor}`}
+                className="pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl shadow-2xl backdrop-blur-md text-xs font-medium"
+                style={{
+                  background: style.bg,
+                  border: `1px solid ${style.border}`,
+                  color: style.text,
+                }}
               >
-                <div className={`p-1.5 rounded-lg ${iconBg} flex-shrink-0 mt-0.5`}>
-                  {icon}
+                <div
+                  className="p-1.5 rounded-lg flex-shrink-0 mt-0.5"
+                  style={{ background: `${style.border}` }}
+                >
+                  <Icon className="w-4 h-4" style={{ color: style.iconColor }} />
                 </div>
                 <div className="flex-1 min-w-0 leading-relaxed break-words py-0.5">
                   {t.message}
                 </div>
                 <button
                   onClick={() => removeToast(t.id)}
-                  className="p-1 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors flex-shrink-0 mt-0.5"
+                  className="p-1 rounded-lg transition-colors flex-shrink-0 mt-0.5"
                   title="Dismiss"
+                  style={{ color: 'var(--text-faint)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-faint)'; }}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>

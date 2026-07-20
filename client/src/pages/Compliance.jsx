@@ -131,8 +131,8 @@ export default function Compliance() {
   const minorCount = complianceDashboard?.gaps_by_severity?.Minor ?? gaps.filter(g => g.gap_severity === 'Minor').length;
 
   const chartData = [
-    { name: 'Compliant', value: overallPct, color: '#10B981' },
-    { name: 'Gaps', value: 100 - overallPct, color: '#EF4444' }
+    { name: 'Compliant', value: overallPct, color: 'var(--positive)' },
+    { name: 'Gaps', value: 100 - overallPct, color: 'var(--critical)' }
   ];
 
   // Actions
@@ -181,7 +181,7 @@ export default function Compliance() {
   };
 
   return (
-    <div className="w-full min-h-screen p-6 space-y-6 overflow-y-auto no-scrollbar bg-nexus-bg">
+    <div className="w-full min-h-screen p-6 space-y-6 overflow-y-auto no-scrollbar bg-[#F5F0E8]">
       {/* Toast Notification */}
       <AnimatePresence>
         {auditToast && (
@@ -190,17 +190,21 @@ export default function Compliance() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className={`fixed top-6 right-6 z-50 px-4 py-3 rounded-xl border shadow-2xl flex items-center gap-3 text-xs font-medium ${
-              auditToast.type === 'error' ? 'bg-red-900/90 border-red-500 text-white' : 'bg-emerald-900/90 border-emerald-500 text-white'
+              auditToast.type === 'error' ? 'text-white' : 'text-white'
             }`}
+            style={{
+              background: auditToast.type === 'error' ? 'rgba(194,59,46,0.9)' : 'rgba(107,143,78,0.9)',
+              borderColor: auditToast.type === 'error' ? 'var(--critical)' : 'var(--positive)'
+            }}
           >
-            {auditToast.type === 'error' ? <X className="w-4 h-4 text-red-400" /> : <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+            {auditToast.type === 'error' ? <X className="w-4 h-4 text-white" /> : <CheckCircle2 className="w-4 h-4 text-white" />}
             <span>{auditToast.message}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Section 1 — Compliance Overview Header */}
-      <div className="glass-card p-6 border border-nexus-border bg-gradient-to-r from-indigo-500/[0.05] via-cyan-500/[0.05] to-transparent relative overflow-hidden shadow-2xl">
+      <div className="card p-6 relative overflow-hidden">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           
           {/* Left: Donut Chart Score */}
@@ -233,8 +237,8 @@ export default function Compliance() {
 
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                <h1 className="text-xl font-bold text-white tracking-tight">SpectraSync Auditing</h1>
+                <ShieldCheck className="w-5 h-5 text-[var(--positive)]" />
+                <h1 className="text-xl font-bold text-nexus-text tracking-tight">SpectraSync Auditing</h1>
               </div>
               <p className="text-xs text-nexus-textMuted max-w-sm leading-relaxed">
                 Autonomous vector-based comparison of government regulatory requirements against active Standard Operating Procedures.
@@ -243,14 +247,14 @@ export default function Compliance() {
           </div>
 
           {/* Right: Three Stat Columns */}
-          <div className="grid grid-cols-3 gap-6 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-nexus-border pt-4 lg:pt-0 lg:pl-8">
+          <div className="grid grid-cols-3 gap-6 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-[#E2D9C8] pt-4 lg:pt-0 lg:pl-8">
             <div className="space-y-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
-                Critical Gaps
+                Needs Attention
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-mono font-bold text-red-500">{criticalCount}</span>
-                <span className="flex items-center text-[11px] text-emerald-400 font-mono">
+                <span className="text-2xl font-mono font-bold" style={{ color: 'var(--critical)' }}>{criticalCount}</span>
+                <span className="flex items-center text-[11px] font-mono" style={{ color: 'var(--positive)' }}>
                   <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> -2 this wk
                 </span>
               </div>
@@ -258,11 +262,11 @@ export default function Compliance() {
 
             <div className="space-y-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
-                Major Gaps
+                Elevated Risk
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-mono font-bold text-amber-500">{majorCount}</span>
-                <span className="flex items-center text-[11px] text-emerald-400 font-mono">
+                <span className="text-2xl font-mono font-bold" style={{ color: 'var(--caution)' }}>{majorCount}</span>
+                <span className="flex items-center text-[11px] font-mono" style={{ color: 'var(--positive)' }}>
                   <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> -1 this wk
                 </span>
               </div>
@@ -270,10 +274,10 @@ export default function Compliance() {
 
             <div className="space-y-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted block">
-                Minor Gaps
+                Monitor
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-mono font-bold text-slate-400">{minorCount}</span>
+                <span className="text-2xl font-mono font-bold text-nexus-muted">{minorCount}</span>
                 <span className="flex items-center text-[11px] text-nexus-textMuted font-mono">
                   Stable
                 </span>
@@ -285,7 +289,7 @@ export default function Compliance() {
           <div className="flex-shrink-0 w-full lg:w-auto">
             <button
               onClick={() => setIsAuditModalOpen(true)}
-              className="w-full lg:w-auto px-5 py-3 rounded-xl bg-nexus-primary hover:bg-indigo-600 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-xl shadow-nexus-primary/25 transition-all active:scale-[0.98]"
+              className="btn-primary w-full lg:w-auto px-5 py-3 rounded-xl text-xs flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4 fill-current" />
               <span>Run New Audit</span>
@@ -295,29 +299,30 @@ export default function Compliance() {
       </div>
 
       {/* Section 2 — Gaps Table */}
-      <div className="glass-card border border-nexus-border overflow-hidden shadow-xl">
+      <div className="card overflow-hidden">
         {/* Filter Bar */}
-        <div className="p-4 border-b border-nexus-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/[0.01]">
+        <div className="p-4 border-b border-[#E2D9C8] flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/[0.01]">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-nexus-textMuted mr-1 flex items-center gap-1.5">
               <Filter className="w-3.5 h-3.5 text-nexus-accent" /> Severity:
             </span>
             {['ALL', 'Critical', 'Major', 'Minor'].map((sev) => {
               const active = severityFilter === sev;
+              const displaySev = sev === 'Critical' ? 'Needs Attention' : sev === 'Major' ? 'Elevated Risk' : sev === 'Minor' ? 'Monitor' : 'ALL';
               return (
                 <button
                   key={sev}
                   onClick={() => setSeverityFilter(sev)}
                   className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                     active
-                      ? sev === 'Critical' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20 font-bold'
-                      : sev === 'Major' ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20 font-bold'
-                      : sev === 'Minor' ? 'bg-slate-600 text-white font-bold'
+                      ? sev === 'Critical' ? 'bg-[#A0623A] text-white font-bold'
+                      : sev === 'Major' ? 'bg-nexus-caution text-white font-bold'
+                      : sev === 'Minor' ? 'bg-nexus-positive text-white font-bold'
                       : 'bg-nexus-primary text-white font-bold'
-                      : 'bg-white/5 text-nexus-textMuted hover:text-white hover:bg-white/10'
+                      : 'bg-black/20 text-nexus-textMuted hover:text-nexus-text hover:bg-black/40'
                   }`}
                 >
-                  {sev}
+                  {displaySev}
                 </button>
               );
             })}
@@ -343,7 +348,7 @@ export default function Compliance() {
 
           <div className="flex items-center gap-3">
             {selectedRegulationFilter && (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-nexus-accent/15 border border-nexus-accent/30 text-xs text-cyan-300 font-mono">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono" style={{ background: 'rgba(252,185,178,0.15)', borderColor: 'rgba(252,185,178,0.3)', color: 'var(--blush)' }}>
                 <span>Filtered: {selectedRegulationFilter}</span>
                 <button onClick={() => setSelectedRegulationFilter(null)} className="hover:text-white">
                   <X className="w-3.5 h-3.5" />
@@ -357,7 +362,7 @@ export default function Compliance() {
                 placeholder="Search Regulation ID or SOP..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-black/40 border border-nexus-border rounded-lg pl-9 pr-4 py-1.5 text-xs text-white placeholder:text-nexus-textMuted focus:outline-none focus:border-nexus-primary transition-colors"
+                className="nexus-input w-full pl-9 pr-4 py-1.5"
               />
             </div>
           </div>
@@ -367,7 +372,7 @@ export default function Compliance() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-nexus-border bg-white/[0.02] text-[11px] uppercase tracking-wider font-bold text-nexus-textMuted">
+              <tr className="border-b border-[#E2D9C8] bg-white/[0.02] text-[11px] uppercase tracking-wider font-bold text-nexus-textMuted">
                 <th className="py-3 px-4">Severity</th>
                 <th className="py-3 px-4">Regulation</th>
                 <th className="py-3 px-4">Affected SOP</th>
@@ -386,7 +391,7 @@ export default function Compliance() {
               ) : filteredGaps.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-nexus-textMuted">
-                    <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2 opacity-80" />
+                    <CheckCircle2 className="w-8 h-8 mx-auto mb-2 opacity-80" style={{ color: 'var(--positive)' }} />
                     <span className="font-medium text-white block mb-1">No compliance gaps match criteria</span>
                     <span>All regulatory standards are satisfied for the active filters.</span>
                   </td>
@@ -404,19 +409,19 @@ export default function Compliance() {
                         {/* Severity Badge */}
                         <td className="py-3.5 px-4 whitespace-nowrap">
                           <span className={`px-2.5 py-1 rounded-md font-mono font-bold text-[11px] inline-flex items-center gap-1.5 ${
-                            gap.gap_severity === 'Critical' ? 'bg-red-500 text-white shadow-sm shadow-red-500/20' :
-                            gap.gap_severity === 'Major' ? 'bg-amber-500 text-black shadow-sm shadow-amber-500/20' :
-                            'border border-slate-500 text-slate-300 bg-slate-800/50'
+                            gap.gap_severity === 'Critical' ? 'bg-[#A0623A] text-white shadow-sm' :
+                            gap.gap_severity === 'Major' ? 'bg-nexus-caution text-white shadow-sm' :
+                            'border border-nexus-positive/50 text-nexus-positive bg-nexus-positive/10'
                           }`}>
                             {gap.gap_severity === 'Critical' && <AlertTriangle className="w-3 h-3" />}
-                            {gap.gap_severity}
+                            {gap.gap_severity === 'Critical' ? 'Needs Attention' : gap.gap_severity === 'Major' ? 'Elevated Risk' : 'Monitor'}
                           </span>
                         </td>
 
                         {/* Regulation */}
                         <td className="py-3.5 px-4 max-w-[200px]">
                           <div className="font-mono font-bold text-white text-xs">{gap.regulation_id}</div>
-                          <div className="text-[11px] text-nexus-accent font-mono">Clause {gap.clause_id}</div>
+                          <div className="text-[11px] font-mono" style={{ color: 'var(--blush)' }}>Clause {gap.clause_id}</div>
                         </td>
 
                         {/* Affected SOP */}
@@ -440,7 +445,8 @@ export default function Compliance() {
                           <div className="flex items-center gap-3 mt-1.5">
                             <button
                               onClick={() => setExpandedFixId(isFixExpanded ? null : gap._id)}
-                              className="inline-flex items-center gap-1 text-[11px] font-medium text-nexus-primary hover:text-indigo-400 transition-colors"
+                              className="inline-flex items-center gap-1 text-[11px] font-medium transition-colors"
+                              style={{ color: 'var(--blush)' }}
                             >
                               <Bot className="w-3.5 h-3.5" />
                               <span>{isFixExpanded ? 'Hide AI Fix' : 'Show AI Fix'}</span>
@@ -460,16 +466,16 @@ export default function Compliance() {
                         {/* Status Badge */}
                         <td className="py-3.5 px-4 whitespace-nowrap">
                           {gap.status === 'resolved' ? (
-                            <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
+                            <div className="flex items-center gap-1.5 font-medium" style={{ color: 'var(--positive)' }}>
                               <CheckCircle2 className="w-4 h-4" />
                               <span className="capitalize">Resolved</span>
                             </div>
                           ) : gap.status === 'in_review' ? (
-                            <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 font-medium text-[11px]">
+                            <span className="px-2.5 py-0.5 rounded-full font-medium text-[11px]" style={{ background: 'rgba(196,124,47,0.15)', border: '1px solid rgba(196,124,47,0.3)', color: 'var(--caution)' }}>
                               In Review
                             </span>
                           ) : (
-                            <span className="px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 font-medium text-[11px]">
+                            <span className="px-2.5 py-0.5 rounded-full font-medium text-[11px]" style={{ background: 'rgba(194,59,46,0.15)', border: '1px solid rgba(194,59,46,0.3)', color: 'var(--critical)' }}>
                               Open
                             </span>
                           )}
@@ -481,9 +487,10 @@ export default function Compliance() {
                             {gap.status === 'open' && (
                               <button
                                 onClick={() => handleMarkInReview(gap._id)}
-                                className="px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-nexus-text font-medium text-[11px] transition-colors"
+                                className="p-1.5 rounded bg-black/20 text-nexus-textMuted hover:text-white hover:bg-black/40 transition-colors"
+                                title="Mark as In Review"
                               >
-                                Mark In Review
+                                <Clock className="w-3.5 h-3.5" />
                               </button>
                             )}
                             {gap.status !== 'resolved' && (
@@ -492,10 +499,11 @@ export default function Compliance() {
                                   setResolvingGapId(isResolving ? null : gap._id);
                                   setResolutionNoteInput('');
                                 }}
-                                className="px-3 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 font-medium text-[11px] transition-colors flex items-center gap-1"
+                                className="p-1.5 rounded transition-colors"
+                                style={{ background: 'rgba(107,143,78,0.15)', border: '1px solid rgba(107,143,78,0.3)', color: 'var(--positive)' }}
+                                title="Resolve Gap"
                               >
-                                <Check className="w-3 h-3" />
-                                <span>Resolve</span>
+                                <Check className="w-3.5 h-3.5" />
                               </button>
                             )}
                           </div>
@@ -504,25 +512,25 @@ export default function Compliance() {
 
                       {/* Expandable AI Suggested Fix Panel */}
                       {isFixExpanded && (
-                        <tr className="bg-indigo-950/20 border-b border-indigo-500/20">
+                        <tr className="border-b" style={{ background: 'rgba(196,124,47,0.1)', borderColor: 'rgba(196,124,47,0.2)' }}>
                           <td colSpan={6} className="p-4 pl-12">
                             <motion.div
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
-                              className="bg-indigo-500/10 border border-indigo-500/30 p-4 rounded-xl relative shadow-lg"
+                              className="p-4 rounded-xl relative shadow-lg border" style={{ background: 'rgba(196,124,47,0.1)', borderColor: 'rgba(196,124,47,0.3)' }}
                             >
                               <div className="flex items-center justify-between mb-2">
-                                <span className="flex items-center gap-1.5 text-xs font-bold text-indigo-300 uppercase tracking-wider">
-                                  <Bot className="w-4 h-4 text-indigo-400" /> AI Suggested SOP Amendment
+                                <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--caution)' }}>
+                                  <Bot className="w-4 h-4" style={{ color: 'var(--caution)' }} /> AI Suggested SOP Amendment
                                 </span>
                                 <button
                                   onClick={() => handleCopyFix(gap.ai_suggested_amendment, gap._id)}
-                                  className="flex items-center gap-1 px-2.5 py-1 rounded bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 text-[11px] font-mono transition-colors border border-indigo-500/30"
+                                  className="flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-mono transition-colors border" style={{ background: 'rgba(196,124,47,0.2)', color: 'rgba(196,124,47,0.8)', borderColor: 'rgba(196,124,47,0.3)' }}
                                 >
                                   {copiedId === gap._id ? (
                                     <>
-                                      <Check className="w-3 h-3 text-emerald-400" />
-                                      <span className="text-emerald-400">Copied!</span>
+                                      <Check className="w-3 h-3" style={{ color: 'var(--positive)' }} />
+                                      <span style={{ color: 'var(--positive)' }}>Copied!</span>
                                     </>
                                   ) : (
                                     <>
@@ -532,7 +540,7 @@ export default function Compliance() {
                                   )}
                                 </button>
                               </div>
-                              <p className="text-xs text-indigo-100 font-mono leading-relaxed bg-black/30 p-3 rounded-lg border border-indigo-500/20">
+                              <p className="text-xs font-mono leading-relaxed p-3 rounded-lg border" style={{ color: 'rgba(196,124,47,0.9)', background: 'rgba(0,0,0,0.3)', borderColor: 'rgba(196,124,47,0.2)' }}>
                                 {gap.ai_suggested_amendment || 'Incorporate mandatory verification step into active SOP clause.'}
                               </p>
                             </motion.div>
@@ -542,35 +550,29 @@ export default function Compliance() {
 
                       {/* Expandable Resolution Note Form / Display */}
                       {(isResolving || (gap.status === 'resolved' && gap.resolution_note)) && (
-                        <tr className={gap.status === 'resolved' ? 'bg-emerald-950/10' : 'bg-white/[0.03]'}>
+                        <tr className={gap.status === 'resolved' ? 'bg-[var(--positive)]/10' : 'bg-white/[0.03]'}>
                           <td colSpan={6} className="p-3 pl-12">
                             {gap.status === 'resolved' ? (
-                              <div className="flex items-center gap-2 text-xs text-nexus-textMuted italic bg-black/20 p-2.5 rounded-lg border border-emerald-500/20">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                <span>Resolution Note: <strong className="text-emerald-300 not-italic">{gap.resolution_note}</strong></span>
+                              <div className="flex items-center gap-2 text-xs italic bg-black/20 p-2.5 rounded-lg border" style={{ color: 'rgba(107,143,78,0.7)', borderColor: 'rgba(107,143,78,0.2)' }}>
+                                <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--positive)' }} />
+                                <span>Resolution Note: <strong className="not-italic" style={{ color: 'var(--positive)' }}>{gap.resolution_note}</strong></span>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-3">
-                                <input
-                                  type="text"
-                                  placeholder="Enter resolution note (e.g., Added Step 3a to SOP-MAINT-017 via Change Request #412)..."
-                                  value={resolutionNoteInput}
-                                  onChange={(e) => setResolutionNoteInput(e.target.value)}
-                                  className="flex-1 bg-black/50 border border-emerald-500/40 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400"
-                                  autoFocus
-                                />
-                                <button
-                                  onClick={() => handleSubmitResolution(gap._id)}
-                                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black font-bold text-xs transition-all shadow-lg"
-                                >
-                                  Submit Resolution
-                                </button>
-                                <button
-                                  onClick={() => setResolvingGapId(null)}
-                                  className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-nexus-textMuted hover:text-white text-xs"
-                                >
-                                  Cancel
-                                </button>
+                              <div className="card-elevated w-full max-w-md p-5">
+                                <h3 className="text-sm font-semibold mb-3 text-white">Resolve Gap</h3>
+                                <div className="mb-4">
+                                  <label className="text-xs font-medium text-nexus-textMuted mb-1 block">Resolution Note / Action Taken</label>
+                                  <textarea
+                                    className="nexus-input w-full min-h-[100px]"
+                                    placeholder="e.g., Added Step 3a to SOP-MAINT-017 via Change Request #412..."
+                                    value={resolutionNoteInput}
+                                    onChange={(e) => setResolutionNoteInput(e.target.value)}
+                                  />
+                                </div>
+                                <div className="flex justify-end gap-3">
+                                  <button onClick={() => setResolvingGapId(null)} className="btn-secondary px-4 py-2 text-xs">Cancel</button>
+                                  <button onClick={() => handleSubmitResolution(gap._id)} className="btn-primary px-4 py-2 text-xs">Submit Resolution</button>
+                                </div>
                               </div>
                             )}
                           </td>
@@ -585,65 +587,57 @@ export default function Compliance() {
         </div>
       </div>
 
-      {/* Section 3 — Regulation Coverage Map */}
+      {/* Section 3 — Standards Coverage Cards */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-nexus-primary" />
             <span>Regulation Coverage Map</span>
           </h3>
-          <span className="text-xs text-nexus-textMuted">Click a standard to filter active gaps</span>
+          <span style={{ color: "#9B8B70", fontSize: "12px" }}>Click a standard to filter active gaps</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {coverageCards.map((card) => {
-            const isSelected = selectedRegulationFilter === card.id;
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          {coverageCards.map((c) => {
+            const isSelected = selectedRegulationFilter === c.id;
             return (
               <div
-                key={card.id}
-                onClick={() => setSelectedRegulationFilter(isSelected ? null : card.id)}
-                className={`glass-card p-4 border transition-all cursor-pointer relative overflow-hidden group ${
-                  isSelected
-                    ? 'border-nexus-primary bg-nexus-primary/[0.08] shadow-lg shadow-nexus-primary/20 ring-1 ring-nexus-primary'
-                    : 'border-nexus-border hover:border-nexus-primary/50 hover:bg-white/[0.03]'
+                key={c.id}
+                onClick={() => setSelectedRegulationFilter(isSelected ? null : c.id)}
+                className={`card p-4 h-full flex flex-col hover:border-nexus-blush transition-colors cursor-pointer group ${
+                  isSelected ? 'border-nexus-primary bg-nexus-primary/[0.08]' : 'border-[#E2D9C8]'
                 }`}
               >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <span className="font-mono font-bold text-white text-sm group-hover:text-nexus-primary transition-colors">
-                    {card.id}
-                  </span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                    card.compliancePct === 100 ? 'bg-emerald-500/20 text-emerald-400' :
-                    card.compliancePct >= 80 ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {card.compliancePct}% Coverage
-                  </span>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2 max-w-[80%]">
+                    <FileText className="w-4 h-4 text-nexus-textMuted flex-shrink-0" />
+                    <span className="text-sm font-semibold truncate text-white" title={c.name}>{c.name}</span>
+                  </div>
+                  <span className={`text-xs font-bold ${
+                    c.compliancePct >= 90 ? 'text-[var(--positive)]' :
+                    c.compliancePct >= 70 ? 'text-[var(--caution)]' :
+                    'text-[var(--critical)]'
+                  }`}>{c.compliancePct}%</span>
                 </div>
 
-                <div className="text-xs text-nexus-textMuted font-medium truncate mb-3" title={card.name}>
-                  {card.name}
-                </div>
-
-                {/* Stacked Horizontal Bar */}
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden flex mb-3">
+                <div className="h-1.5 w-full rounded-full overflow-hidden mt-3" style={{ background: 'var(--surface-high)' }}>
                   <div
-                    style={{ width: `${card.compliancePct}%` }}
-                    className="h-full bg-emerald-500 transition-all duration-500"
-                    title={`Compliant: ${card.compliantCount} clauses`}
-                  />
-                  <div
-                    style={{ width: `${100 - card.compliancePct}%` }}
-                    className="h-full bg-red-500 transition-all duration-500"
-                    title={`Gaps: ${card.gaps} clauses`}
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${c.compliancePct}%`,
+                      background: c.compliancePct >= 90 ? 'var(--positive)' : c.compliancePct >= 70 ? 'var(--caution)' : 'var(--critical)'
+                    }}
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] font-mono text-nexus-textMuted">
-                  <span>Checked: <strong className="text-white">{card.totalClauses}</strong></span>
-                  <span className="flex items-center gap-3">
-                    <span className="text-emerald-400">✓ {card.compliantCount}</span>
-                    <span className={card.gaps > 0 ? 'text-red-400 font-bold' : 'text-slate-500'}>! {card.gaps}</span>
-                  </span>
+                <div className="flex items-center gap-1.5 pt-3 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
+                  <span style={{ color: "#9B8B70", fontSize: "12px" }}>Coverage:</span>
+                  <span className="text-xs font-mono font-medium text-nexus-text">{c.compliantCount} / {c.totalClauses} clauses</span>
+                  {c.critical > 0 && (
+                    <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: 'var(--critical)', color: 'var(--text)' }}>
+                      {c.critical} Needs Attention
+                    </span>
+                  )}
                 </div>
               </div>
             );
@@ -664,31 +658,32 @@ export default function Compliance() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="glass-card w-full max-w-lg p-6 border border-nexus-border shadow-2xl space-y-4 bg-nexus-surface"
+              className="card-elevated w-full max-w-lg mx-4 p-6"
             >
-              <div className="flex items-center justify-between border-b border-nexus-border pb-3">
-                <div className="flex items-center gap-2">
-                  <Play className="w-5 h-5 text-nexus-primary" />
-                  <h3 className="text-base font-bold text-white">Run New Compliance Audit</h3>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-lg font-bold text-nexus-text">Run SpectraSync Audit</h2>
+                  <p className="text-xs text-nexus-textMuted mt-1">
+                    Select a regulation to audit against your indexed SOPs.
+                  </p>
                 </div>
-                <button onClick={() => setIsAuditModalOpen(false)} className="text-nexus-textMuted hover:text-white">
+                <button
+                  onClick={() => !auditRunning && setIsAuditModalOpen(false)}
+                  className="p-1.5 rounded-lg text-nexus-textMuted hover:text-white transition-colors"
+                  disabled={auditRunning}
+                >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <p className="text-xs text-nexus-textMuted leading-relaxed">
-                Select a target Regulation document to run an automated clause-by-clause semantic audit across all indexed Standard Operating Procedures (SOPs).
-              </p>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-white uppercase tracking-wider block">
-                  Regulation Document
-                </label>
+              <div className="mb-6">
+                <label className="text-xs font-semibold text-nexus-textMuted block mb-2">Target Regulation</label>
                 {regulationsList.length > 0 ? (
                   <select
                     value={selectedRegDocId}
                     onChange={(e) => setSelectedRegDocId(e.target.value)}
-                    className="w-full bg-black/60 border border-nexus-border rounded-xl p-3 text-xs text-white focus:outline-none focus:border-nexus-primary"
+                    disabled={auditRunning}
+                    className="nexus-input w-full appearance-none pr-8 cursor-pointer"
                   >
                     {regulationsList.map((r) => (
                       <option key={r._id} value={r._id}>
@@ -697,33 +692,28 @@ export default function Compliance() {
                     ))}
                   </select>
                 ) : (
-                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300">
-                    No Regulation documents indexed in collection yet. You can upload one on the Documents page or use our demo ID below.
-                  </div>
-                )}
-
-                {!regulationsList.length && (
                   <input
                     type="text"
                     placeholder="Paste Regulation Document ObjectId..."
                     value={selectedRegDocId}
                     onChange={(e) => setSelectedRegDocId(e.target.value)}
-                    className="w-full bg-black/60 border border-nexus-border rounded-xl p-3 text-xs text-white focus:outline-none focus:border-nexus-primary font-mono mt-2"
+                    className="nexus-input w-full font-mono"
                   />
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-nexus-border">
+              <div className="flex items-center justify-end gap-3 mt-8">
                 <button
                   onClick={() => setIsAuditModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-nexus-text font-medium transition-colors"
+                  disabled={auditRunning}
+                  className="btn-secondary px-4 py-2 text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleRunNewAudit}
-                  disabled={!selectedRegDocId || auditRunning}
-                  className="px-5 py-2 rounded-xl bg-nexus-primary hover:bg-indigo-600 disabled:opacity-50 text-white font-medium text-xs flex items-center gap-2 shadow-lg shadow-nexus-primary/25 transition-all"
+                  disabled={auditRunning || !selectedRegDocId}
+                  className="btn-primary px-5 py-2 text-xs flex items-center gap-2"
                 >
                   {auditRunning ? (
                     <>

@@ -36,13 +36,13 @@ export default function SourceModal({ pattern, onClose }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="glass-card w-full max-w-2xl border border-nexus-border shadow-2xl overflow-hidden flex flex-col max-h-[85vh] bg-nexus-surface"
+          className="card w-full max-w-2xl border border-nexus-border shadow-2xl overflow-hidden flex flex-col max-h-[85vh] bg-nexus-surface"
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-nexus-border flex items-center justify-between bg-white/[0.02] flex-shrink-0">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-purple-500/10 text-nexus-textMuted border border-purple-500/30">
                   {equipmentType}
                 </span>
                 <span className="text-xs text-nexus-textMuted">· Source Incidents</span>
@@ -78,14 +78,14 @@ export default function SourceModal({ pattern, onClose }) {
                   : 'Historical Record';
 
                 const badgeColor =
-                  docType === 'IncidentReport' ? 'bg-red-500/10 text-red-400 border-red-500/30' :
-                  docType === 'WorkOrder' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' :
-                  'bg-cyan-500/10 text-cyan-400 border-cyan-500/30';
+                  docType === 'IncidentReport' ? 'bg-[#B87070]/10 text-[#B87070] border-[#B87070]/30' :
+                  docType === 'WorkOrder' ? 'bg-[#C4A882]/10 text-[#C4A882] border-[#C4A882]/30' :
+                  'bg-[#C49A3C]/10 text-[#C49A3C] border-[#C49A3C]/30';
 
                 return (
                   <div
                     key={doc._id || idx}
-                    className="glass-card p-4 border border-nexus-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-nexus-primary/40 transition-all bg-white/[0.01]"
+                    className="card p-4 border border-nexus-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-nexus-primary/40 transition-all bg-white/[0.01]"
                   >
                     <div className="flex items-start gap-3 min-w-0">
                       <div className="p-2 rounded-lg bg-white/5 border border-nexus-border flex-shrink-0 mt-0.5">
@@ -106,7 +106,7 @@ export default function SourceModal({ pattern, onClose }) {
                             {dateStr}
                           </span>
                           {Array.isArray(doc.equipment_tags) && doc.equipment_tags.length > 0 && (
-                            <span className="font-mono text-cyan-400">
+                            <span className="font-mono text-nexus-accent">
                               Tags: {doc.equipment_tags.join(', ')}
                             </span>
                           )}

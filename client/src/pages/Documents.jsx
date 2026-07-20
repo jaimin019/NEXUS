@@ -149,19 +149,19 @@ export default function Documents() {
           </p>
         </div>
         <button onClick={loadDocuments} className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-nexus-border text-nexus-textMuted hover:text-nexus-text text-xs transition-all duration-200">
-          <RefreshCw className="w-3.5 h-3.5" />Refresh
+          <RefreshCw style={{ color: "#9B8B70", width: "14px", height: "14px" }} />Refresh
         </button>
       </div>
 
       {/* Upload Zone */}
-      <div className="glass-card p-5">
+      <div className="card p-5">
         <div className="flex items-center gap-4 mb-4">
           <h3 className="text-sm font-semibold text-nexus-text flex-1">Upload New Documents</h3>
           <div className="relative">
             <select
               value={docType}
               onChange={(e) => setDocType(e.target.value)}
-              className="bg-nexus-bg border border-nexus-border rounded-lg pl-3 pr-8 py-1.5 text-xs text-nexus-text appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors"
+              className="nexus-input border border-nexus-border rounded-lg pl-3 pr-8 py-1.5 text-xs appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors"
             >
               {DOC_TYPES.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
@@ -194,8 +194,8 @@ export default function Documents() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by title…"
-            className="w-full bg-nexus-surface border border-nexus-border rounded-lg pl-9 pr-4 py-2
-              text-sm text-nexus-text placeholder:text-nexus-muted
+            className="nexus-input w-full border border-nexus-border rounded-lg pl-9 pr-4 py-2
+              text-sm placeholder:text-nexus-muted
               focus:outline-none focus:border-nexus-primary transition-colors"
           />
         </div>
@@ -204,7 +204,7 @@ export default function Documents() {
         <div className="relative">
           <Filter className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-nexus-muted" />
           <select value={filterType} onChange={(e) => setFilterType(e.target.value)}
-            className="bg-nexus-surface border border-nexus-border rounded-lg pl-8 pr-6 py-2 text-xs text-nexus-text appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors">
+            className="nexus-input border border-nexus-border rounded-lg pl-8 pr-6 py-2 text-xs appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors">
             {DOC_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
           <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-nexus-muted pointer-events-none" />
@@ -213,7 +213,7 @@ export default function Documents() {
         {/* Status filter */}
         <div className="relative">
           <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-nexus-surface border border-nexus-border rounded-lg px-3 py-2 text-xs text-nexus-text appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors">
+            className="nexus-input border border-nexus-border rounded-lg px-3 py-2 text-xs appearance-none cursor-pointer focus:outline-none focus:border-nexus-primary transition-colors">
             {STATUSES.map(s => <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s}</option>)}
           </select>
           <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-nexus-muted pointer-events-none" />
@@ -225,17 +225,17 @@ export default function Documents() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             onClick={handleBulkDelete}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20
-              text-red-400 hover:bg-red-500/20 text-xs font-medium transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+            style={{ background: 'rgba(194,59,46,0.1)', border: '1px solid rgba(194,59,46,0.2)', color: '#B87070' }}
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 style={{ color: "#9B8B70", width: "14px", height: "14px" }} />
             Delete {selectedIds.size} selected
           </motion.button>
         )}
       </div>
 
       {/* Document Table */}
-      <div className="glass-card overflow-hidden">
+      <div style={{ background: "#FDFAF6", border: "1px solid #E2D9C8", borderRadius: "12px", overflow: "hidden" }} style={{ background: "#FDFAF6", border: "1px solid #E2D9C8" }}>
         {loading ? (
           <div className="p-5 space-y-3">
             {[1,2,3,4,5].map(i => <LoadingSkeleton key={i} height={52} />)}
@@ -297,12 +297,12 @@ export default function Documents() {
                       {/* Pipeline stepper */}
                       <td className="py-3.5 px-4">
                         {doc.ingestion_status === 'failed' ? (
-                          <div className="flex items-center gap-1 text-red-400 text-xs">
-                            <AlertCircle className="w-3.5 h-3.5" /> Failed
+                          <div className="flex items-center gap-1 text-xs" style={{ color: '#B87070' }}>
+                            <AlertCircle style={{ color: "#9B8B70", width: "14px", height: "14px" }} /> Failed
                           </div>
                         ) : doc.ingestion_status === 'complete' ? (
-                          <div className="flex items-center gap-1 text-emerald-400 text-xs">
-                            <CheckCircle2 className="w-3.5 h-3.5" /> Complete
+                          <div className="flex items-center gap-1 text-xs" style={{ color: '#D4B896' }}>
+                            <CheckCircle2 style={{ color: "#9B8B70", width: "14px", height: "14px" }} /> Complete
                           </div>
                         ) : (
                           <ProgressStepper currentStep={doc.ingestion_status} compact />
@@ -322,15 +322,18 @@ export default function Documents() {
                       <td className="py-3.5 px-4">
                         {deleteConfirm === doc._id ? (
                           <div className="flex items-center gap-2">
-                            <button onClick={() => handleDelete(doc._id)} className="text-red-400 hover:text-red-300 text-xs font-medium">Confirm</button>
+                            <button onClick={() => handleDelete(doc._id)} className="text-xs font-medium" style={{ color: '#B87070' }}>Confirm</button>
                             <button onClick={() => setDeleteConfirm(null)} className="text-nexus-muted hover:text-nexus-text">
-                              <X className="w-3.5 h-3.5" />
+                              <X style={{ color: "#9B8B70", width: "14px", height: "14px" }} />
                             </button>
                           </div>
                         ) : (
                           <button
                             onClick={() => setDeleteConfirm(doc._id)}
-                            className="opacity-0 group-hover:opacity-100 text-nexus-muted hover:text-red-400 transition-all"
+                            className="opacity-0 group-hover:opacity-100 text-nexus-muted transition-all"
+                            style={{ color: 'var(--text-faint)' }}
+                            onMouseEnter={(e) => { e.currentTarget.style.color = '#B87070'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-faint)'; }}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

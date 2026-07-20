@@ -251,7 +251,7 @@ function UserMessage({ msg }) {
   );
 }
 
-export default function ConversationPanel({ viewMode, onViewModeToggle, onSourceClick }) {
+export default function ConversationPanel({ onSourceClick }) {
   const { conversationHistory, isQuerying, clearConversation } = useNexusStore();
   const bottomRef = useRef(null);
   const [confirmClear, setConfirmClear] = useState(false);

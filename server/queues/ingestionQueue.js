@@ -8,7 +8,7 @@ const { processIngestionJob } = require('./ingestionProcessor');
 // Upstash also exposes a native Redis endpoint on port 6379 (TLS).
 let rawRedisUrl = process.env.UPSTASH_REDIS_URL || '';
 
-// Normalise https:// → rediss:// so URL parsing works
+// Normalise https:// -> rediss:// so URL parsing works
 if (rawRedisUrl.startsWith('https://')) {
   rawRedisUrl = rawRedisUrl.replace('https://', 'rediss://');
 } else if (rawRedisUrl.startsWith('http://')) {
@@ -31,7 +31,7 @@ if (rawRedisUrl) {
         connectTimeout: 10000,
       },
     };
-    console.log(`[ingestion-queue] Redis config → host: ${url.hostname}, tls: ${url.protocol === 'rediss:'}`);
+    console.log(`[ingestion-queue] Redis config -> host: ${url.hostname}, tls: ${url.protocol === 'rediss:'}`);
   } catch (e) {
     console.warn('[ingestion-queue] Could not parse UPSTASH_REDIS_URL, falling back to local Redis');
     queueConfig = { redis: { host: '127.0.0.1', port: 6379, maxRetriesPerRequest: 3 } };

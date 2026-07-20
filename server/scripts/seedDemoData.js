@@ -8,12 +8,14 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const Asset = require(path.join(__dirname, '../models/Asset'));
 const Document = require(path.join(__dirname, '../models/Document'));
 const Chunk = require(path.join(__dirname, '../models/Chunk'));
 const FailureSignature = require(path.join(__dirname, '../models/FailureSignature'));
 const ComplianceMapping = require(path.join(__dirname, '../models/ComplianceMapping'));
+const User = require(path.join(__dirname, '../models/User'));
 
 // Generate a pseudo-random embedding vector for demo search
 function generateDemoEmbedding() {
@@ -22,19 +24,19 @@ function generateDemoEmbedding() {
 
 async function seed() {
   console.log(`\n${'='.repeat(70)}`);
-  console.log(`🚀  NEXUS Demo Data Seeder — Bharat Refinery Unit-3`);
+  console.log(`[INFO] NEXUS Demo Data Seeder — Bharat Refinery Unit-3`);
   console.log(`${'='.repeat(70)}\n`);
 
   const mongoUri = process.env.MONGODB_URI;
   if (!mongoUri) {
-    console.error('❌  MONGODB_URI not found in environment variables (.env). Exiting.');
+    console.error('[ERROR] MONGODB_URI not found in environment variables (.env). Exiting.');
     process.exit(1);
   }
 
   try {
-    console.log('Connecting to MongoDB...');
+    console.log('[INFO] Connecting to MongoDB...');
     await mongoose.connect(mongoUri);
-    console.log('✅  Connected to MongoDB.\n');
+    console.log('[OK] Connected to MongoDB.\n');
 
     // CLEAR DB BEFORE SEEDING to avoid duplicates in this comprehensive demo seed
     await Promise.all([
@@ -43,13 +45,29 @@ async function seed() {
       Chunk.deleteMany({}),
       FailureSignature.deleteMany({}),
       ComplianceMapping.deleteMany({}),
+      User.deleteMany({}),
     ]);
-    console.log('Cleared existing demo data.\n');
+    console.log('[INFO] Cleared existing demo data.\n');
+
+    // -------------------------------------------------------------------------
+    // 0. Seed Demo User
+    // -------------------------------------------------------------------------
+    console.log('[INFO] Seeding Demo User...');
+    const hashedPassword = await bcrypt.hash('nexus2026', 10);
+    await User.create({
+      name: 'Jaimin Hadvani',
+      email: 'demo@nexus.ai',
+      password: hashedPassword,
+      role: 'admin',
+      plant: 'Bharat Refinery Unit-3',
+      avatar_initials: 'JH',
+    });
+    console.log('[OK] Demo user: demo@nexus.ai / nexus2026');
 
     // -------------------------------------------------------------------------
     // 1. Seed Assets (8)
     // -------------------------------------------------------------------------
-    console.log('▶ Seeding Assets...');
+    console.log('[INFO] Seeding Assets...');
     const demoAssets = [
       {
         tag: 'P-101', name: 'Feed Pump 101', asset_type: 'Centrifugal_Pump',
@@ -141,16 +159,16 @@ async function seed() {
     for (const a of demoAssets) {
       await Asset.create(a);
     }
-    console.log(`  ✓ Seeded ${demoAssets.length} Assets.`);
+    console.log(`  [OK] Seeded ${demoAssets.length} Assets.`);
 
     // -------------------------------------------------------------------------
     // 2. Seed Documents & Chunks
     // -------------------------------------------------------------------------
-    console.log('\n▶ Seeding Documents & Chunks...');
+    console.log('\n[INFO] Seeding Documents & Chunks...');
     
     // Note: In a real system, the actual ingestion pipeline would generate real semantic embeddings.
     // We are generating pseudo-random embeddings here just to fulfill the data model for the UI demo.
-    console.log('  ⚠️ Using pseudo-random embeddings for demo speed. Run real ingestion for true semantic search.');
+    console.log('  [WARN] Using pseudo-random embeddings for demo speed. Run real ingestion for true semantic search.');
 
     const demoDocs = [
       {
@@ -231,12 +249,12 @@ async function seed() {
         totalChunks++;
       }
     }
-    console.log(`  ✓ Seeded ${demoDocs.length} Documents and ${totalChunks} Chunks.`);
+    console.log(`  [OK] Seeded ${demoDocs.length} Documents and ${totalChunks} Chunks.`);
 
     // -------------------------------------------------------------------------
     // 3. Seed Failure Signatures (3)
     // -------------------------------------------------------------------------
-    console.log('\n▶ Seeding Failure Signatures...');
+    console.log('\n[INFO] Seeding Failure Signatures...');
     
     // Find incident doc if available for source
     const incidentDoc = docRecords.find(d => d.doc_type === 'IncidentReport');
@@ -275,12 +293,12 @@ async function seed() {
     for (const sig of demoSignatures) {
       await FailureSignature.create(sig);
     }
-    console.log(`  ✓ Seeded ${demoSignatures.length} Failure Signatures.`);
+    console.log(`  [OK] Seeded ${demoSignatures.length} Failure Signatures.`);
 
     // -------------------------------------------------------------------------
     // 4. Seed Compliance Mappings (4)
     // -------------------------------------------------------------------------
-    console.log('\n▶ Seeding Compliance Mappings...');
+    console.log('\n[INFO] Seeding Compliance Mappings...');
 
     const demoMappings = [
       {
@@ -321,19 +339,20 @@ async function seed() {
     for (const mapping of demoMappings) {
       await ComplianceMapping.create(mapping);
     }
-    console.log(`  ✓ Seeded ${demoMappings.length} Compliance Mappings.`);
+    console.log(`  [OK] Seeded ${demoMappings.length} Compliance Mappings.`);
 
     console.log(`\n${'='.repeat(70)}`);
-    console.log(`✅ NEXUS Demo Data Seeded Successfully`);
-    console.log(`📊 Assets: ${demoAssets.length} | Documents: ${demoDocs.length} | Chunks: ${totalChunks} | Failure Patterns: ${demoSignatures.length} | Compliance Gaps: ${demoMappings.length}`);
-    console.log(`🏭 Plant: Bharat Refinery Unit-3, Vadodara`);
-    console.log(`🚀 Ready for demo — run the app and explore!`);
+    console.log(`[DONE] NEXUS Demo Data Seeded Successfully`);
+    console.log(`[INFO] Assets: ${demoAssets.length} | Documents: ${demoDocs.length} | Chunks: ${totalChunks} | Failure Patterns: ${demoSignatures.length} | Compliance Gaps: ${demoMappings.length}`);
+    console.log(`[INFO] Plant: Bharat Refinery Unit-3, Vadodara`);
+    console.log(`[INFO] Demo User: demo@nexus.ai / nexus2026`);
+    console.log(`[INFO] Ready for demo — run the app and explore!`);
     console.log(`${'='.repeat(70)}\n`);
 
     await mongoose.connection.close();
     process.exit(0);
   } catch (error) {
-    console.error(`❌  Fatal error during seeding:`, error.message);
+    console.error(`[ERROR] Fatal error during seeding:`, error.message);
     console.error(error.stack);
     if (mongoose.connection.readyState !== 0) {
       await mongoose.connection.close();

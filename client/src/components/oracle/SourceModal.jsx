@@ -37,8 +37,7 @@ export default function SourceModal({ source, onClose }) {
           initial={{ opacity: 0, scale: 0.93, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.93, y: 20 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-          className="glass-card w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden"
+          className="card w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden"
         >
           {/* Header */}
           <div className="flex items-start justify-between p-5 border-b border-nexus-border flex-shrink-0">
@@ -77,7 +76,7 @@ export default function SourceModal({ source, onClose }) {
           <div className="flex-1 overflow-y-auto p-5">
             <div
               className="text-sm leading-relaxed font-mono rounded-lg p-4 whitespace-pre-wrap"
-              style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}
+              style={{ background: 'rgba(196,154,60,0.04)', border: '1px solid rgba(196,154,60,0.12)' }}
             >
               <span className="text-nexus-text">
                 {highlightTags(source.raw_text || source.text || 'No text available.', source.equipment_tags || [])}

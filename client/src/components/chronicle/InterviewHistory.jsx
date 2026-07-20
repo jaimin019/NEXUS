@@ -20,7 +20,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
     <div className="space-y-4 pt-6">
       <div className="flex items-center justify-between border-b border-nexus-border pb-3">
         <div className="flex items-center gap-2">
-          <Archive className="w-5 h-5 text-amber-400" />
+          <Archive className="w-5 h-5 text-[#C49A3C]" />
           <h3 className="text-base font-bold text-white tracking-tight">Indexed Expert Knowledge</h3>
         </div>
         <span className="text-xs font-mono text-nexus-textMuted">
@@ -33,12 +33,12 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
           Loading indexed tacit interviews from PhoenixMind vector memory...
         </div>
       ) : interviews.length === 0 ? (
-        <div className="glass-card p-12 text-center border border-nexus-border rounded-2xl flex flex-col items-center justify-center space-y-4" style={{ background: 'rgba(245, 158, 11, 0.02)' }}>
+        <div className="card p-12 text-center rounded-2xl flex flex-col items-center justify-center space-y-4" style={{ background: 'rgba(252,185,178, 0.02)' }}>
           {/* Illustration SVG of person with thought bubble */}
-          <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center relative shadow-lg">
-            <Brain className="w-10 h-10 text-amber-400" />
+          <div className="w-20 h-20 rounded-2xl border flex items-center justify-center relative shadow-lg text-[#C49A3C]" style={{ background: 'rgba(252,185,178,0.1)', borderColor: 'rgba(252,185,178,0.2)' }}>
+            <Brain className="w-10 h-10" />
             <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-nexus-surface border border-nexus-border flex items-center justify-center">
-              <span className="text-[10px] font-bold text-amber-400">💡</span>
+              <span className="text-[10px] font-bold">Idea:</span>
             </div>
           </div>
           <div className="max-w-sm space-y-1">
@@ -70,8 +70,8 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
             return (
               <div
                 key={interview._id || idx}
-                className="glass-card p-5 border border-nexus-border hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-4 shadow-lg"
-                style={{ background: 'rgba(245, 158, 11, 0.025)' }}
+                className="card p-5 hover:border-nexus-blush/40 transition-all flex flex-col justify-between space-y-4 shadow-lg"
+                style={{ background: 'rgba(252,185,178, 0.025)' }}
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
@@ -91,8 +91,8 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                     </div>
 
                     {/* Tacit Knowledge Badge */}
-                    <span className="px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 font-medium text-[11px] flex items-center gap-1.5 flex-shrink-0 shadow-sm">
-                      <Brain className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="px-2.5 py-1 rounded-full border text-[#C49A3C] font-medium text-[11px] flex items-center gap-1.5 flex-shrink-0 shadow-sm" style={{ background: 'rgba(252,185,178,0.15)', borderColor: 'rgba(252,185,178,0.3)' }}>
+                      <Brain className="w-3.5 h-3.5" />
                       <span>Tacit Knowledge</span>
                     </span>
                   </div>
@@ -106,7 +106,7 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                       {displayedTags.map((t, tIdx) => (
                         <span
                           key={tIdx}
-                          className="px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-xs font-mono font-medium text-cyan-300"
+                          className="px-2 py-0.5 rounded-md font-mono font-medium text-xs" style={{ background: 'rgba(252,185,178,0.15)', border: '1px solid rgba(252,185,178,0.3)', color: '#C49A3C' }}
                         >
                           {t}
                         </span>
@@ -123,9 +123,9 @@ export default function InterviewHistory({ interviews = [], loading = false }) {
                 <div className="pt-3 border-t border-nexus-border/60 flex justify-end">
                   <button
                     onClick={() => handleQueryKnowledge(interview)}
-                    className="px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-white font-medium text-xs flex items-center gap-2 transition-all group"
+                    className="px-4 py-2 rounded-xl text-[#C49A3C] hover:text-white font-medium text-xs flex items-center gap-2 transition-all group" style={{ background: 'rgba(252,185,178,0.1)', border: '1px solid rgba(252,185,178,0.3)' }}
                   >
-                    <Bot className="w-3.5 h-3.5 text-amber-400" />
+                    <Bot className="w-3.5 h-3.5 text-[#C49A3C]" />
                     <span>Query this knowledge</span>
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </button>

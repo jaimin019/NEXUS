@@ -8,15 +8,14 @@ import useNexusStore from '@/store/nexusStore';
 import { getQuerySuggestions } from '@/lib/api';
 
 const DOC_TYPES = [
-  { id: 'SOP', color: 'bg-indigo-500' },
-  { id: 'WorkOrder', color: 'bg-amber-500' },
-  { id: 'Regulation', color: 'bg-purple-500' },
-  { id: 'IncidentReport', color: 'bg-red-500' },
-  { id: 'ExpertInterview', color: 'bg-emerald-500' },
-  { id: 'OEMManual', color: 'bg-cyan-500' },
+  { id: 'SOP', color: 'bg-[#C49A3C]' },
+  { id: 'WorkOrder', color: 'bg-[#C49A3C]' },
+  { id: 'Regulation', color: 'bg-[#C49A3C]' },
+  { id: 'IncidentReport', color: 'bg-[#C49A3C]' },
+  { id: 'ExpertInterview', color: 'bg-[#C49A3C]' },
+  { id: 'OEMManual', color: 'bg-[#C49A3C]' },
 ];
 
-const SUGGESTION_ICONS = ['🔧', '⚠️', '📋', '🛡️', '🔍', '📊'];
 
 export default function ContextPanel({ filters, onFiltersChange, onSuggestionClick, safetyWarnings = [], sessionStats }) {
   const { assets } = useNexusStore();
@@ -70,7 +69,7 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
     <div className="flex flex-col gap-4 h-full overflow-y-auto no-scrollbar">
 
       {/* Section A — Query Filters */}
-      <div className="glass-card p-4">
+      <div className="card p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="w-4 h-4 text-nexus-primary" />
@@ -101,13 +100,13 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  className="absolute top-full mt-1 left-0 right-0 glass-card border border-nexus-border rounded-lg overflow-hidden z-20 shadow-xl"
+                  className="absolute top-full mt-1 left-0 right-0 card border border-nexus-border rounded-lg overflow-hidden z-20 shadow-xl"
                 >
                   {tagDropdown.map((a) => (
                     <button
                       key={a.tag}
                       onClick={() => addTag(a.tag)}
-                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-nexus-primary/10 text-left transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#C49A3C]/10 text-left transition-colors"
                     >
                       <span className="text-xs font-mono text-nexus-accent font-medium">{a.tag}</span>
                       <span className="text-xs text-nexus-textMuted truncate">{a.name}</span>
@@ -123,7 +122,7 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
             <div className="flex flex-wrap gap-1.5 mt-2">
               {filters.equipment_tags.map((tag) => (
                 <span key={tag} className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs
-                  bg-nexus-primary/15 border border-nexus-primary/30 text-nexus-primary font-mono">
+                  bg-[#C49A3C]/15 border border-nexus-primary/30 text-nexus-primary font-mono">
                   {tag}
                   <button onClick={() => removeTag(tag)} className="hover:text-nexus-text ml-0.5">
                     <X className="w-3 h-3" />
@@ -171,7 +170,7 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="absolute left-0 bottom-full mb-1.5 w-56 glass-card border border-nexus-border
+                    className="absolute left-0 bottom-full mb-1.5 w-56 card border border-nexus-border
                       rounded-lg p-2.5 text-xs text-nexus-textMuted z-30 shadow-xl"
                   >
                     Includes undocumented knowledge captured from retiring engineers.
@@ -183,7 +182,7 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
           <button
             onClick={() => onFiltersChange({ ...filters, tacit: !filters.tacit })}
             className={`w-9 h-5 rounded-full transition-all duration-300 relative flex-shrink-0
-              ${filters.tacit ? 'bg-nexus-primary' : 'bg-nexus-border'}`}
+              ${filters.tacit ? 'bg-[#C49A3C]' : 'bg-nexus-border'}`}
           >
             <motion.div
               animate={{ x: filters.tacit ? 16 : 2 }}
@@ -195,7 +194,7 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
       </div>
 
       {/* Section B — Suggested Queries */}
-      <div className="glass-card p-4">
+      <div className="card p-4">
         <div className="flex items-center gap-2 mb-3">
           <Lightbulb className="w-4 h-4 text-nexus-warning" />
           <h3 className="text-sm font-semibold text-nexus-text">Suggested Queries</h3>
@@ -216,10 +215,10 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
               transition={{ delay: i * 0.05 }}
               onClick={() => onSuggestionClick(q)}
               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left
-                hover:bg-nexus-primary/8 border border-transparent hover:border-nexus-primary/20
+                hover:bg-[#C49A3C]/8 border border-transparent hover:border-nexus-primary/20
                 transition-all duration-150 group"
             >
-              <span className="text-base flex-shrink-0">{SUGGESTION_ICONS[i % SUGGESTION_ICONS.length]}</span>
+              <span className="text-base flex-shrink-0 text-nexus-primary"><ChevronRight className="w-3.5 h-3.5" /></span>
               <span className="text-xs text-nexus-textMuted group-hover:text-nexus-text transition-colors flex-1 leading-snug">
                 {q}
               </span>
@@ -236,22 +235,22 @@ export default function ContextPanel({ filters, onFiltersChange, onSuggestionCli
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="rounded-xl p-4 border border-red-500/30"
-            style={{ background: 'rgba(239,68,68,0.08)' }}
+            className="rounded-xl p-4 border"
+            style={{ background: 'rgba(160,98,58,0.08)', borderColor: 'rgba(160,98,58,0.3)' }}
           >
             <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="w-4 h-4 text-red-400" />
-              <h3 className="text-sm font-semibold text-red-300">Active Safety Context</h3>
+              <AlertTriangle className="w-4 h-4" style={{ color: '#A0623A' }} />
+              <h3 className="text-sm font-semibold" style={{ color: '#A0623A' }}>Active Safety Context</h3>
             </div>
             <div className="space-y-1.5 mb-2">
               {safetyWarnings.map((w, i) => (
-                <div key={i} className="text-xs text-red-200/80 flex items-start gap-1.5">
-                  <span className="text-red-400 font-mono font-medium mt-0.5 flex-shrink-0">{w.tag}</span>
+                <div key={i} className="text-xs flex items-start gap-1.5" style={{ color: 'rgba(160,98,58,0.8)' }}>
+                  <span className="font-mono font-medium mt-0.5 flex-shrink-0" style={{ color: '#A0623A' }}>{w.tag}</span>
                   <span>{w.message}</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-red-400/70 italic">
+            <p className="text-xs italic" style={{ color: 'rgba(160,98,58,0.7)' }}>
               This context will be prepended to your next query answer.
             </p>
           </motion.div>

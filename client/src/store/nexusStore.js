@@ -2,6 +2,13 @@ import { create } from 'zustand';
 
 const useNexusStore = create((set) => ({
   // ---------------------------------------------------------------------------
+  // Auth / Current User
+  // ---------------------------------------------------------------------------
+  currentUser: null,
+  setCurrentUser: (user) => set({ currentUser: user }),
+  clearUser: () => set({ currentUser: null }),
+
+  // ---------------------------------------------------------------------------
   // Documents
   // ---------------------------------------------------------------------------
   documents: [],
@@ -66,6 +73,8 @@ const useNexusStore = create((set) => ({
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   activePage: 'dashboard',
   setActivePage: (page) => set({ activePage: page }),
+  theme: 'dark',
+  toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
 }));
 
 export default useNexusStore;

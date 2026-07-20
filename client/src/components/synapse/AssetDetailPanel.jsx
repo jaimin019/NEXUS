@@ -16,16 +16,14 @@ function CircularProgressRing({ completeness = 0 }) {
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - (pct / 100) * circumference;
 
-  let color = '#EF4444'; // red
-  if (pct > 70) color = '#10B981'; // green
-  else if (pct >= 40) color = '#F59E0B'; // amber
+  let color = '#C49A3C';
 
   return (
     <div className="relative flex flex-col items-center justify-center py-3">
       <svg height={radius * 2} width={radius * 2} className="-rotate-90">
         {/* Background Track circle */}
         <circle
-          stroke="#1E1E2E"
+          stroke="#EDE8DE"
           fill="transparent"
           strokeWidth={stroke}
           r={normalizedRadius}
@@ -46,8 +44,8 @@ function CircularProgressRing({ completeness = 0 }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-mono font-extrabold text-white">{pct}%</span>
-        <span className="text-[10px] uppercase tracking-wider text-nexus-textMuted font-semibold">Completeness</span>
+        <span className="text-xl font-mono font-extrabold gradient-text text-[#2C2416]">{pct}%</span>
+        <span className="text-[10px] uppercase tracking-wider text-[#9B8B70] font-semibold">Completeness</span>
       </div>
     </div>
   );
@@ -66,11 +64,11 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         <h3 className="gradient-text text-lg font-bold mb-2 max-w-[260px]">
           Select an asset to explore its knowledge network
         </h3>
-        <p className="text-xs text-nexus-textMuted mb-6 max-w-[280px]">
+        <p className="text-xs text-[#9B8B70] mb-6 max-w-[280px]">
           Click any D3 node on the canvas to inspect real-time health, regulatory compliance, relationships, and RAG knowledge.
         </p>
         <div className="space-y-2">
-          <span className="text-[11px] font-semibold text-nexus-textMuted uppercase tracking-wider block">
+          <span className="text-[11px] font-semibold text-[#9B8B70] uppercase tracking-wider block">
             Example Assets:
           </span>
           <div className="flex items-center justify-center gap-2">
@@ -78,7 +76,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
               <button
                 key={tag}
                 onClick={() => onSelectTag && onSelectTag(tag)}
-                className="px-3 py-1.5 rounded-lg bg-white/5 border border-nexus-border text-xs font-mono font-medium text-nexus-text hover:text-white hover:border-nexus-primary/50 hover:bg-nexus-primary/10 transition-all shadow-sm"
+                className="px-3 py-1.5 rounded-lg bg-[#F5EDD8] border border-nexus-border text-xs font-mono font-medium text-[#2C2416] hover:text-white hover:border-nexus-primary/50 hover:bg-nexus-primary/10 transition-all shadow-sm"
               >
                 {tag}
               </button>
@@ -155,7 +153,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-nexus-textMuted hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg text-[#9B8B70] hover:text-white hover:bg-white/10 transition-colors"
               title="Close Panel"
             >
               <X className="w-5 h-5" />
@@ -163,16 +161,16 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
           </div>
 
           <div className="flex items-center gap-2 mt-3">
-            <span className="px-2.5 py-1 rounded-md bg-white/5 border border-nexus-border text-xs font-medium text-nexus-text">
+            <span className="px-2.5 py-1 rounded-md bg-[#F5EDD8] border border-nexus-border text-xs font-medium text-[#2C2416]">
               {type}
             </span>
             <span
               className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold border ${
                 criticality === 'A'
-                  ? 'bg-red-500/10 text-red-400 border-red-500/30'
+                  ? 'bg-[#B87070]/10 text-[#B87070] border-[#B87070]/30'
                   : criticality === 'B'
-                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                  : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                  ? 'bg-[#C4A882]/10 text-[#C4A882] border-[#C4A882]/30'
+                  : 'bg-[#D4B896]/10 text-[#D4B896] border-[#D4B896]/30'
               }`}
             >
               Criticality {criticality}
@@ -183,7 +181,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         {/* Section 2 — Knowledge Completeness */}
         <div className="p-5 border-b border-nexus-border flex flex-col items-center text-center bg-black/20">
           <CircularProgressRing completeness={completeness} />
-          <div className="flex items-center gap-1.5 text-xs text-nexus-text font-medium mt-1">
+          <div className="flex items-center gap-1.5 text-xs text-[#2C2416] font-medium mt-1">
             <FileText className="w-4 h-4 text-nexus-accent" />
             <span><strong className="text-white font-mono">{docCount}</strong> documents indexed</span>
           </div>
@@ -191,35 +189,35 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
 
         {/* Section 3 — Health Indicators */}
         <div className="p-5 border-b border-nexus-border space-y-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
             Health & Operational Status
           </h4>
-          <div className="glass-card p-3 space-y-2.5 border border-nexus-border">
+          <div className="card p-3 space-y-2.5">
             {/* Vibration Trend */}
             <div className="flex items-center justify-between text-xs">
-              <span className="text-nexus-textMuted">Vibration Trend:</span>
+              <span className="text-[#9B8B70]">Vibration Trend:</span>
               <div className="flex items-center gap-1.5 font-mono">
                 <span className="text-white font-medium">{vibration.value}</span>
                 {vibration.trend === 'rising' ? (
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" title="Rising" />
+                  <span className="w-2 h-2 rounded-full bg-[#B87070] animate-pulse" title="Rising" />
                 ) : vibration.trend === 'decreasing' ? (
-                  <span className="w-2 h-2 rounded-full bg-cyan-400" title="Decreasing" />
+                  <span className="w-2 h-2 rounded-full bg-[#C49A3C]" title="Decreasing" />
                 ) : (
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" title="Stable" />
+                  <span className="w-2 h-2 rounded-full bg-[#D4B896]" title="Stable" />
                 )}
               </div>
             </div>
 
             <div className="border-t border-white/5 pt-2 flex items-center justify-between text-xs">
-              <span className="text-nexus-textMuted">Last Inspection:</span>
-              <span className="text-nexus-text font-medium text-right max-w-[170px] truncate" title={lastInspection}>
+              <span className="text-[#9B8B70]">Last Inspection:</span>
+              <span className="text-[#2C2416] font-medium text-right max-w-[170px] truncate" title={lastInspection}>
                 {lastInspection}
               </span>
             </div>
 
             <div className="border-t border-white/5 pt-2 flex items-center justify-between text-xs">
-              <span className="text-nexus-textMuted">Days Since Maint:</span>
-              <span className={`font-mono font-bold ${daysSinceMaintenance > 90 ? 'text-red-400' : 'text-emerald-400'}`}>
+              <span className="text-[#9B8B70]">Days Since Maint:</span>
+              <span className={`font-mono font-bold ${daysSinceMaintenance > 90 ? 'text-[#B87070]' : 'text-[#D4B896]'}`}>
                 {daysSinceMaintenance} days
               </span>
             </div>
@@ -228,17 +226,17 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
 
         {/* Section 4 — Active Work & Permits */}
         <div className="p-5 border-b border-nexus-border space-y-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
             Active Work & Permits
           </h4>
           <div className="grid grid-cols-2 gap-3">
-            <div className="glass-card p-3 border border-nexus-border text-center">
+            <div className="card p-3 text-center">
               <span className="text-2xl font-mono font-bold text-white block">{openWorkOrders}</span>
-              <span className="text-[11px] text-nexus-textMuted">Open Work Orders</span>
+              <span className="text-[11px] text-[#9B8B70]">Open Work Orders</span>
             </div>
-            <div className="glass-card p-3 border border-nexus-border text-center">
+            <div className="card p-3 text-center">
               <span className="text-2xl font-mono font-bold text-white block">{activePermits}</span>
-              <span className="text-[11px] text-nexus-textMuted">Active Permits</span>
+              <span className="text-[11px] text-[#9B8B70]">Active Permits</span>
             </div>
           </div>
 
@@ -246,11 +244,12 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
             <motion.div
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-2.5 text-xs text-red-300"
+              className="p-3 rounded-xl flex items-start gap-2.5 text-xs"
+              style={{ background: 'rgba(194,59,46,0.1)', border: '1px solid rgba(194,59,46,0.3)', color: '#C49A3C' }}
             >
-              <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5 animate-pulse" />
+              <AlertTriangle className="w-4 h-4 text-[#B87070] flex-shrink-0 mt-0.5 animate-pulse" />
               <div className="leading-relaxed">
-                <strong className="text-red-200 font-semibold block">Active Work Detected</strong>
+                <strong className="text-white font-semibold block">Active Work Detected</strong>
                 Verify physical isolation and safety interlocks before querying maintenance procedures.
               </div>
             </motion.div>
@@ -260,34 +259,35 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         {/* Section 5 — Relationships */}
         <div className="p-5 border-b border-nexus-border space-y-3">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-nexus-textMuted">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#9B8B70]">
               Knowledge Relationships
             </h4>
-            <span className="text-[11px] font-mono text-nexus-textMuted">{relationships.length} links</span>
+            <span className="text-[11px] font-mono text-[#9B8B70]">{relationships.length} links</span>
           </div>
 
           {relationships.length === 0 ? (
-            <div className="glass-card p-4 text-center text-xs text-nexus-textMuted italic border border-nexus-border">
+            <div className="card p-4 text-center text-xs text-[#9B8B70] italic">
               No explicit connections mapped yet.
             </div>
           ) : (
             <div className="space-y-2">
               {relationships.map((rel, idx) => {
                 const relType = rel.type || 'RELATED_TO';
+                // Adjust colors based on Autumn Sunset palette, matching KnowledgeGraph
                 const typeColor =
-                  relType === 'FEEDS_INTO' ? 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' :
-                  relType === 'GOVERNED_BY' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
-                  relType === 'CONTROLLED_BY' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
-                  'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
+                  relType === 'FEEDS_INTO' ? 'text-[#A0623A] bg-[#C49A3C]/10 border-[#C49A3C]/20' :
+                  relType === 'GOVERNED_BY' ? 'text-[#B87070] bg-[#B87070]/10 border-[#B87070]/20' :
+                  relType === 'CONTROLLED_BY' ? 'text-[#C4A882] bg-[#C4A882]/10 border-[#C4A882]/20' :
+                  'text-[#A0623A] bg-[#C49A3C]/10 border-[#C49A3C]/20';
 
                 return (
                   <div
                     key={idx}
                     onClick={() => onSelectTag && onSelectTag(rel.target_tag)}
-                    className="glass-card p-3 border border-nexus-border flex items-center justify-between hover:border-nexus-primary/50 hover:bg-white/[0.04] transition-all cursor-pointer group"
+                    className="card p-3 flex items-center justify-between hover:border-nexus-blush transition-all cursor-pointer group"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <ArrowRight className="w-4 h-4 text-nexus-textMuted group-hover:text-nexus-primary flex-shrink-0 transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-[#9B8B70] group-hover:text-nexus-primary flex-shrink-0 transition-colors" />
                       <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${typeColor}`}>
                         {relType}
                       </span>
@@ -295,7 +295,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
                         {rel.target_tag}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-nexus-textMuted flex-shrink-0">
+                    <span className="text-[10px] font-mono text-[#9B8B70] flex-shrink-0">
                       {Math.round((rel.confidence || 0.8) * 100)}% conf
                     </span>
                   </div>
@@ -309,7 +309,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
         <div className="p-5 space-y-3 mt-auto">
           <button
             onClick={handleQueryOracle}
-            className="w-full py-3 px-4 rounded-xl bg-nexus-primary text-white font-medium text-xs flex items-center justify-center gap-2 shadow-lg shadow-nexus-primary/25 hover:bg-indigo-600 transition-all active:scale-[0.98]"
+            className="btn-primary w-full py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2"
           >
             <Bot className="w-4 h-4" />
             <span>Query ORACLE about this asset</span>
@@ -317,7 +317,7 @@ export default function AssetDetailPanel({ selectedAsset, onClose, onSelectTag }
 
           <button
             onClick={handleViewChronicle}
-            className="w-full py-2.5 px-4 rounded-xl bg-white/5 border border-nexus-border text-nexus-text font-medium text-xs flex items-center justify-center gap-2 hover:bg-white/10 hover:text-white transition-all active:scale-[0.98]"
+            className="btn-secondary w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2"
           >
             <Activity className="w-4 h-4 text-nexus-accent" />
             <span>View Failure Patterns</span>

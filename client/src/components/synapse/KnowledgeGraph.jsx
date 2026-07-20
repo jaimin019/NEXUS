@@ -94,25 +94,29 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
   // Helper colors
   const getNodeColor = useCallback((type) => {
     const t = (type || '').toLowerCase();
-    if (t.includes('pump')) return '#4F46E5'; // indigo
-    if (t.includes('exchanger') || t.includes('hx')) return '#06B6D4'; // cyan
-    if (t.includes('valve')) return '#F59E0B'; // amber
-    return '#8B5CF6'; // purple default
+    if (t.includes('pump')) return '#C49A3C';
+    if (t.includes('exchanger') || t.includes('hx')) return '#A0623A';
+    if (t.includes('reactor')) return '#6B7A8C';
+    if (t.includes('vessel')) return '#7A8C5A';
+    if (t.includes('valve')) return '#9B8B70';
+    if (t.includes('column')) return '#8C6B3E';
+    if (t.includes('cooler')) return '#6B5B8C';
+    return '#B8A888';
   }, []);
 
   const getBorderColor = useCallback((completeness) => {
-    if (completeness > 0.7) return '#10B981'; // green
-    if (completeness >= 0.4) return '#F59E0B'; // amber
-    return '#EF4444'; // red
+    if (completeness > 0.7) return '#D4B896'; // green
+    if (completeness >= 0.4) return '#C4A882'; // amber
+    return '#B87070'; // red
   }, []);
 
   const getLinkColor = useCallback((type) => {
-    switch (type) {
-      case 'FEEDS_INTO': return { color: '#4F46E5', opacity: 0.6, marker: 'marker-feeds' };
-      case 'GOVERNED_BY': return { color: '#EF4444', opacity: 0.5, marker: 'marker-governed' };
-      case 'CONTROLLED_BY': return { color: '#F59E0B', opacity: 0.5, marker: 'marker-controlled' };
-      default: return { color: '#6B7280', opacity: 0.4, marker: 'marker-default' };
-    }
+    const t = (type || '').toUpperCase();
+    if (t === 'FEEDS_INTO') return 'rgba(196,154,60,0.5)';
+    if (t === 'FED_BY') return 'rgba(196,154,60,0.3)';
+    if (t === 'GOVERNED_BY') return 'rgba(160,98,58,0.5)';
+    if (t === 'CONTROLLED_BY') return 'rgba(107,122,140,0.5)';
+    return 'rgba(155,139,112,0.4)';
   }, []);
 
   // Reset Zoom function
@@ -175,10 +179,10 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
 
     // Arrowhead markers definition
     const markerConfigs = [
-      { id: 'marker-feeds', color: '#4F46E5' },
-      { id: 'marker-governed', color: '#EF4444' },
-      { id: 'marker-controlled', color: '#F59E0B' },
-      { id: 'marker-default', color: '#6B7280' },
+      { id: 'marker-feeds', color: '#C49A3C' },
+      { id: 'marker-governed', color: '#B87070' },
+      { id: 'marker-controlled', color: '#C4A882' },
+      { id: 'marker-default', color: 'var(--border-light)' },
     ];
 
     markerConfigs.forEach(({ id, color }) => {
@@ -247,7 +251,7 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
       .attr('class', 'selection-ring')
       .attr('r', (d) => Math.min(12 + d.doc_count * 1.5, 32) + 8)
       .attr('fill', 'none')
-      .attr('stroke', '#4F46E5')
+      .attr('stroke', '#C49A3C')
       .attr('stroke-width', 2.5)
       .attr('stroke-dasharray', '4 4')
       .attr('opacity', (d) => (selectedAsset?.tag === d.id ? 1 : 0));
@@ -273,7 +277,10 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
       .attr('class', 'node-label font-mono text-[11px]')
       .attr('dy', (d) => Math.min(12 + d.doc_count * 1.5, 32) + 16)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#F1F5F9')
+      .attr('fill', '#2C2416')
+      .attr('font-family', "'Plus Jakarta Sans', sans-serif")
+      .attr('font-size', '11px')
+      .attr('font-weight', '600')
       .style('pointer-events', 'none')
       .style('user-select', 'none')
       .style('opacity', showLabels ? 1 : 0)
@@ -374,7 +381,7 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
       {/* Controls Bar above canvas */}
       <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-3">
         {/* Button Group (Glass Card) */}
-        <div className="glass-card flex items-center p-1 gap-1 shadow-lg border border-nexus-border">
+        <div className="card flex items-center p-1 gap-1">
           <button
             onClick={handleResetZoom}
             title="Reset Zoom & Center"
@@ -390,7 +397,7 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
             onClick={() => setShowLabels((prev) => !prev)}
             title="Toggle Labels"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              showLabels ? 'bg-nexus-primary/20 text-nexus-primary border border-nexus-primary/30' : 'text-nexus-textMuted hover:text-white hover:bg-white/10'
+              showLabels ? 'bg-nexus-blush/20 text-nexus-blush border border-nexus-blush/30' : 'text-nexus-textMuted hover:text-white hover:bg-white/10'
             }`}
           >
             {showLabels ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
@@ -399,7 +406,7 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
         </div>
 
         {/* Criticality Filter Pills */}
-        <div className="glass-card flex items-center px-2 py-1 gap-1 shadow-lg border border-nexus-border">
+        <div className="card flex items-center px-2 py-1 gap-1">
           <span className="flex items-center gap-1 text-[11px] text-nexus-textMuted font-medium px-2">
             <Filter className="w-3 h-3 text-nexus-accent" /> Criticality:
           </span>
@@ -413,10 +420,10 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
                 className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-all ${
                   isActive
                     ? crit === 'A'
-                      ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                      ? 'bg-[#B87070] text-white shadow-lg'
                       : crit === 'B'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-emerald-500 text-black shadow-lg shadow-emerald-500/20'
+                      ? 'bg-[#C4A882] text-white shadow-lg'
+                      : 'bg-[#D4B896] text-white shadow-lg'
                     : 'bg-white/5 text-nexus-textMuted hover:text-white hover:bg-white/10'
                 }`}
               >
@@ -427,7 +434,7 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
         </div>
 
         {/* Node/Edge count badge */}
-        <div className="glass-card px-3 py-1.5 text-xs font-mono text-nexus-textMuted flex items-center gap-2 border border-nexus-border shadow-lg">
+        <div className="card px-3 py-1.5 text-xs font-mono text-nexus-textMuted flex items-center gap-2">
           <Layers className="w-3.5 h-3.5 text-nexus-accent" />
           <span><strong className="text-white font-mono">{nodes.length}</strong> nodes</span>
           <span>·</span>
@@ -436,32 +443,32 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
       </div>
 
       {/* Legend inside canvas */}
-      <div className="absolute bottom-4 left-4 z-20 glass-card p-3 border border-nexus-border text-xs space-y-2 shadow-xl bg-nexus-surface/90">
+      <div className="absolute bottom-4 left-4 z-20 space-y-2" style={{ background: "#FDFAF6", border: "1px solid #E2D9C8", borderRadius: "8px", padding: "12px 16px" }}>
         <div className="font-semibold text-nexus-text flex items-center gap-1.5 border-b border-nexus-border pb-1.5">
           <span>Node Types & Health</span>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-nexus-textMuted">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#4F46E5] border border-white/20" />
+            <span className="w-3 h-3 rounded-full bg-[#C49A3C] border border-white/20" />
             <span>Pump</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#06B6D4] border border-white/20" />
+            <span className="w-3 h-3 rounded-full bg-[#C4A882] border border-white/20" />
             <span>Heat Exchanger</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#F59E0B] border border-white/20" />
+            <span className="w-3 h-3 rounded-full bg-[#C49A3C] border border-white/20" />
             <span>Control Valve</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#8B5CF6] border border-white/20" />
+            <span className="w-3 h-3 rounded-full bg-[#D4B896] border border-white/20" />
             <span>General Asset</span>
           </div>
         </div>
         <div className="border-t border-nexus-border pt-1.5 flex items-center justify-between text-[11px] text-nexus-textMuted">
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> &gt;70%</span>
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> 40-70%</span>
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> &lt;40% Gap</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#D4B896]" /> &gt;70%</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#C4A882]" /> 40-70%</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#B87070]" /> &lt;40% Gap</span>
         </div>
       </div>
 
@@ -480,14 +487,14 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
       {hoveredNode && (
         <div
           style={{ left: `${tooltipPos.x}px`, top: `${tooltipPos.y}px` }}
-          className="absolute z-50 pointer-events-none glass-card p-3 border border-nexus-border shadow-2xl rounded-lg w-56 text-xs bg-nexus-surface/95 backdrop-blur-md animate-in fade-in duration-150"
+          className="absolute z-50 pointer-events-none p-3 w-56 text-xs" style={{ background: "#FDFAF6", border: "1px solid #E2D9C8", borderRadius: "8px", boxShadow: "0 4px 20px rgba(44,36,22,0.10)", color: "#2C2416", padding: "10px 14px", fontSize: "13px", fontFamily: "\'Plus Jakarta Sans\', sans-serif" }}
         >
           <div className="flex items-center justify-between border-b border-nexus-border pb-1.5 mb-1.5">
             <span className="font-mono font-bold text-white tracking-wide">{hoveredNode.id}</span>
             <span className={`px-1.5 py-0.5 rounded font-mono font-bold text-[10px] ${
-              hoveredNode.criticality === 'A' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-              hoveredNode.criticality === 'B' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-              'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+              hoveredNode.criticality === 'A' ? 'bg-[#B87070]/20 text-[#B87070] border border-[#B87070]/30' :
+              hoveredNode.criticality === 'B' ? 'bg-[#C4A882]/20 text-[#C4A882] border border-[#C4A882]/30' :
+              'bg-[#D4B896]/20 text-[#D4B896] border border-[#D4B896]/30'
             }`}>
               Crit {hoveredNode.criticality}
             </span>
@@ -505,8 +512,8 @@ export default function KnowledgeGraph({ onNodeSelect, selectedAsset }) {
             <div className="flex items-center justify-between pt-1 border-t border-white/5">
               <span>Completeness:</span>
               <span className={`font-mono font-bold ${
-                hoveredNode.completeness > 0.7 ? 'text-emerald-400' :
-                hoveredNode.completeness >= 0.4 ? 'text-amber-400' : 'text-red-400'
+                hoveredNode.completeness > 0.7 ? 'text-[#D4B896]' :
+                hoveredNode.completeness >= 0.4 ? 'text-[#C4A882]' : 'text-[#B87070]'
               }`}>
                 {Math.round(hoveredNode.completeness * 100)}%
               </span>

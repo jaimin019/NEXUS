@@ -8,7 +8,7 @@ module.exports = function requestLogger(req, res, next) {
   res.on('finish', () => {
     const duration = Date.now() - start;
     const isSlow = duration > 2000;
-    const prefix = isSlow ? '⚠️  [SLOW]' : '⚡️';
+    const prefix = isSlow ? '[WARN]️  [SLOW]' : '[PERF]️';
     
     // Format: [timestamp] METHOD /path STATUS Xms
     const timestamp = new Date().toISOString();

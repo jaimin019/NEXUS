@@ -110,7 +110,7 @@ async function hybridSearch(queryText, queryEmbedding, filters = {}, topK = 8) {
   // ---------------------------------------------------------------------------
   // Reciprocal Rank Fusion (RRF)
   // ---------------------------------------------------------------------------
-  const scoreMap = new Map(); // _id (string) → { doc, rrf_score }
+  const scoreMap = new Map(); // _id (string) -> { doc, rrf_score }
 
   const applyRRF = (results, searchLabel) => {
     results.forEach((doc, rank) => {
@@ -144,7 +144,7 @@ async function hybridSearch(queryText, queryEmbedding, filters = {}, topK = 8) {
     .slice(0, topK);
 
   console.log(
-    `[hybridSearch] RRF fusion complete — ${scoreMap.size} unique docs → top ${ranked.length} returned (${Date.now() - startTime}ms)`
+    `[hybridSearch] RRF fusion complete — ${scoreMap.size} unique docs -> top ${ranked.length} returned (${Date.now() - startTime}ms)`
   );
 
   return ranked;

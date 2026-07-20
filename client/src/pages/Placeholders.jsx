@@ -4,10 +4,10 @@ import { Network, Bot, Activity, ShieldCheck } from 'lucide-react';
 
 function PlaceholderPage({ icon: Icon, title, subtitle, color = 'indigo' }) {
   const colorMap = {
-    indigo: 'text-indigo-400',
-    cyan: 'text-cyan-400',
-    purple: 'text-purple-400',
-    green: 'text-emerald-400',
+    indigo: 'text-[#C49A3C]',
+    cyan: 'text-[#C49A3C]',
+    purple: 'text-[#C4A882]',
+    green: 'text-[#D4B896]',
   };
   return (
     <div className="flex items-center justify-center min-h-[60vh]">

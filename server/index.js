@@ -14,12 +14,16 @@ const mongoose = require('mongoose');
 // ---------------------------------------------------------------------------
 // Route imports
 // ---------------------------------------------------------------------------
+const authRouter = require('./routes/auth');
 const documentsRouter = require('./routes/documents');
 const queryRouter = require('./routes/query');
 const assetsRouter = require('./routes/assets');
 const complianceRouter = require('./routes/compliance');
 const chronicleRouter = require('./routes/chronicle');
 const healthRouter = require('./routes/health');
+
+// Auth middleware
+const authMiddleware = require('./middleware/auth');
 
 // ---------------------------------------------------------------------------
 // App setup
@@ -50,12 +54,16 @@ app.use('/uploads', express.static(uploadsDir));
 // ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
+// Public routes — no auth required
 app.use('/api/health', healthRouter);
-app.use('/api/documents', documentsRouter);
-app.use('/api/query', queryRouter);
-app.use('/api/assets', assetsRouter);
-app.use('/api/compliance', complianceRouter);
-app.use('/api/chronicle', chronicleRouter);
+app.use('/api/auth', authRouter);
+
+// Protected routes — require auth
+app.use('/api/documents', authMiddleware, documentsRouter);
+app.use('/api/query', authMiddleware, queryRouter);
+app.use('/api/assets', authMiddleware, assetsRouter);
+app.use('/api/compliance', authMiddleware, complianceRouter);
+app.use('/api/chronicle', authMiddleware, chronicleRouter);
 
 // ---------------------------------------------------------------------------
 // Global error handler
@@ -73,12 +81,12 @@ app.use((err, _req, res, _next) => {
 // Graceful Error Handling
 // ---------------------------------------------------------------------------
 process.on('uncaughtException', (err) => {
-  console.error('❌ [NEXUS] Uncaught Exception:', err);
+  console.error('[ERROR] [NEXUS] Uncaught Exception:', err);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ [NEXUS] Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('[ERROR] [NEXUS] Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 // ---------------------------------------------------------------------------
@@ -89,38 +97,38 @@ async function start() {
 
   if (mongoUri) {
     try {
-      console.log('[NEXUS] Connecting to MongoDB...');
+      console.log('[INFO] [NEXUS] Connecting to MongoDB...');
       await mongoose.connect(mongoUri);
-      console.log('[NEXUS] MongoDB connected ✅');
+      console.log('[OK] [NEXUS] MongoDB connected');
     } catch (err) {
-      console.error('❌ [NEXUS] MongoDB connection failed:', err.message);
-      console.warn('⚠️ [NEXUS] Server will start without database — some routes will fail.');
+      console.error('[ERROR] [NEXUS] MongoDB connection failed:', err.message);
+      console.warn('[WARN] [NEXUS] Server will start without database — some routes will fail.');
     }
   } else {
-    console.warn('⚠️ [NEXUS] MONGODB_URI not set — skipping database connection.');
+    console.warn('[WARN] [NEXUS] MONGODB_URI not set — skipping database connection.');
   }
 
   // Warm up / load embedding model
   try {
-    console.log('[NEXUS] Embedding model loading...');
+    console.log('[INFO] [NEXUS] Embedding model loading...');
     const { embedTexts } = require('./ingestion/embedder');
     await embedTexts(['warmup']);
-    console.log('[NEXUS] Embedding model ready ✅');
+    console.log('[OK] [NEXUS] Embedding model ready');
   } catch (err) {
-    console.warn('⚠️ [NEXUS] Could not load embedding model:', err.message);
+    console.warn('[WARN] [NEXUS] Could not load embedding model:', err.message);
   }
 
   // Boot Bull queue workers
   try {
     require('./queues/ingestionQueue');
-    console.log('[NEXUS] Ingestion queue connected to Redis ✅');
-    console.log('[NEXUS] Queue processor registered ✅');
+    console.log('[OK] [NEXUS] Ingestion queue connected to Redis');
+    console.log('[OK] [NEXUS] Queue processor registered');
   } catch (err) {
-    console.warn('⚠️ [NEXUS] Could not start ingestion queue:', err.message);
+    console.warn('[WARN] [NEXUS] Could not start ingestion queue:', err.message);
   }
 
   app.listen(PORT, () => {
-    console.log(`[NEXUS] Server running on port ${PORT} ✅`);
+    console.log(`[OK] [NEXUS] Server running on port ${PORT}`);
   });
 }
 

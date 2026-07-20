@@ -6,10 +6,26 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Request interceptor — attach token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('nexus_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Response interceptor for consistent error logging
 api.interceptors.response.use(
   (res) => res,
   (err) => {
+    // If 401, clear token and redirect to login
+    if (err.response?.status === 401 && !err.config?.url?.includes('/auth/')) {
+      localStorage.removeItem('nexus_token');
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/') {
+        window.location.href = '/login';
+      }
+    }
     console.error('[api]', err.config?.url, err.response?.status, err.message);
     return Promise.reject(err);
   }
@@ -27,6 +43,22 @@ async function call(fn) {
     };
   }
 }
+
+// ---------------------------------------------------------------------------
+// Auth
+// ---------------------------------------------------------------------------
+export const login = (email, password) =>
+  call(() => api.post('/auth/login', { email, password }));
+
+export const register = (name, email, password, role) =>
+  call(() => api.post('/auth/register', { name, email, password, role }));
+
+export const getMe = () =>
+  call(() => api.get('/auth/me'));
+
+export const logout = () => {
+  localStorage.removeItem('nexus_token');
+};
 
 // ---------------------------------------------------------------------------
 // Documents
@@ -89,6 +121,9 @@ export const getComplianceGaps = (filters = {}) =>
 
 export const resolveGap = (id, note) =>
   call(() => api.patch(`/compliance/gaps/${id}/resolve`, { resolution_note: note }));
+
+export const updateGapStatus = (id, status) =>
+  call(() => api.patch(`/compliance/gaps/${id}/status`, { status }));
 
 export const runComplianceAudit = (regulationDocId) =>
   call(() => api.post('/compliance/audit', { regulation_doc_id: regulationDocId }));

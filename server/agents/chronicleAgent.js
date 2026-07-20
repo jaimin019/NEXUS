@@ -170,7 +170,7 @@ async function mineFailurePatterns() {
       }
     }
 
-    console.log(`\n[chronicleAgent] ✅ Mining complete — Found: ${patternsFound}, New: ${patternsNew}, Updated: ${patternsUpdated}`);
+    console.log(`\n[chronicleAgent] [OK] Mining complete — Found: ${patternsFound}, New: ${patternsNew}, Updated: ${patternsUpdated}`);
     return { patternsFound, patternsNew, patternsUpdated };
   } catch (error) {
     console.error(`[chronicleAgent] Fatal error during failure pattern mining: ${error.message}`);

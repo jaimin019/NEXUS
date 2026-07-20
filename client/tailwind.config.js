@@ -1,39 +1,47 @@
-/** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+      },
       colors: {
         nexus: {
-          bg: '#0A0A0F',
-          surface: '#111118',
-          border: '#1E1E2E',
-          primary: '#4F46E5',
-          primaryHover: '#4338CA',
-          accent: '#06B6D4',
-          success: '#10B981',
-          warning: '#F59E0B',
-          danger: '#EF4444',
-          muted: '#6B7280',
-          text: '#F1F5F9',
-          textMuted: '#94A3B8',
-        },
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+          bg:           '#F5F0E8',
+          sidebar:      '#EDE8DE',
+          surface:      '#FDFAF6',
+          surfaceHigh:  '#F0EBE1',
+          border:       '#E2D9C8',
+          borderLight:  '#EDE8DE',
+          primary:      '#C49A3C',
+          primaryHover: '#B8860B',
+          primaryLight: '#F5EDD8',
+          primaryDim:   'rgba(196,154,60,0.12)',
+          text:         '#2C2416',
+          textSecond:   '#6B5B3E',
+          textMuted:    '#9B8B70',
+          textFaint:    '#C4B49A',
+          positive:     '#7A8C5A',
+          caution:      '#C49A3C',
+          critical:     '#A0623A',
+          info:         '#6B7A8C',
+          inactive:     '#C4B49A',
+        }
       },
       boxShadow: {
-        'nexus-glow': '0 0 20px rgba(79,70,229,0.15)',
-        'nexus-glow-lg': '0 0 40px rgba(79,70,229,0.2)',
-        'nexus-accent': '0 0 20px rgba(6,182,212,0.15)',
+        'card':     '0 1px 4px rgba(44,36,22,0.06), 0 2px 12px rgba(44,36,22,0.04)',
+        'elevated': '0 4px 20px rgba(44,36,22,0.10), 0 1px 4px rgba(44,36,22,0.06)',
+        'focus':    '0 0 0 3px rgba(196,154,60,0.2)',
+        'gold':     '0 4px 12px rgba(196,154,60,0.35)',
       },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'spin-slow': 'spin 2s linear infinite',
-      },
-    },
+      borderRadius: {
+        DEFAULT: '8px',
+        'lg': '12px',
+        'xl': '16px',
+        'full': '999px',
+      }
+    }
   },
-  plugins: [],
-};
+  plugins: []
+}
