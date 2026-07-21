@@ -4,7 +4,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Bot, RotateCcw, Monitor, Smartphone, ChevronDown, ChevronUp,
+  Bot, RotateCcw, ChevronDown, ChevronUp,
   Activity, AlertTriangle, Clock, Layers, ExternalLink
 } from 'lucide-react';
 import StatusBadge from '@/components/ui/StatusBadge';
@@ -87,8 +87,8 @@ function AnswerText({ text }) {
       if (isWarning) {
         elements.push(
           <div key={idx} className="flex items-start gap-2 my-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
-            <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-red-300">{line.replace('WARNING:', '').trim()}</span>
+            <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-red-700">{line.replace('WARNING:', '').trim()}</span>
           </div>
         );
       } else if (line.trim()) {
@@ -140,11 +140,11 @@ function AssistantMessage({ msg, onSourceClick }) {
           {hasSafetyWarnings && (
             <div className="mb-3 p-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
               <div className="flex items-center gap-1.5 mb-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
-                <span className="text-xs font-semibold text-red-300">Safety Warning</span>
+                <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
+                <span className="text-xs font-semibold text-red-700">Safety Warning</span>
               </div>
               {msg.safetyWarnings.map((w, i) => (
-                <p key={i} className="text-xs text-red-200/80">{w.message || JSON.stringify(w)}</p>
+                <p key={i} className="text-xs text-red-700/90">{w.message || JSON.stringify(w)}</p>
               ))}
             </div>
           )}
@@ -153,15 +153,15 @@ function AssistantMessage({ msg, onSourceClick }) {
           {hasFailureAlert && (
             <div className="mb-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
               <div className="flex items-center gap-1.5 mb-1">
-                <Activity className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-xs font-semibold text-amber-300">Failure Pattern Detected</span>
-                <span className="ml-auto text-xs text-amber-400">
+                <Activity className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-xs font-semibold text-amber-700">Failure Pattern Detected</span>
+                <span className="ml-auto text-xs text-amber-600">
                   {((msg.failureAlert.similarity_score || 0) * 100).toFixed(0)}% match
                 </span>
               </div>
-              <p className="text-xs text-amber-200/80 mb-1">{msg.failureAlert.message}</p>
+              <p className="text-xs text-amber-700/90 mb-1">{msg.failureAlert.message}</p>
               {msg.failureAlert.recommended_action && (
-                <p className="text-xs text-amber-300/70 italic">{msg.failureAlert.recommended_action}</p>
+                <p className="text-xs text-amber-700/80 italic">{msg.failureAlert.recommended_action}</p>
               )}
             </div>
           )}
@@ -251,7 +251,7 @@ function UserMessage({ msg }) {
   );
 }
 
-export default function ConversationPanel({ onSourceClick, onViewModeToggle, viewMode }) {
+export default function ConversationPanel({ onSourceClick }) {
   const { conversationHistory, isQuerying, clearConversation } = useNexusStore();
   const bottomRef = useRef(null);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -298,16 +298,7 @@ export default function ConversationPanel({ onSourceClick, onViewModeToggle, vie
             {confirmClear ? 'Confirm?' : 'New'}
           </button>
 
-          {/* View toggle */}
-          {onViewModeToggle && (
-            <button
-              onClick={onViewModeToggle}
-              className="p-1.5 rounded-lg border border-nexus-border text-nexus-muted hover:text-nexus-text hover:border-nexus-primary/40 transition-all"
-              title={viewMode === 'desktop' ? 'Switch to mobile view' : 'Switch to desktop view'}
-            >
-              {viewMode === 'desktop' ? <Smartphone className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
-            </button>
-          )}
+
         </div>
       </div>
 
