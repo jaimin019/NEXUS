@@ -69,7 +69,7 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    const savedTheme = 'light';
+    const savedTheme = localStorage.getItem('nexus-theme') || 'light';
     useNexusStore.setState({ theme: savedTheme });
   }, []);
 

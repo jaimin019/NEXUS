@@ -16,11 +16,25 @@ const Chunk = require(path.join(__dirname, '../models/Chunk'));
 const FailureSignature = require(path.join(__dirname, '../models/FailureSignature'));
 const ComplianceMapping = require(path.join(__dirname, '../models/ComplianceMapping'));
 const User = require(path.join(__dirname, '../models/User'));
+const { embedTexts } = require(path.join(__dirname, '../ingestion/embedder'));
 
-// Generate a pseudo-random embedding vector for demo search
+// Generate a pseudo-random embedding vector for demo search fallback
 function generateDemoEmbedding() {
   return Array.from({ length: 384 }, () => (Math.random() - 0.5) * 0.1);
 }
+
+let realEmbeddingsAvailable = false;
+async function getEmbeddingsSafe(texts) {
+  if (realEmbeddingsAvailable) {
+    try {
+      return await embedTexts(texts);
+    } catch (e) {
+      console.warn('  [WARN] Real embedding failed, using fallback:', e.message);
+    }
+  }
+  return texts.map(() => generateDemoEmbedding());
+}
+
 
 async function seed() {
   console.log(`\n${'='.repeat(70)}`);
@@ -48,6 +62,16 @@ async function seed() {
       User.deleteMany({}),
     ]);
     console.log('[INFO] Cleared existing demo data.\n');
+
+    try {
+      console.log('[INFO] Warming up Xenova local embedding model for true semantic search...');
+      await embedTexts(['warmup']);
+      realEmbeddingsAvailable = true;
+      console.log('[OK] Xenova local embedding model loaded.');
+    } catch (err) {
+      console.warn('[WARN] Could not load Xenova model, will use fallback embeddings:', err.message);
+    }
+
 
     // -------------------------------------------------------------------------
     // 0. Seed Demo User
@@ -166,9 +190,7 @@ async function seed() {
     // -------------------------------------------------------------------------
     console.log('\n[INFO] Seeding Documents & Chunks...');
     
-    // Note: In a real system, the actual ingestion pipeline would generate real semantic embeddings.
-    // We are generating pseudo-random embeddings here just to fulfill the data model for the UI demo.
-    console.log('  [WARN] Using pseudo-random embeddings for demo speed. Run real ingestion for true semantic search.');
+    console.log('  [INFO] Generating real 384-dim semantic embeddings via Xenova/all-MiniLM-L6-v2...');
 
     const demoDocs = [
       {
@@ -233,6 +255,8 @@ async function seed() {
       const createdDoc = await Document.create(docData);
       docRecords.push(createdDoc);
 
+      const chunkEmbeddings = await getEmbeddingsSafe(d.chunks.map(c => c.raw_text));
+
       for (let i = 0; i < d.chunks.length; i++) {
         const c = d.chunks[i];
         await Chunk.create({
@@ -240,7 +264,7 @@ async function seed() {
           chunk_index: i,
           text: c.raw_text,
           raw_text: c.raw_text,
-          embedding: generateDemoEmbedding(),
+          embedding: chunkEmbeddings[i],
           doc_type: createdDoc.doc_type,
           equipment_tags: createdDoc.equipment_tags,
           regulatory_refs: createdDoc.regulatory_refs,
@@ -268,7 +292,6 @@ async function seed() {
         resolution: 'bearing_replacement_and_root_cause_analysis_of_resonance',
         occurrence_count: 3,
         source_incidents: incidentDoc ? [incidentDoc._id] : [],
-        embedding: generateDemoEmbedding()
       },
       {
         equipment_type: 'Heat_Exchanger', failure_mode: 'tube_fouling_and_failure',
@@ -277,7 +300,6 @@ async function seed() {
         avg_days_to_failure: 22, detection_method: 'pressure_differential_monitoring',
         resolution: 'tube_bundle_cleaning_and_plugging_failed_tubes',
         occurrence_count: 2,
-        embedding: generateDemoEmbedding()
       },
       {
         equipment_type: 'Control_Valve', failure_mode: 'valve_seizure',
@@ -286,11 +308,15 @@ async function seed() {
         avg_days_to_failure: 3, detection_method: 'operator_observation',
         resolution: 'heat_application_and_manual_exercise_do_not_force_with_extension',
         occurrence_count: 1,
-        embedding: generateDemoEmbedding()
       }
     ];
 
-    for (const sig of demoSignatures) {
+    const sigTexts = demoSignatures.map(sig => `${sig.equipment_type} ${sig.failure_mode} ${sig.precursor_signals.join(' ')} ${sig.contributing_conditions.join(' ')}`);
+    const sigEmbeddings = await getEmbeddingsSafe(sigTexts);
+
+    for (let i = 0; i < demoSignatures.length; i++) {
+      const sig = demoSignatures[i];
+      sig.embedding = sigEmbeddings[i];
       await FailureSignature.create(sig);
     }
     console.log(`  [OK] Seeded ${demoSignatures.length} Failure Signatures.`);
@@ -307,7 +333,6 @@ async function seed() {
         gap_severity: 'Critical', status: 'open',
         gap_description: 'SOP-MAINT-017 Section 7 references hot work in pump area but does not include mandatory gas testing step required by OISD-GDN-206 Clause 4.3.2. This creates a critical safety and regulatory compliance gap.',
         ai_suggested_amendment: 'Add Step 7.3 to SOP-MAINT-017: "Before commencing any hot work in the P-101/P-102 pump area: (a) Conduct atmosphere test using calibrated combustible gas detector within 30 minutes of work start. (b) Verify gas concentration below 10% LEL. (c) Record test result, tester name, and timestamp on Hot Work Permit form. (d) Repeat testing every 2 hours during continuous hot work. Stop work immediately if LEL exceeds 10%."',
-        clause_embedding: generateDemoEmbedding()
       },
       {
         regulation_id: 'OISD-GDN-206', clause_id: '4.4.2',
@@ -315,7 +340,6 @@ async function seed() {
         gap_severity: 'Critical', status: 'open',
         gap_description: 'No confined space entry procedure found for V-302 High Pressure Separator. OISD-GDN-206 Clause 4.4.2 requires rescue team pre-positioning. This procedure is completely absent from the indexed document corpus.',
         ai_suggested_amendment: 'Create new SOP: CSE-V302-001 Confined Space Entry Procedure for V-302. Must include: rescue team assignment and briefing checklist, atmospheric testing sequence, attendant responsibilities, emergency evacuation signal protocol, and rescue equipment positioning requirements per OISD-GDN-206 Section 4.4.',
-        clause_embedding: generateDemoEmbedding()
       },
       {
         regulation_id: 'FactoryAct-Sec31', clause_id: '7.1',
@@ -323,7 +347,6 @@ async function seed() {
         gap_severity: 'Major', status: 'in_review',
         gap_description: 'HX-204 annual inspection is overdue by approximately 2 months (due Nov-2024). INSP-2023-HX204 noted 3 tubes below minimum wall thickness requiring plugging. No evidence that plugging was completed or reinspection conducted.',
         ai_suggested_amendment: 'Immediately schedule HX-204 reinspection to confirm tube plugging status. Update inspection management system with overdue flag. Initiate Factory Act compliance notification to Plant Safety Officer. Target completion: within 30 days.',
-        clause_embedding: generateDemoEmbedding()
       },
       {
         regulation_id: 'OISD-GDN-206', clause_id: '4.2',
@@ -332,11 +355,15 @@ async function seed() {
         gap_description: 'WO-2024-1847 work order for P-101 bearing inspection did not reference PTW permit number in work order body.',
         ai_suggested_amendment: 'Update work order template to include mandatory PTW permit number field. Add validation in SAP PM to prevent WO closure without PTW reference.',
         resolution_note: 'Work order template updated in SAP PM. Training conducted with maintenance planning team. Verified in last 3 work orders.',
-        clause_embedding: generateDemoEmbedding()
       }
     ];
 
-    for (const mapping of demoMappings) {
+    const mappingTexts = demoMappings.map(m => m.clause_text);
+    const mappingEmbeddings = await getEmbeddingsSafe(mappingTexts);
+
+    for (let i = 0; i < demoMappings.length; i++) {
+      const mapping = demoMappings[i];
+      mapping.clause_embedding = mappingEmbeddings[i];
       await ComplianceMapping.create(mapping);
     }
     console.log(`  [OK] Seeded ${demoMappings.length} Compliance Mappings.`);

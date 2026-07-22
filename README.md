@@ -1,94 +1,63 @@
-# 🏭 NEXUS
-```
-N   N  EEEEE  X   X  U   U  SSSS
-NN  N  E       X X   U   U  S
-N N N  EEEE     X    U   U  SSSS
-N  NN  E       X X   U   U     S
-N   N  EEEEE  X   X  UUUU   SSSS
-```
-**An AI-powered Industrial Knowledge Intelligence Platform**
+# NEXUS — Industrial Knowledge Intelligence Platform
 
-NEXUS bridges the gap between siloed industrial data (P&IDs, SOPs, Work Orders, Regulations, Expert Knowledge) and actionable operational intelligence.
+> AI for Industrial Knowledge Intelligence: Unified Asset & Operations Brain  
+> ET AI Hackathon 2026 — Problem Statement 8
 
----
+NEXUS is an AI-powered Operations Brain engineered to eliminate the critical information fragmentation bottleneck plaguing modern industrial plants. Today, industrial professionals spend **35% of their time searching for information across 7–12 disconnected document systems**—including siloed SOPs, complex P&IDs, historical maintenance logs, active work orders, and strict regulatory frameworks—while mission-critical operational wisdom disappears every time an experienced engineer retires. NEXUS unifies these disparate data streams into a dynamic, cross-linked institutional brain, enabling real-time multi-hop knowledge discovery, predictive failure intelligence, and automated compliance auditing across the entire asset lifecycle.
 
-## 🌟 Core Features
+## Key Features
+- **SYNAPSE (Autonomous Knowledge Graph Engine)**: Automatically ingests unstructured industrial documents to extract equipment tags and build a topological asset network with auditable relationship edges, leveraging entity extraction pipelines to link equipment nodes across SOPs, P&IDs, and maintenance logs.
+- **ORACLE (Hybrid RAG Copilot & Tacit Knowledge Copilot)**: Synthesizes multi-document operational answers with exact source citations and real-time active work order safety checks, powered by Reciprocal Rank Fusion (RRF) combining 384-dimensional vector search with keyword filtering over local and tacit engineer knowledge.
+- **CHRONICLE (Predictive Failure Intelligence & Expert Capture)**: Mines historical failure signatures and captures retiring engineers' undocumented operational wisdom via interactive interviews, utilizing a real-time vector similarity simulator to match field symptoms against historical breakdown trajectories.
+- **SpectraSync (Autonomous Regulatory Compliance Engine)**: Continuously audits internal SOPs and maintenance procedures against OISD, Factory Act, and PESO standards, detecting critical safety gaps and automatically drafting corrective, audit-ready regulatory amendments.
 
-- **SYNAPSE (Knowledge Graph)**: Ingests documents to automatically extract industrial entities (Assets) and infer their topological and operational relationships.
-- **ORACLE (Copilot)**: A hybrid RAG-based query engine using MongoDB Atlas Vector Search and Groq (Llama-3.3-70B). Supports desktop and mobile voice interfaces for field technicians.
-- **CHRONICLE (Failure Intelligence)**: Mines historical incident reports and work orders to detect recurring failure patterns. Features an Expert Capture mode to ingest tacit knowledge from retiring engineers.
-- **SpectraSync (Compliance Engine)**: Automatically maps internal procedures against external regulatory codes (e.g., OISD, Factory Act) and flags critical compliance gaps using LLMs.
+## Tech Stack
 
----
+| Category | Technology |
+|---|---|
+| **Frontend** | React + Vite + TailwindCSS + D3.js |
+| **Backend** | Node.js + Express.js |
+| **Database** | MongoDB Atlas (M0 free tier) |
+| **Vector Search** | MongoDB Atlas Vector Search (384-dim) |
+| **Embeddings** | Xenova/all-MiniLM-L6-v2 (local, no API cost) |
+| **LLM** | Groq API — Llama 3.3 70B |
+| **Queue** | Bull + Upstash Redis |
+| **Auth** | JWT (bcrypt) |
 
-## 🚀 Quick Start
+## Architecture
+Explore the full system design by visiting the `/architecture` route within the live application or viewing our interactive architectural breakdown. The NEXUS platform is organized into a robust **3-Layer Architecture** comprising an Ingestion & Data Layer, an AI & Intelligence Layer, and a Presentation & Experience Layer. Unstructured industrial documents and tacit interviews pass through an asynchronous 4-stage ingestion pipeline (`Parsing` → `Entity Extraction` → `Embedding` → `Graph Construction`) queued via Redis and stored in MongoDB Atlas. The four autonomous agents (`SYNAPSE`, `ORACLE`, `CHRONICLE`, and `SpectraSync`) orchestrate local embeddings and Llama 3.3 70B inference to deliver instant, verifiable knowledge to field technicians and plant operators.
 
-### 1. Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas cluster (M0 free tier is sufficient, with Vector Search enabled)
-- Groq API Key
-- Upstash Redis (or any Redis instance)
+## Quick Start
+Execute the following commands on a fresh machine to clone the repository, install dependencies, seed the demo database, and launch the platform:
 
-### 2. Clone & Install
 ```bash
+# 1. Clone the repository and enter the directory
 git clone https://github.com/jaimin019/NEXUS.git
 cd NEXUS
 
-# Install Server dependencies
+# 2. Install all platform dependencies (root, client, and server)
+npm run install:all
+
+# 3. Configure backend environment variables
 cd server
-npm install
+cp .env.example .env
+# Edit .env with your MongoDB Atlas, Groq API Key, Upstash Redis, and JWT credentials
 
-# Install Client dependencies
-cd ../client
-npm install
-```
+# 4. Seed the demo database with Bharat Refinery Unit-3 industrial assets and documents
+npm run seed
 
-### 3. Environment Variables
-Create a `.env` file in the `/server` directory:
-```env
-PORT=5001
-MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/nexus?retryWrites=true&w=majority
-GROQ_API_KEY=gsk_your_api_key_here
-UPSTASH_REDIS_REST_URL=https://your-upstash-url
-UPSTASH_REDIS_REST_TOKEN=your_upstash_token
-REDIS_URL=rediss://default:password@your-upstash-url:port
-```
+# 5. Create MongoDB Atlas Vector Search index
+npm run create-indexes
 
-### 4. Seed Demo Data
-Populate the database with a complete, realistic industrial plant scenario (Bharat Refinery Unit-3):
-```bash
-cd server
-node scripts/seedDemoData.js
-```
-
-### 5. Run the Application
-Run both the backend and frontend simultaneously:
-```bash
-# In the root or server directory:
+# 6. Launch both backend server and frontend development server simultaneously
+cd ..
 npm run dev
-
-# Or run them separately:
-# Terminal 1: cd server && npm run dev
-# Terminal 2: cd client && npm run dev
 ```
-Navigate to **http://localhost:5173** to access the NEXUS dashboard.
+Navigate to **http://localhost:5173** and sign in using `demo@nexus.ai` / `nexus2026`.
 
----
+## Team
+- **Jaimin Hadvani** — [GitHub](https://github.com/jaimin019) | [LinkedIn](https://www.linkedin.com/in/jaimin-hadvani-6a1496284/)
+- **Pal Kaneria** — [GitHub](https://github.com/palkaneria) | [LinkedIn](www.linkedin.com/in/pal-kaneria-49517232b)
 
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Frontend** | React, Vite, TailwindCSS, shadcn/ui, Zustand, Framer Motion, Lucide React |
-| **Backend** | Node.js, Express, Mongoose, Bull (Redis Queues) |
-| **AI / NLP** | Groq (Llama-3.3-70B), Xenova Transformers (Local Embeddings) |
-| **Database** | MongoDB Atlas (Document Store + Vector Search) |
-
----
-
-## 🏗️ Architecture
-Click the **Architecture** button in the TopBar of the application to view the full three-layer architectural diagram, or navigate to `/architecture`.
-
----
-**Team:** Jaimin Hadvani + Pal Kaneria  
-*Built for the ET AI Hackathon 2026* 🏆
+## Submission
+**ET AI Hackathon 2026 | Problem Statement 8**

@@ -73,7 +73,7 @@ const useNexusStore = create((set) => ({
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   activePage: 'dashboard',
   setActivePage: (page) => set({ activePage: page }),
-  theme: 'dark',
+  theme: typeof window !== 'undefined' ? (localStorage.getItem('nexus-theme') || 'light') : 'light',
   toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
 }));
 

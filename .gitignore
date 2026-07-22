@@ -1,7 +1,13 @@
 node_modules/
 .env
+uploads/
+!uploads/.gitkeep
+client/dist/
 dist/
-.DS_Store
 *.log
+.DS_Store
+Thumbs.db
+*.tmp
+server/scripts/test_*.js
 server/uploads/*
 !server/uploads/.gitkeep
